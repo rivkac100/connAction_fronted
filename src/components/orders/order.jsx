@@ -89,5 +89,6 @@ export const Orders = () => {
 
         {delt && <button onClick={() => deleteOrder(ordId)}>delete</button>}
         {edit && <button onClick={() => navigate(`/editOrder/${ordId}`)}>edit</button>}
+    
     </div>
 } 
