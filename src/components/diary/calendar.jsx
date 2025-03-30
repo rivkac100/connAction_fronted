@@ -155,7 +155,7 @@ export const Calendar = () => {
                 <button className='menuButton' onClick={() => deleteEvent()}>מחיקה</button>
             </div>} */}
 
-            <table>
+            <table className='dairyTable'>
                 <thead>
                     <tr>
                         {week.map((d) => <><td onContextMenu={event => {

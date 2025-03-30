@@ -3,13 +3,13 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 export const findOrderThunk = createAsyncThunk(
     'findOrderThunk',
 
-    async ({ token }) => {
+    async ({ id }) => {
 
-        const response = await fetch(`https://localhost:7044/api/Orders/GetById/${token}`,)
+        const response = await fetch(`https://localhost:7044/api/Orders/GetById/${id}`,)
         if (response.ok) {
             const data = await response.json();
             console.log("fetch success get event");
-            return data.orders;
+            return data;
         }
 
         else {

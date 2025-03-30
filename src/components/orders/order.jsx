@@ -4,15 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { ordersFetchThunk } from '../../store/slices/ordersFetch';
 import { deleteOrderThunk } from '../../store/slices/deleteOrderThunk'
 import './order.css'
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { findCustomerThunk } from '../../store/slices/findCustomerThunk';
 
 export const Orders = () => {
 
     const dispatch = useDispatch();
     const orders = useSelector(state => state.order.orders)
-    const customer=useSelector(state=>state.customer.customer)
-   
+    const customer = useSelector(state => state.customer.customer)
+
     const navigate = useNavigate();
     const [delt, setDelt] = useState(false);
     const [edit, setEdit] = useState(false);
@@ -25,14 +25,14 @@ export const Orders = () => {
     useEffect(() => {
         debugger
         dispatch(ordersFetchThunk());
-       
+
         // navigate(`/calendar`)
 
     }, [])
     useEffect(() => {
 
         // if(orders.length>0)
-       // dispatch(ordersFetchThunk());
+        // dispatch(ordersFetchThunk());
         // navigate(`/calendar`)
         console.log(orders);
     }, [orders])
@@ -43,10 +43,10 @@ export const Orders = () => {
         console.log("success");
 
     }
-    const getDitals=async(o)=>{
-        dispatch(findCustomerThunk({id:o.customerId}))
+    // const getDitals=async(o)=>{
+    //     dispatch(findCustomerThunk({id:o.customerId}))
 
-    }
+    // }
 
 
     return <div className='orderPage'>
@@ -66,18 +66,18 @@ export const Orders = () => {
                     <th>תשלום</th>
                 </tr>   </thead>
             <tbody>
-                {orders.length > 0 && orders.map(o => { getDitals(o);
+                {orders.length > 0 && orders.map(o => { //getDitals(o);
                     return <tr className={o.orderId === ordId} onClick={() => { setOrdId(o.orderId); setDelt(true); setEdit(true) }} key={o.ordIdId}>
-                       
+
                         <td>{o.orderId}</td>
                         {/* שם לקוח */}
-                        <td>{customer.instituteName}</td>
+                        <td>{o.customerName}</td>
                         {/* <td>{getDitals(o).id}</td> */}
                         {/* שם מתווך */}
-                        <td>{o.brokerId}</td>
+                        <td>{o.brokerName}</td>
                         <td>{o.amountOfParticipants}</td>
                         {/* שם פעילות */}
-                        <td>{o.activityId}</td>
+                        <td>{o.activityName}</td>
                         <td>{o.date}</td>
                         <td>{o.activeHour}</td>
                         <td>{o.payment}</td>
@@ -85,10 +85,13 @@ export const Orders = () => {
                 })}
             </tbody>
         </table>
-        <button onClick={() => navigate('/newOrder')}>add</button>
+        <button onClick={() => navigate('newOrder')}>add</button>
 
         {delt && <button onClick={() => deleteOrder(ordId)}>delete</button>}
-        {edit && <button onClick={() => navigate(`/editOrder/${ordId}`)}>edit</button>}
-    <h1>vghfby</h1>
+        {edit && <button onClick={() => navigate(`editOrder/${ordId}`)}>edit</button>}
+        <h1>vghfby</h1>
+        <div>
+            <Outlet></Outlet>
+        </div>
     </div>
 } 

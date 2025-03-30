@@ -111,7 +111,7 @@ export const ordersSlice = createSlice({
 
         builder.addCase(findOrderThunk.fulfilled, (state, action) => {
             console.log(action.payload);
-            state.orders = action.payload;
+            state.order = action.payload;
         });
 
 

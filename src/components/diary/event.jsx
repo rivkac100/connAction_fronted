@@ -82,20 +82,7 @@ export const Event = () => {
 
       if(thisEvent.date && thisEvent.title)
         if(eventId){
-        //const eventId = parseInt(token, 10);
-        // if (isNaN(eventId)) {
-        //     console.error('Invalid eventId:', token);
-        // }
-        //else {
-            // if (!day) {
-
-            //     let d = new Date(thisEvent.date)
-            //     d = d.toLocaleDateString()
-
-            //     setThisEvent({...thisEvent,date:d})
-            //     //setDetails({ ...details, date: d });
-            //     console.log(d);
-            // }
+       
             dispatch(editEventThunk({details:thisEvent}));
         }
         else{
