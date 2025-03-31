@@ -3,9 +3,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 export const updateOrderThunk = createAsyncThunk(
     'updateOrderThunk',
 
-    async (details) => {
+    async ({details}) => {
 
-        const response = await fetch("https://localhost:7044/api/Orders/Update", {
+        const response = await fetch("https://localhost:7044/api/Order/Update", {
             method: 'PUT',
             body: JSON.stringify(details),
             headers: {
@@ -15,7 +15,7 @@ export const updateOrderThunk = createAsyncThunk(
 
         if (response.ok) {
             const data = await response.json();
-            return data.token;
+            return data
         }
         else {
             throw new Error('failed to fetch update OrderThunk');

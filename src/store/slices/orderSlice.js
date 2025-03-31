@@ -59,7 +59,7 @@ export const ordersSlice = createSlice({
         //הוספת מקרה שהט'נק הסתיים בהצלחה
         builder.addCase(updateOrderThunk.fulfilled, (state, action) => {
              state.orders = action.payload;
-            state.sucsses = true;
+             state.sucsses = true;
         });
         //הוספת מקרה שהט'נק נכשל
         builder.addCase(updateOrderThunk.rejected, (state, action) => {

@@ -7,6 +7,7 @@ import { addCustomerThunk } from "../../store/slices/addCustomerThunk";
 import { useNavigate } from "react-router-dom";
 import { updateCustomerThunk } from "../../store/slices/updateCustomerThunk";
 import { customersFetchThunkById } from "../../store/slices/customerFetchThunkById";
+import { Button } from "@mui/material";
 export const Logon = () => {
     const params = useParams();
     const dispatch = useDispatch();
@@ -14,16 +15,19 @@ export const Logon = () => {
     const customers = useSelector(state => state.customer.customers)
     const token = useSelector(state => state.customer.token)
     const myCustomer = useSelector(state => state.customer.customer)
+    const refDialog = useRef();
 
     // const [customer, setCustomer] = useState({
     //     instituteName: "", mobile: "", email: "",
     //     fax: "", contactName: "", contactPhone: "", city: "", community: "", amount: 0,
     //     due: 0
     // });
-    const [customer, setCustomer] = useState({})
+    const [customer, setCustomer] = useState(myCustomer)
     const [edit, setEdit] = useState(false);
     const [id, setId] = useState(-1)
     useEffect(() => {
+        refDialog.current.showModal();
+
         //    setId(params.id)
         //    console.log(id);
         if (params.id) {
@@ -55,11 +59,15 @@ export const Logon = () => {
         debugger
         if (edit) {
             dispatch(updateCustomerThunk({ details: customer }))
+            refDialog.current.close();
+
             navigate('/customers')
         }
         else {
             dispatch(addCustomerThunk({ details: customer }));
             // console.log(token);
+            refDialog.current.close();
+
             navigate('/customers')
 
         }
@@ -72,8 +80,8 @@ export const Logon = () => {
         // navigate("/calender");
     }
 
-    return <div className="inDiv" >
-       
+    return <dialog ref={refDialog} className="inDiv" >
+
         <br /><input className="logBut" type="text" value={customer?.community} placeholder="insert community" onChange={e => setCustomer({ ...customer, community: e.target.value })} />
         <br /><input className="logBut" type="text" value={customer?.mobile} placeholder="insert telephone" onChange={e => setCustomer({ ...customer, mobile: e.target.value })} />
         <br /><input className="logBut" type="text" value={customer?.fax} placeholder="insert fax" onChange={e => setCustomer({ ...customer, fax: e.target.value })} />
@@ -82,8 +90,13 @@ export const Logon = () => {
         <br /><input className="logBut" type="text" value={customer?.contactPhone} placeholder="insert contactPhone" onChange={e => setCustomer({ ...customer, contactPhone: e.target.value })} />
         <br /><input className="logBut" type="text" value={customer?.city} placeholder="insert city" onChange={e => setCustomer({ ...customer, city: e.target.value })} />
         <input className="logBut" type="text" value={customer?.instituteName} placeholder="insert name" onChange={e => setCustomer({ ...customer, instituteName: e.target.value })} />
-{/* {raute && refDialog.current.close()} */}
-<br /><button className="login" onClick={() => { logOnn() }}>log on</button> 
+        {/* {raute && refDialog.current.close()} */}
+        <br /><button className="login" onClick={() => { logOnn() }}>log on</button>
+        {params.id && <button className="login" onClick={() => {
+            refDialog.current.close();
 
-    </div>
+            navigate('/customers')
+        }}>back</button>
+        }
+    </dialog>
 }

@@ -25,9 +25,12 @@ export const Routing = () => {
             <Route path={`/event/:day/:month/:year`} element={<Event />} ></Route>
             <Route path={'/login'} element={<Login />}></Route> */}
             <Route path={'/'} element={<Login />} ></Route>
-            <Route path={'/customers'} element={<Customers />}></Route>
+            <Route path={'/customers'} element={<Customers />}>
+             <Route path={'newCustomer'} element={<Logon />}></Route>
+             <Route path={'editCustomer/:id'} element={<Logon />}></Route>
+            </Route>
             <Route path={'/newCustomer'} element={<Logon />}></Route>
-            <Route path={'/editCustomer/:id'} element={<Logon />}></Route>
+
             <Route path={'/home/:id'} element={<Home />}></Route>
             <Route path={'/orders'} element={<Orders />}>
                 <Route path={'newOrder'} element={<LogonOrder />}></Route>

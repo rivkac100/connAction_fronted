@@ -3,7 +3,7 @@ import { useEffect, useState} from 'react';
 // import './style.css'
 import { useDispatch, useSelector } from "react-redux";
 // import { searchEventThunk } from '../store/slices/searchEventThunk'
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import {deleteCustomerThunk} from '../../store/slices/deleteCustomerThunk'
 import {customersFetchThunk } from '../../store/slices/customersFetch';
 import './customer.css'
@@ -79,10 +79,13 @@ const  deleteCustomer=async(id)=>{
                </tr>})}
             </tbody>
         </table>
-        <button onClick={()=>navigate('/newCustomer')}>add</button>
+        <button onClick={()=>navigate('newCustomer')}>add</button>
 
         {delt && <button onClick={()=>deleteCustomer(custId)}>delete</button>}
-        {edit && <button onClick={()=>navigate(`/editCustomer/${custId}`)}>edit</button>}
+        {edit && <button onClick={()=>navigate(`editCustomer/${custId}`)}>edit</button>}
         {/* <Button variant='text'>nnnngf</Button> */}
+ <div>
+    <Outlet></Outlet>
+ </div>
     </div>
 } 
