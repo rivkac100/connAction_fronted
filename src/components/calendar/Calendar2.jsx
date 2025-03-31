@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import MonthView from './MonthView';
 import WeekView from './WeekView';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import './calendar.css'
 import { DayView } from '../DayView/dayView';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 // import { getAllStartAQueuesThunk } from '../../redux/slices/queueSlice/getAllStartAvialableQueue';
 // import { getQueuesThunk } from '../../redux/slices/queueSlice/getQueueThunk';
 // import { getPatientsThunk } from "../../redux/slices/patientSlice/getPatientsThunk"
-const Calendar = () => {
-    const currentPatient = useSelector(state => state.PatientSlice.currentPatient)
+export const Calendar2 = () => {
+    //const currentPatient = useSelector(state => state.PatientSlice.currentPatient)
     const [currentDate, setCurrentDate] = useState(new Date());
     const [view, setView] = useState('month'); // 'month' or 'week'
     const [dayDate ,setDayDate] = useState(new Date(2025 , 2 , 24))
     //const patients = useSelector(state => state.PatientSlice.patientsList)
     const [monthName , setMonthName]=  useState("")
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
     // useEffect(() => {
     //     debugger
@@ -53,8 +53,10 @@ const Calendar = () => {
     return (
         <div id='calen'>
 
-            {monthName != "" && <DayView date = {dayDate} monthName = {monthName} setMonthName = {setMonthName}></DayView>}
-            <h2>שלום {currentPatient.firstName}</h2>
+            {monthName !== "" && <DayView date = {dayDate} monthName = {monthName} setMonthName = {setMonthName}></DayView>}
+            <h2>שלום 
+                {/* {currentPatient.firstName} */}
+                </h2>
             <button onClick={toggleView}>{view === 'month' ? 'מעבר לתצוגה שבועית' : 'מעבר לתצוגה חודשית'}</button>
             {view === 'month' ? (
                 <>
@@ -74,4 +76,4 @@ const Calendar = () => {
     );
 };
 
-export default Calendar;
+
