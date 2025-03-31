@@ -1,0 +1,30 @@
+/* בס"ד */
+
+.details{
+    text-align: center;
+    direction: rtl;
+    font-family: cursive;
+    
+}
+.addQueue{
+    direction: rtl;
+    width: 38%;
+    height: 80vh;
+    margin-left: 31%;
+    border: solid black 1px;
+}
+.addHead{
+    width: 100%;
+    text-align: center;
+    
+}
+.lll{
+    font-size: x-large;
+    font-family:'Times New Roman', Times, serif;
+   
+}
+select{
+    width: 20%;
+    height: 3vh;
+    font-size: large;
+}
