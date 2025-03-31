@@ -8,6 +8,7 @@ import { Orders } from "./orders/order"
 import { MyOrders } from "./orders/myOrders"
 import { LogonOrder } from "./orders/addEditOrder"
 import { Calendar } from "./diary/calendar"
+import { Calendar2 } from "./calendar/Calendar2";
 import { Event } from "./diary/event"
 
 
@@ -40,11 +41,11 @@ export const Routing = () => {
             <Route path={'/myOrders/:id'} element={<MyOrders />}></Route>
 
             <Route path={'/home/:id/calandar'} element={<Calendar />}>
+                <Route path={"month"} element={<Calendar2/>}></Route>
                 <Route path={"event/:month/:day/:year"} element={<Event />}></Route>
                 <Route path={"event"} element={<Event />}></Route>
             </Route>
             {/* <Route path={'/event/:month/:day/:year'} element={<Event/>}></Route>  */}
-
         </Routes>
     </>
 }
