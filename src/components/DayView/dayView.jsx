@@ -1,35 +1,35 @@
 // בס"ד
 import Face3OutlinedIcon from '@mui/icons-material/Face3Outlined';
-import { useSelector } from 'react-redux'
+//import { useSelector } from 'react-redux'
 import './dayView.css'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { getAllStartAQueuesThunk } from '../../redux/slices/queueSlice/getAllStartAvialableQueue'
+//import { getAllStartAQueuesThunk } from '../../redux/slices/queueSlice/getAllStartAvialableQueue'
 import { useNavigate } from 'react-router-dom';
 
 export const DayView = (props) => {
     const { date, monthName  , setMonthName} = props
     const daysAtHebrew = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'שבת']
-    const aQ = useSelector(state => state.QueuesSlice.listStartAQueue)
-    const fixedQueues = useSelector(state => state.QueuesSlice.listOfQueues)
-    const allPatients = useSelector(state => state.PatientSlice.patientsList)
+    // const aQ = useSelector(state => state.QueuesSlice.listStartAQueue)
+    //const fixedQueues = useSelector(state => state.QueuesSlice.listOfQueues)
+    //const allPatients = useSelector(state => state.PatientSlice.patientsList)
     const dispatch = useDispatch()
     const [aqToday, setAqToday] = useState([])
     const [fqToday, setFqToday] = useState([])
     const navi = useNavigate()
     let qType = 'o'
-    useEffect(() => {
-        setAqToday(aQ.filter(aq => new Date(aq.queue.date).toLocaleDateString() == date.toLocaleDateString()))
-        setFqToday(fixedQueues.filter(fq => new Date(fq.date).toLocaleDateString() == date.toLocaleDateString()))
-    }, [aQ, date])
+    // useEffect(() => {
+    //     // setAqToday(aQ.filter(aq => new Date(aq.queue.date).toLocaleDateString() == date.toLocaleDateString()))
+    //     // setFqToday(fixedQueues.filter(fq => new Date(fq.date).toLocaleDateString() == date.toLocaleDateString()))
+    // }, [aQ, date])
 
     useEffect(() => {
 
         debugger
-        dispatch(getAllStartAQueuesThunk())
+       // dispatch(getAllStartAQueuesThunk())
     }, [])
 
-console.log(allPatients , 'allllllllllll');
+//console.log(allPatients , 'allllllllllll');
 
     const hours = [
         { hour: 0, hourString: "00:00" },
@@ -56,7 +56,7 @@ console.log(allPatients , 'allllllllllll');
         { hour: 21, hourString: "21:00" },
         { hour: 22, hourString: "22:00" },
         { hour: 23, hourString: "23:00" }]
-    console.log(fixedQueues, 'oooooo');
+    //console.log(fixedQueues, 'oooooo');
     const add = (q) => {
         console.log(qType, "ttttttttyyyyyppppppeeee");
         let q1 = JSON.stringify(q)
@@ -73,29 +73,30 @@ console.log(allPatients , 'allllllllllll');
         </section>
         <header className='day'>
             {hours && hours.map(h => {
-                {
-                    var coll = aqToday.find(q => q.queue.hour == h.hour)
+               
+                    var coll = aqToday.find(q => q.queue.hour === h.hour)
                     var col = coll != null ? 'salmon' : 'white'
                     debugger
-                    var aq = aqToday.find(q => q.queue.hour == h.hour)
-                    var fixedQ = fqToday.find(fq => fq.startHour == h.hour)
-                    if (fixedQ)
-                        col = 'yellow'
+                    var aq = aqToday.find(q => q.queue.hour === h.hour)
+                    var fixedQ = fqToday.find(fq => fq.startHour === h.hour)
+                //     if (fixedQ)
+                //         col = 'yellow'
 
-                }
+                // }
+                
                 return <section className='rowHour'
                     style={{ backgroundColor: col }}>
                     {
-                        aq?.queue != undefined ?
+                        aq?.queue !== undefined ?
                             <>
-                                {aq?.queue != undefined && aq?.flagWoman == true && <button onClick={() => { qType = 'w'; add(aq.queue) }} className='toAddQ'><Face3OutlinedIcon></Face3OutlinedIcon></button>}
-                                {aq?.queue != undefined && aq?.flagDouble == true && <button onClick={() => { qType = 'd'; add(aq.queue) }} className='toAddQ'>💢</button>}
+                                {aq?.queue !== undefined && aq?.flagWoman === true && <button onClick={() => { qType = 'w'; add(aq.queue) }} className='toAddQ'><Face3OutlinedIcon></Face3OutlinedIcon></button>}
+                                {aq?.queue !== undefined && aq?.flagDouble === true && <button onClick={() => { qType = 'd'; add(aq.queue) }} className='toAddQ'>💢</button>}
                                 <button className='toAddQ' onClick={() => add(aq.queue)}>+</button>
                             </> : ""}
-                    {fixedQ?.id != undefined ?
+                    {fixedQ?.id !== undefined ?
                         <>
   
-                            <p>{allPatients.find(p => p.id == fixedQ.idPatient)?.firstName} {allPatients.find(p => p.id == fixedQ.idPatient)?.lastName} {fixedQ.description}</p>
+                            {/* <p>{allPatients.find(p => p.id == fixedQ.idPatient)?.firstName} {allPatients.find(p => p.id == fixedQ.idPatient)?.lastName} {fixedQ.description}</p> */}
                             
                         </>
                         : ""}

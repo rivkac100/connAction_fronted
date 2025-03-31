@@ -5,29 +5,29 @@ import { useSelector } from 'react-redux';
 import './calendar.css'
 import { DayView } from '../DayView/dayView';
 import { useDispatch } from 'react-redux';
-import { getAllStartAQueuesThunk } from '../../redux/slices/queueSlice/getAllStartAvialableQueue';
-import { getQueuesThunk } from '../../redux/slices/queueSlice/getQueueThunk';
-import { getPatientsThunk } from "../../redux/slices/patientSlice/getPatientsThunk"
+// import { getAllStartAQueuesThunk } from '../../redux/slices/queueSlice/getAllStartAvialableQueue';
+// import { getQueuesThunk } from '../../redux/slices/queueSlice/getQueueThunk';
+// import { getPatientsThunk } from "../../redux/slices/patientSlice/getPatientsThunk"
 const Calendar = () => {
     const currentPatient = useSelector(state => state.PatientSlice.currentPatient)
     const [currentDate, setCurrentDate] = useState(new Date());
     const [view, setView] = useState('month'); // 'month' or 'week'
     const [dayDate ,setDayDate] = useState(new Date(2025 , 2 , 24))
-    const patients = useSelector(state => state.PatientSlice.patientsList)
+    //const patients = useSelector(state => state.PatientSlice.patientsList)
     const [monthName , setMonthName]=  useState("")
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        debugger
-        if(patients.length > 0)
-            dispatch(getQueuesThunk())
-        else;
+    // useEffect(() => {
+    //     debugger
+    //     // if(patients.length > 0)
+    //     //   //  dispatch(getQueuesThunk())
+    //     // else;
             
-    }, [patients])
+    // }, [patients])
 
     useEffect(() => {
         debugger
-        dispatch(getPatientsThunk())
+       // dispatch(getPatientsThunk())
     }, [])
 
     const toggleView = () => {
