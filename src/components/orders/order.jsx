@@ -5,13 +5,13 @@ import { ordersFetchThunk } from '../../store/slices/ordersFetch';
 import { deleteOrderThunk } from '../../store/slices/deleteOrderThunk'
 import './order.css'
 import { Outlet, useNavigate } from 'react-router-dom';
-import { findCustomerThunk } from '../../store/slices/findCustomerThunk';
+// import { findCustomerThunk } from '../../store/slices/findCustomerThunk';
 
 export const Orders = () => {
 
     const dispatch = useDispatch();
     const orders = useSelector(state => state.order.orders)
-    const customer = useSelector(state => state.customer.customer)
+    // const customer = useSelector(state => state.customer.customer)
 
     const navigate = useNavigate();
     const [delt, setDelt] = useState(false);
