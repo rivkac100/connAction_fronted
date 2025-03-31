@@ -39,6 +39,18 @@ dialog{
     /* width: 25px; */
     width: 100px !important;
 }
+.cal-button{
+    width:19.75% ;
+    margin-left: 2px;
+}
+.title{
+    width: 20%;
+    margin: 0px;
+}
+.div{
+    margin: 0px;
+   color: #3b3a3d;
+}
 
 .dairyTable {
     width: 100%;

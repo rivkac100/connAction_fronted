@@ -9,7 +9,7 @@ import { Calendar2 } from '../calendar/Calendar2';
 export const Calendar = () => {
     const [menu, setMenu] = useState(false);
     const [week, setWeek] = useState([]);
-    const param =useParams();
+    const param = useParams();
     const [Day, setDay] = useState(new Date());
     const [thisDay, setThisDay] = useState(new Date());
     const [count, setCount] = useState(0);
@@ -19,17 +19,19 @@ export const Calendar = () => {
     // const token = useSelector(state => state.customer.token);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-   // const username = useSelector(state => state.user.userName)
-     const events = useSelector(state => state.events.events);
+    // const username = useSelector(state => state.user.userName)
+    const events = useSelector(state => state.events.events);
     const [eventToEdit, setEventToEdit] = useState();
     const [eventToEditId, setEventToEditId] = useState();
     const [menuEvent, setmenuEvent] = useState(false);
     const [name, setName] = useState('');
-    const [view,setView]=useState('תצוגה שבועית')
-    const [manager,setManager]=useState(false);
+    const [view, setView] = useState('תצוגה שבועית')
+    const [notview, setNotView] = useState('תצוגה חודשית')
+
+    const [manager, setManager] = useState(false);
     // const [openEvent,setOpenEvent]=
     let s = new Date();
-    const refDialog =useRef();
+    const refDialog = useRef();
 
     useEffect(() => {
         myDate();
@@ -37,18 +39,18 @@ export const Calendar = () => {
         return () => {
             window.removeEventListener('contextmenu', rightClick)
         }
-        
+
     }, [])
 
-    useEffect(()=>{
-    if(events?.length==0) dispatch(eventFetchThunk())
-    },[events])
+    useEffect(() => {
+        if (events?.length == 0) dispatch(eventFetchThunk())
+    }, [events])
 
     const newEvent = () => {
-       
+
         navigate(`event`)
     };
-    const newOrder=()=>{
+    const newOrder = () => {
         navigate(`/newOrder`)
     }
 
@@ -63,17 +65,18 @@ export const Calendar = () => {
     };
 
     const right = () => {
-        if(view==='תצוגה שבועית'){
-        setCount(count + 1)
-        myDate(count + 1)}
-        
+        if (view === 'תצוגה שבועית') {
+            setCount(count + 1)
+            myDate(count + 1)
+        }
+
     };
 
     const left = () => {
-        if(view==='תצוגה שבועית'){
-        setCount(count - 1)
-        myDate(count - 1)
-    }
+        if (view === 'תצוגה שבועית') {
+            setCount(count - 1)
+            myDate(count - 1)
+        }
     }
 
     const toDay = async () => {
@@ -93,7 +96,7 @@ export const Calendar = () => {
                 //הימים שעברו
                 elemntDay = (itsDay + 7 * count - (myday - i))
             }
-            else 
+            else
                 elemntDay = itsDay + 7 * count + ((i - myday))
             newd.setDate(elemntDay);
             let newdstr = newd.toDateString();
@@ -101,9 +104,9 @@ export const Calendar = () => {
         }
         setWeek(thisWeek);
     }
-   const myMonth=()=>{
+    const myMonth = () => {
 
-   }
+    }
     // const searchEvent = () => {
     //     if (!token) {
     //         navigate(`/login`)
@@ -125,11 +128,16 @@ export const Calendar = () => {
         // console.log(`/event/${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}/${event.id}`);
         // navigate(`/event/${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}/${event.id}`)
     }
-const changeView=(view)=>{
-    if(view==='תצוגה שבועית'){
-        setView('תצוגה חודשית')}
-    else {setView('תצוגה שבועית')}
-}
+    const changeView = (view) => {
+        if (view === 'תצוגה שבועית') {
+            setView('תצוגה חודשית')
+            setNotView('תצוגה שבועית')
+        }
+        else {
+            setView('תצוגה שבועית')
+            setNotView('תצוגה חודשית')
+        }
+    }
     return <div>
         {/* {openEvent && < Event ></Event>} */}
         <div className='cal-title'>
@@ -146,12 +154,12 @@ const changeView=(view)=>{
         <div className='cal'>
             <button className='title' onClick={() => {
                 changeView(view); //navigate(`home/${param.id}/calandar`) 
-            } }>{view} </button>
+            }}>{notview}</button>
             {/* <button onClick={() => searchEvent()} className='cal-button'>חיפוש ארוע</button> */}
-           {view==='תצוגה שבועית' && <> <button onClick={() => newEvent()} className='cal-button'>ארוע חדש</button>
-            <button onClick={() => left()} className='cal-button'>◀</button>
-            <button onClick={() => right()} className='cal-button'>▶</button>
-            <button onClick={() => toDay()} className='cal-button'>לתאריך הנוכחי</button></>
+            {view === 'תצוגה שבועית' && <> <button onClick={() => newEvent()} className='cal-button'>ארוע חדש</button>
+                <button onClick={() => left()} className='cal-button'>◀</button>
+                <button onClick={() => right()} className='cal-button'>▶</button>
+                <button onClick={() => toDay()} className='cal-button'>לתאריך הנוכחי</button></>
             }
             {menu && <div
                 style={{ position: "absolute", top: y, left: x, fontSize: "5px" }}>
@@ -168,7 +176,7 @@ const changeView=(view)=>{
                     <button className='menuButton' onClick={() => deleteEvent()}>מחיקה</button>
                 </div>} */}
             {view === 'תצוגה שבועית' ? (
-              
+
                 <table className='dairyTable'>
                     <thead>
                         <tr>
@@ -179,7 +187,7 @@ const changeView=(view)=>{
                                 setY(event.clientY);
                                 setmenuEvent(false);
                                 setMenu(true);
-                            } } onDoubleClick={() => { setMenu(false); } } className={d === s.toDateString() ? "th-toDay" : "th-notToDay"}>{d}</td>
+                            }} onDoubleClick={() => { setMenu(false); }} className={d === s.toDateString() ? "th-toDay" : "th-notToDay"}>{d}</td>
                                 {/* <td className='cal-white'></td> */}
                             </>)}
                         </tr>
@@ -199,9 +207,9 @@ const changeView=(view)=>{
                                         setEventToEditId(e.id);
                                         setmenuEvent(true);
                                         setMenu(false);
-                                    } } onDoubleClick={() => {
+                                    }} onDoubleClick={() => {
                                         setmenuEvent(false);
-                                    } }>
+                                    }}>
                                         {e.time}
                                         <br />
                                         {e.title}
@@ -213,14 +221,15 @@ const changeView=(view)=>{
                             </>)}
                         </tr>
                     </tbody>
-                </table>) : (<>{()=>console.log(view)}
-                <Calendar2 />
+                </table>) : (<>{() => console.log(view)}
+                    <Calendar2 />
                 </>
-                    // {view==='תצוגה חודשית' && 
-                )}
+                // {view==='תצוגה חודשית' && 
+            )}
             < div style={{ width: '50%' }} >
-            {/* <img className='sen-img' src={process.env.PUBLIC_URL + "/pic/sen.jpg"} alt="" /> */}
-        </div>
-    </div><div><Outlet></Outlet></div>
+                {/* <img className='sen-img' src={process.env.PUBLIC_URL + "/pic/sen.jpg"} alt="" /> */}
+            </div>
+        </div><div><Outlet></Outlet></div>
 
-</div>}
+    </div>
+}
