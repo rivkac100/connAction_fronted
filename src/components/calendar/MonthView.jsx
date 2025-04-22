@@ -27,11 +27,13 @@ const MonthView = ({ currentDate , setDayDate , setMonthName}) => {
       calendarCells.push(
         <div key={`header-${day}`} style={{
 
-          backgroundColor: '#4CAF50',
+          // backgroundColor: '#4CAF50',
           color: 'white',
+          height:'4vh',
           padding: "10px",
           textAlign: 'center',
           fontWeight: 'bold',
+          background:"linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
           borderRadius: '5px'
         }}>
           {day}
@@ -45,6 +47,7 @@ const MonthView = ({ currentDate , setDayDate , setMonthName}) => {
         <div key={`empty-${i}`} style={{
           border: "1px solid #eee",
           padding: "10px",
+          height:'4vh',
           textAlign: 'center',
           borderRadius: '5px',
           backgroundColor: '#f9f9f9'
@@ -67,8 +70,10 @@ const MonthView = ({ currentDate , setDayDate , setMonthName}) => {
           border: "1px solid #ccc",
           padding: "10px",
           textAlign: 'center',
+          height:'4vh',
           borderRadius: '5px',
-          backgroundColor: isToday ? '#1c89' : 'white'
+          color:isToday?'white':'black',         
+          backgroundColor: isToday ? '#764ba2' : 'white'
         }}>
           {day}
         </div>
@@ -94,9 +99,12 @@ const MonthView = ({ currentDate , setDayDate , setMonthName}) => {
   return (
     <div style={{
       padding: "20px",
-      border: "3px solid pink",
+      border: "3px solid #764ba2",
+      height:"55vh",
+      margin:"5% 20%",
+      width:"60%",
       borderRadius: "10px",
-      boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
+      // boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
     }}>
       <h2 style={{ textAlign: 'center' }}>
         {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}

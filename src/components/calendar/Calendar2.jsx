@@ -13,12 +13,13 @@ import { Calendar } from '../diary/calendar';
 export const Calendar2 = () => {
     const navigate=useNavigate()
     //const currentPatient = useSelector(state => state.PatientSlice.currentPatient)
-    const parms=useParams();
+    const parms = useParams();
     const [currentDate, setCurrentDate] = useState(new Date());
     const [view, setView] = useState('month'); // 'month' or 'week'
     const [dayDate ,setDayDate] = useState(new Date(2025 , 2 , 24))
     //const patients = useSelector(state => state.PatientSlice.patientsList)
     const [monthName , setMonthName]=  useState("")
+    
     // const dispatch = useDispatch()
 
     // useEffect(() => {
@@ -56,11 +57,10 @@ export const Calendar2 = () => {
 
     return (
         <div id='calen'>
-
+              <button onClick={goToPrevMonth}>▶חודש הקודם</button>
+              <button onClick={goToNextMonth}>חודש הבא◀</button> 
             {monthName !== "" && <DayView date = {dayDate} monthName = {monthName} setMonthName = {setMonthName}></DayView>}
-            <h2>שלום 
-                {/* {currentPatient.firstName} */}
-                </h2>
+            
                 <MonthView currentDate={currentDate}  setDayDate={setDayDate} setMonthName = {setMonthName}/>
 
             {/* <button onClick={()=>
