@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MonthView from './MonthView';
-import WeekView from './WeekView';
+
 // import { useSelector } from 'react-redux';
 import './calendar.css'
 import { DayView } from '../DayView/dayView';
