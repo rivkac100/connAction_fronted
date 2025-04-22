@@ -29,7 +29,7 @@ const MonthView = ({ currentDate , setDayDate , setMonthName}) => {
 
           // backgroundColor: '#4CAF50',
           color: 'white',
-          height:'5vh',
+          height:'4vh',
           padding: "10px",
           textAlign: 'center',
           fontWeight: 'bold',
@@ -47,7 +47,7 @@ const MonthView = ({ currentDate , setDayDate , setMonthName}) => {
         <div key={`empty-${i}`} style={{
           border: "1px solid #eee",
           padding: "10px",
-          height:'7vh',
+          height:'4vh',
           textAlign: 'center',
           borderRadius: '5px',
           backgroundColor: '#f9f9f9'
@@ -70,7 +70,7 @@ const MonthView = ({ currentDate , setDayDate , setMonthName}) => {
           border: "1px solid #ccc",
           padding: "10px",
           textAlign: 'center',
-          height:'7vh',
+          height:'4vh',
           borderRadius: '5px',
           color:isToday?'white':'black',         
           backgroundColor: isToday ? '#764ba2' : 'white'
@@ -100,9 +100,11 @@ const MonthView = ({ currentDate , setDayDate , setMonthName}) => {
     <div style={{
       padding: "20px",
       border: "3px solid #764ba2",
-      height:"75vh",
+      height:"55vh",
+      margin:"5% 20%",
+      width:"60%",
       borderRadius: "10px",
-      boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
+      // boxShadow: "0 2px 10px rgba(0,0,0,0.1)"
     }}>
       <h2 style={{ textAlign: 'center' }}>
         {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
