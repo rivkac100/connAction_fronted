@@ -11,6 +11,8 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import { Month } from './Month';
+import { ordersFetchThunk } from '../../store/slices/ordersFetch';
+import { customersFetchThunkById } from '../../store/slices/customerFetchThunkById';
 // import { deleteEventThunk } from '../store/slices/deleteEventThunk';
 
 export const Week = () => {
@@ -28,6 +30,9 @@ export const Week = () => {
     const dispatch = useDispatch();
     // const username = useSelector(state => state.user.userName)
     const events = useSelector(state => state.events.events);
+    const myOrders = useSelector(state => state.customer.MyOrders);
+    const orders = useSelector(state => state.order.orders)
+    
     const [eventToEdit, setEventToEdit] = useState();
     const [eventToEditId, setEventToEditId] = useState();
     const [menuEvent, setmenuEvent] = useState(false);
@@ -50,12 +55,14 @@ export const Week = () => {
     }, [])
 
     useEffect(() => {
-        if (events?.length == 0) dispatch(eventFetchThunk())
+        if (events?.length === 0) dispatch(eventFetchThunk())
     }, [events])
-
+    useEffect(() => {
+        if (myOrders?.length === 0) dispatch(customersFetchThunkById({id: parseInt(param.id)}))
+    }, [orders])
     const newEvent = () => {
 
-        navigate(`event`)
+        navigate(`/home/${param.id}/event`)
     };
     const newOrder = () => {
         navigate(`/newOrder`)
@@ -176,7 +183,7 @@ export const Week = () => {
                     {manager && <><button className='menuButton' onClick={() => newEventnow()}>לארוע  חדש</button><br /></>}
                     <button className='menuButton' onClick={() => toDay()}>לתאריך הנוכחי</button>
                 </div>}
-                <Button variant="contained" onClick={() => {
+                <Button variant="contained" className='button' onClick={() => {
                     changeView(view); //navigate(`home/${param.id}/calandar`) 
                 }} endIcon={<DateRangeIcon />}>{notview}</Button>
                 <Button variant="contained" onClick={() => newEvent()} className='button cal-button' endIcon={<AddPhotoAlternateSharpIcon />}>
@@ -231,6 +238,22 @@ export const Week = () => {
                                         <br />
                                         {e.title}
                                     </div>)}
+                                    {myOrders && <>
+                                     {myOrders.filter((o)=>{
+                                        //if(new Date(o.date).toDateString()===d && o.customerId===param.id)
+                                        if(new Date(o.date).toDateString()===d )
+                                        return o
+                                     }).map(o=> <div  className={new Date(o.date).toDateString() === s.toDateString() ? "event event-td" : "event event-ntd"}>
+                                         {o.activityName}
+                                         <br />
+                                         {o.customerName}
+                                         <br />
+                                         {o.activeHour}
+                                     </div>
+
+
+                                     )}
+                                    </>}
                                 </>}
 
                             </td>

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
 import './home.css'
 import { Button, Stack } from '@mui/material';
 //import { Button } from "@mui/material";
@@ -35,22 +35,22 @@ export const Home = () => {
 <button type="text">להזמנות הקרובות שלך</button>
 <button type="text">יומן </button> */}
     <Stack direction="row" spacing={5}>
-      <Button variant="contained" className='button' endIcon={<ListAltIcon />}>
+      <Button variant="contained" className='button' onClick={()=>navigate(`newOrder`)} endIcon={<ListAltIcon />}>
         להזמנה
       </Button>
-      <Button variant="contained" endIcon={<WorkHistoryIcon />} onClick={() => navigate(`/myOrders/${id}`)}>
+      <Button variant="contained" className='button'  endIcon={<WorkHistoryIcon />} onClick={() => navigate(`myOrders`)}>
         הסטורית הזמנות
       </Button>
-      <Button variant="contained" endIcon={<HowToRegIcon />}>
+      <Button variant="contained" className='button' endIcon={<HowToRegIcon />}>
         .....עלינו
       </Button>
-      <Button variant="contained" endIcon={<EditCalendarIcon />} onClick={() => navigate(`calandar`)}>
+      <Button variant="contained" className='button' endIcon={<EditCalendarIcon />} onClick={() => navigate(`month`)}>
         יומן
       </Button>
-      <Button variant="contained" endIcon={<HourglassBottomIcon />}>
+      <Button variant="contained" className='button' endIcon={<HourglassBottomIcon />}>
         להזמנות הקרובות שלך
       </Button>
     </Stack>
-
+    <div><Outlet></Outlet></div>
   </div>
 }
