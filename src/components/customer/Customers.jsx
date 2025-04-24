@@ -8,6 +8,11 @@ import {deleteCustomerThunk} from '../../store/slices/deleteCustomerThunk'
 import {customersFetchThunk } from '../../store/slices/customersFetch';
 import './customer.css'
 import '@emotion/styled'
+import { Button } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+// import {EditDocumentIcon} from '@mui/icons-material/EditDocument';
+import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 
 export const Customers =()=>{
    const navigate = useNavigate()
@@ -62,6 +67,8 @@ const  deleteCustomer=async(id)=>{
                <th>Community</th>
                <th>Amount</th>
                <th>Due</th>
+               <th></th>
+               <th></th>
          </tr>   </thead>
             <tbody>
                 {customers.length>0 && customers.map(c=> {return<tr className={c.instituteId===custId} onClick={() => {setCustId(c.instituteId);setDelt(true);setEdit(true)}} key={c.instituteId}>
@@ -76,13 +83,26 @@ const  deleteCustomer=async(id)=>{
                 <td>{c.community}</td>
                 <td>{c.amount}</td>
                 <td>{c.due}</td>
+                <td>
+                {/* <Button variant='outlined' onClick={()=>deleteCustomer(c.instituteId)} endIcon={<DeleteForeverOutlinedIcon htmlColor='#3b3a3d' />}  ></Button> */}
+                <IconButton onClick={()=>deleteCustomer(c.instituteId)} aria-label="delete" size='large' >
+                <DeleteForeverOutlinedIcon htmlColor=' #3b3a3d'/>
+                </IconButton>
+              
+                </td>
+                <td>
+                {/* <Button variant='outlined' style={{backgroundColor:"white"}} onClick={()=>navigate(`editCustomer/${c.instituteId}`)} endIcon={<EditNoteOutlinedIcon  htmlColor='#3b3a3d' />}></Button> */}
+                <IconButton onClick={()=>navigate(`editCustomer/${c.instituteId}`)} aria-label="edit" size='large' >
+                <EditNoteOutlinedIcon htmlColor=' #3b3a3d'/>
+                </IconButton>
+                </td>
                </tr>})}
             </tbody>
         </table>
-        <button onClick={()=>navigate('newCustomer')}>add</button>
+        <button className='button' onClick={()=>navigate('newCustomer')}>add</button>
 
-        {delt && <button onClick={()=>deleteCustomer(custId)}>delete</button>}
-        {edit && <button onClick={()=>navigate(`editCustomer/${custId}`)}>edit</button>}
+        {/* {delt && <button onClick={()=>deleteCustomer(custId)}>delete</button>}
+        {edit && <button onClick={()=>navigate(`editCustomer/${custId}`)}>edit</button>} */}
         {/* <Button variant='text'>nnnngf</Button> */}
  <div>
     <Outlet></Outlet>

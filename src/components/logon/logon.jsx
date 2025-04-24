@@ -27,7 +27,6 @@ export const Logon = () => {
     const [edit, setEdit] = useState(false);
     const [id, setId] = useState(-1)
     useEffect(() => {
-        refDialog.current.showModal();
 
         //    setId(params.id)
         //    console.log(id);
@@ -50,6 +49,8 @@ export const Logon = () => {
             console.log(customer);
             setEdit(true)
         }
+        refDialog.current.showModal();
+
     }, [])
     //const refDialog = useRef()
     // const navigate = useNavigate();

@@ -75,7 +75,7 @@ export const Event = () => {
 
     const cancele = () => {
         refDialog.current.close();
-        navigate(`/home/${id}/calandar`)
+        navigate(`/home/${id}/month`)
     }
 
     const saveEvent = async () => {
