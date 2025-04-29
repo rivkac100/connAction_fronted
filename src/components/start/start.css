@@ -1,0 +1,13 @@
+.strt_bt{
+    border-radius: 12px !important;
+    background-color:  #eec4d5 !important;
+    color: #3b3a3d !important;
+    min-height: 70px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-size: 20px !important;
+}
+.strt_bt:hover{
+    border-radius: 12px !important;
+    color: white !important;
+    background: linear-gradient(135deg,orange 0%, #ef5293 100%, #764ba2 0%);
+}
