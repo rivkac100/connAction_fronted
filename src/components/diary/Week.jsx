@@ -3,7 +3,7 @@ import './calendar.css'
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { eventFetchThunk } from '../../store/slices/eventFetchThunk';
-import { Calendar2 } from '../calendar/Calendar2';
+
 import { Button } from '@mui/material';
 import TimerSharpIcon from '@mui/icons-material/TimerSharp';
 import AddPhotoAlternateSharpIcon from '@mui/icons-material/AddPhotoAlternateSharp';

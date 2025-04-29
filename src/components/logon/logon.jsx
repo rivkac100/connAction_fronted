@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { updateCustomerThunk } from "../../store/slices/updateCustomerThunk";
 import { customersFetchThunkById } from "../../store/slices/customerFetchThunkById";
 import { Button } from "@mui/material";
-import { Calendar2 } from "../calendar/Calendar2";
+
 export const Logon = () => {
     const params = useParams();
     const dispatch = useDispatch();
@@ -102,4 +102,4 @@ export const Logon = () => {
         }
     </dialog>
 }
-export default Calendar2;
+

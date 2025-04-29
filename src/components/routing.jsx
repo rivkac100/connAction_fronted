@@ -7,12 +7,11 @@ import { Home } from "./home/home"
 import { Orders } from "./orders/order"
 import { MyOrders } from "./orders/myOrders"
 import { AddEditOrder } from "./orders/addEditOrder"
-import { Calendar } from "./diary/calendar"
-// import { Calendar2 } from "./calendar/Calendar2";
 import { Event } from "./diary/event"
 import { Month } from "./diary/Month"
 import { Week } from "./diary/Week"
 import { DayView } from "./DayView/dayView"
+import { Start } from "./start/start"
 
 
 
@@ -29,7 +28,7 @@ export const Routing = () => {
             <Route path={`/event/:day/:month/:year/:eventId`} element={<Event />} ></Route>
             <Route path={`/event/:day/:month/:year`} element={<Event />} ></Route>
             <Route path={'/login'} element={<Login />}></Route> */}
-            <Route path={'/'} element={<Login />} ></Route>
+            <Route path={'/'} element={<Start />} ></Route>
             <Route path={'/customers'} element={<Customers />}>
                 <Route path={'newCustomer'} element={<Logon />}></Route>
                 <Route path={'editCustomer/:id'} element={<Logon />}></Route>
