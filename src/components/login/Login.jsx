@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./login.css"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { customersFetchThunk } from "../../store/slices/customersFetch";
+import { customersFetchThunk } from "../../store/slices/customers/customersFetch";
 // import { Button } from "@mui/material";
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import SendIcon from '@mui/icons-material/Send';

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import './calendar.css'
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import { eventFetchThunk } from '../../store/slices/eventFetchThunk';
+import { eventFetchThunk } from '../../store/slices/events/eventFetchThunk';
 
 import { Button } from '@mui/material';
 import TimerSharpIcon from '@mui/icons-material/TimerSharp';
@@ -11,8 +11,8 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import { Month } from './Month';
-import { ordersFetchThunk } from '../../store/slices/ordersFetch';
-import { customersFetchThunkById } from '../../store/slices/customerFetchThunkById';
+import { ordersFetchThunk } from '../../store/slices/orders/ordersFetch';
+import { customersFetchThunkById } from '../../store/slices/customers/customerFetchThunkById';
 // import { deleteEventThunk } from '../store/slices/deleteEventThunk';
 
 export const Week = () => {

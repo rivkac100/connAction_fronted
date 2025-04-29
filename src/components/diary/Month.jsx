@@ -18,9 +18,9 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import { useDispatch, useSelector } from "react-redux";
-import { eventFetchThunk } from "../../store/slices/eventFetchThunk";
-import { customersFetchThunkById } from "../../store/slices/customerFetchThunkById";
-import { ordersFetchThunk } from "../../store/slices/ordersFetch";
+import { eventFetchThunk } from "../../store/slices/events/eventFetchThunk";
+import { customersFetchThunkById } from "../../store/slices/customers/customerFetchThunkById";
+import { ordersFetchThunk } from "../../store/slices/orders/ordersFetch";
 
 export const Month = ({ }) => {
     debugger

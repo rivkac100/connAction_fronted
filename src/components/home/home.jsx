@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { eventFetchThunk } from '../../store/slices/eventFetchThunk';
+import { eventFetchThunk } from '../../store/slices/events/eventFetchThunk';
 //import Stack from '@mui/material/Stack';
 import { useSelector } from 'react-redux';
 import ListAltIcon from '@mui/icons-material/ListAlt';

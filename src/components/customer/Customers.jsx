@@ -4,8 +4,8 @@ import { useEffect, useState} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 // import { searchEventThunk } from '../store/slices/searchEventThunk'
 import { Outlet, useNavigate } from 'react-router-dom';
-import {deleteCustomerThunk} from '../../store/slices/deleteCustomerThunk'
-import {customersFetchThunk } from '../../store/slices/customersFetch';
+import {deleteCustomerThunk} from '../../store/slices/customers/deleteCustomerThunk'
+import {customersFetchThunk } from '../../store/slices/customers/customersFetch';
 import './customer.css'
 import '@emotion/styled'
 import { Button } from '@mui/material';
