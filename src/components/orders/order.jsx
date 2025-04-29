@@ -1,8 +1,8 @@
 
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { ordersFetchThunk } from '../../store/slices/ordersFetch';
-import { deleteOrderThunk } from '../../store/slices/deleteOrderThunk'
+import { ordersFetchThunk } from '../../store/slices/orders/ordersFetch';
+import { deleteOrderThunk } from '../../store/slices/orders/deleteOrderThunk'
 import './order.css'
 import { Outlet, useNavigate } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';

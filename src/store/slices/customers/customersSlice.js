@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { addCustomerThunk } from './addCustomerThunk';
-import { updateCustomerThunk } from './updateCustomerThunk';
 import { customersFetchThunk } from './customersFetch';
 //import { findCustomerThunk } from './findCustomerThunk';
 import { deleteCustomerThunk } from './deleteCustomerThunk';
 import { customersFetchThunkById } from './customerFetchThunkById';
+import { updateCustomerThunk } from './updateCustomerThunk';
 
 const INITIAL_STATE_USER = {
     InstituteName: -1,

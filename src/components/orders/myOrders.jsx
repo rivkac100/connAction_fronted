@@ -9,13 +9,13 @@ import './order.css'
 import { useParams } from 'react-router-dom';
 //import {  useFormStatus } from 'react-dom';
 
-import { customersFetchThunkById } from '../../store/slices/customerFetchThunkById';
+import { customersFetchThunkById } from '../../store/slices/customers/customerFetchThunkById';
 import { Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 // import {EditDocumentIcon} from '@mui/icons-material/EditDocument';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
-import { deleteOrderThunk } from '../../store/slices/deleteOrderThunk';
+import { deleteOrderThunk } from '../../store/slices/orders/deleteOrderThunk';
 
 export const MyOrders = () => {
     const navigate = useNavigate()

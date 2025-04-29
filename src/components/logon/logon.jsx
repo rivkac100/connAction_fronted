@@ -3,10 +3,10 @@ import { useEffect, useRef, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import "./logon.css"
 import { useParams } from 'react-router-dom';
-import { addCustomerThunk } from "../../store/slices/addCustomerThunk";
+import { addCustomerThunk } from "../../store/slices/customers/addCustomerThunk";
 import { useNavigate } from "react-router-dom";
-import { updateCustomerThunk } from "../../store/slices/updateCustomerThunk";
-import { customersFetchThunkById } from "../../store/slices/customerFetchThunkById";
+import { updateCustomerThunk } from "../../store/slices/customers/updateCustomerThunk";
+import { customersFetchThunkById } from "../../store/slices/customers/customerFetchThunkById";
 import { Button } from "@mui/material";
 
 export const Logon = () => {
