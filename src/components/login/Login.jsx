@@ -36,7 +36,7 @@ export const Login = () => {
       }
       else {
         setNewCustomer(false);
-        navigate(`home/${id}`);
+        navigate(`/home/${id}`);
 
       }
 

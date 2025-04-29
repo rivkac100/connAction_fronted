@@ -20,20 +20,18 @@ export const Routing = () => {
 
     return <>
         <Routes>
-            {/* <Route path={'/search'} element={<Search />}></Route>
-            <Route path={'/calendar'} element={<Calendar />}></Route>
-            <Route path={'/'} element={<Login />} ></Route>
-            <Route path={'/newUser'} element={<NewUser />} ></Route>
-            <Route path={'/event'} element={<Event />}></Route>
-            <Route path={`/event/:day/:month/:year/:eventId`} element={<Event />} ></Route>
-            <Route path={`/event/:day/:month/:year`} element={<Event />} ></Route>
-            <Route path={'/login'} element={<Login />}></Route> */}
-            <Route path={'/'} element={<Start />} ></Route>
+
+            <Route path={'/'} element={<Start />} >
+
+            </Route>
+            <Route path={'/login'} element={<Login />}></Route>
+
             <Route path={'/customers'} element={<Customers />}>
                 <Route path={'newCustomer'} element={<Logon />}></Route>
                 <Route path={'editCustomer/:id'} element={<Logon />}></Route>
             </Route>
             <Route path={'/newCustomer'} element={<Logon />}></Route>
+            <Route path={'/home'} element={<Home />}></Route>
 
             <Route path={'/home/:id'} element={<Home />}>
                 <Route path={'newOrder'} element={<AddEditOrder />}>
@@ -49,16 +47,16 @@ export const Routing = () => {
                 <Route path={"event/:month/:day/:year"} element={<Event />}></Route>
                 <Route path={"event"} element={<Event />}></Route>
                 <Route path={'myOrders'} element={<MyOrders />}>
-                <Route path={'editOrder/:orderId'} element={<AddEditOrder />}></Route>
+                    <Route path={'editOrder/:orderId'} element={<AddEditOrder />}></Route>
 
+                </Route>
             </Route>
-            </Route>
-      
+
             <Route path={'/orders'} element={<Orders />}>
                 <Route path={'newOrder'} element={<AddEditOrder />}></Route>
                 <Route path={'editOrder/:orderId'} element={<AddEditOrder />}></Route>
             </Route>
-            
+
 
 
             {/* <Route path={'/event/:month/:day/:year'} element={<Event/>}></Route>  */}
