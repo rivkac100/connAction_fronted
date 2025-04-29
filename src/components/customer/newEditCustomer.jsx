@@ -9,7 +9,7 @@ import { updateCustomerThunk } from "../../store/slices/customers/updateCustomer
 import { customersFetchThunkById } from "../../store/slices/customers/customerFetchThunkById";
 import { Button } from "@mui/material";
 
-export const Logon = () => {
+export const NewEditCustomer = () => {
     const params = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();

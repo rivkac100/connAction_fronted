@@ -16,11 +16,17 @@ export const Start = () => {
 
 
         <div style={{
-            width: "30%",
+            width: "40%",
+            border:"solid 2px #eec4d5",
+            height:"55vh",
             margin: "5%",
             display: "flex",
-            flexDirection: "column"
+            flexDirection: "column",
+            textAlign:"center",
+            color:"white"
+            
         }}>
+            <h1>wellcome</h1>
             <Button variant="contained" style={{ width: "80%", marginTop: "5%" /*,boxShadow: "0 8px 20px #9b9595"border:"white solid 2px"*/}} className='strt_bt' onClick={() => navigate(`/home`)}>
                 לכניסה
             </Button>

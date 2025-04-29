@@ -5,6 +5,7 @@
     min-height: 70px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
     font-size: 20px !important;
+    margin-left: 10% !important;
 }
 .strt_bt:hover{
     border-radius: 12px !important;

@@ -2,22 +2,22 @@ import { useEffect, useState } from "react";
 import "./login.css"
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { customersFetchThunk } from "../../store/slices/customers/customersFetch";
+import { managersFetchThunk } from "../../store/slices/managers/managersFetch";
 // import { Button } from "@mui/material";
 // import DeleteIcon from '@mui/icons-material/Delete';
 // import SendIcon from '@mui/icons-material/Send';
 // import Stack from '@mui/material/Stack';
 
 export const Login = () => {
-  const [customer, setCustomer] = useState({ name: "", email: "" });
+  const [manager, setManager] = useState({ name: "", email: "" });
   const dispatch = useDispatch();
-  const customers = useSelector(state => state.customer.customers)
-  const [newCustomer, setNewCustomer] = useState(false)
+  const managers= useSelector(state=>state.manager.managers)
+  const [newManager, setNewManager] = useState(false)
   const navigate = useNavigate();
   //const route = useSelector(state => state.user.route)
   useEffect(() => {
-    dispatch(customersFetchThunk());
-    console.log(customers);
+    dispatch(managersFetchThunk());
+    console.log(managers);
     // refDialog.current.showModal();
   }, []);
   // useEffect(() => {
@@ -26,16 +26,16 @@ export const Login = () => {
 
   const existing = () => {
     debugger
-    if (customers) {
-      console.log(customers.find(x => x.email === customer.email && x.instituteName === customer.name));
-      let c = customers.find(x => x.email === customer.email && x.instituteName === customer.name);
+    if (managers) {
+      console.log(managers.find(x => x.managerEmail === manager.email && x.managerName === manager.name));
+      let c = managers.find(x => x.managerEmail === manager.email && x.managerName === manager.name);
       console.log(c);
-      let id = c?.instituteId;
+      let id = c?.id;
       if (!c) {
-        setNewCustomer(true)
+        setNewManager(true)
       }
       else {
-        setNewCustomer(false);
+        setNewManager(false);
         navigate(`/home/${id}`);
 
       }
@@ -45,15 +45,15 @@ export const Login = () => {
     }
   }
   return <div className="inDiv" >
-    <input className="logBut" type="text" value={customer.name} placeholder="insert name" onChange={(e) => setCustomer({ ...customer, name: e.target.value })} />
+    <input className="logBut" type="text" value={manager.name} placeholder="insert name" onChange={(e) => setManager({ ...manager, name: e.target.value })} />
     <br />
     <br />
-    <input className="logBut" type="email" value={customer.email} placeholder="insert email" onChange={(e) => setCustomer({ ...customer, email: e.target.value })} />
+    <input className="logBut" type="email" value={manager.email} placeholder="insert email" onChange={(e) => setManager({ ...manager, email: e.target.value })} />
     <br />
     <button className="login" onClick={() => { existing() }}>log in</button><br /><br />
-    <a onClick={() => setNewCustomer(true)}>first visit? log on</a>
+    <a onClick={() => setNewManager(true)}>first visit? log on</a>
     {/* {route && navigate(route)} */}
-    {newCustomer && navigate("/newCustomer")}
+    {newManager && navigate("/newManager")}
     {/*  <Stack direction="row" spacing={4}>
       <Button variant="contained" startIcon={<DeleteIcon />}>
         Delete
