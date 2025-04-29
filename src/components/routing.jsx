@@ -1,7 +1,7 @@
 
 import { Route, Routes } from "react-router-dom"
 import { Customers } from "./customer/Customers"
-import { Logon } from "./logon/logon"
+import { NewEditCustomer } from "./customer/newEditCustomer"
 import { Login } from "./login/Login"
 import { Home } from "./home/home"
 import { Orders } from "./orders/order"
@@ -12,6 +12,8 @@ import { Month } from "./diary/Month"
 import { Week } from "./diary/Week"
 import { DayView } from "./DayView/dayView"
 import { Start } from "./start/start"
+import { NewEditManager } from "./manager/newEditManager"
+import { Managers } from "./manager/Managers"
 
 
 
@@ -25,12 +27,15 @@ export const Routing = () => {
 
             </Route>
             <Route path={'/login'} element={<Login />}></Route>
-
-            <Route path={'/customers'} element={<Customers />}>
-                <Route path={'newCustomer'} element={<Logon />}></Route>
-                <Route path={'editCustomer/:id'} element={<Logon />}></Route>
+            <Route path={'/managers'} element={<Managers />}>
+                <Route path={'newManager'} element={<NewEditManager />}></Route>
+                <Route path={'editManager/:id'} element={<NewEditManager />}></Route>
             </Route>
-            <Route path={'/newCustomer'} element={<Logon />}></Route>
+            <Route path={'/customers'} element={<Customers />}>
+                <Route path={'newCustomer'} element={<NewEditCustomer />}></Route>
+                <Route path={'editCustomer/:id'} element={<NewEditCustomer />}></Route>
+            </Route>
+            <Route path={'/newCustomer'} element={<NewEditCustomer />}></Route>
             <Route path={'/home'} element={<Home />}></Route>
 
             <Route path={'/home/:id'} element={<Home />}>
