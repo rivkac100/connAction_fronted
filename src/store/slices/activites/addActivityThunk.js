@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-export const addManagerThunk = createAsyncThunk(
-    'addManagerThunk',
+export const addActivityThunk = createAsyncThunk(
+    'addActivityThunk',
     async ({details}) => {
 
-        const response = await fetch("https://localhost:7044/api/Managers/Add",
+        const response = await fetch("https://localhost:7044/api/Activites/Add",
             {
                 method: 'POST',
                 body: JSON.stringify(details),

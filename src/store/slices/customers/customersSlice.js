@@ -14,7 +14,8 @@ const INITIAL_STATE_USER = {
     token: null,
     sucsses: false,
     failed: false,
-    MyOrders:[]
+    MyOrders:[],
+    isC:-1
 }
 
 export const customersSlice = createSlice({
@@ -28,9 +29,9 @@ export const customersSlice = createSlice({
         // editUserName: (state, action) => {
         //     state.InstituteName = action.payload;
         // },
-        // editPassword: (state, action) => {
-        //     state.InstituteName = action.payload;
-        // },
+        editIsC: (state, action) => {
+            state.isC = action.payload;
+        },
         editToken: (state, action) => {
             state.token = action.payload;
         }
@@ -109,4 +110,4 @@ export const customersSlice = createSlice({
 
     }
 })
-export const { editCustomer, editToken } = customersSlice.actions;
+export const { editCustomer, editToken,editIsC } = customersSlice.actions;

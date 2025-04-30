@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-export const managersFetchThunk = createAsyncThunk(
-    'managersFetchThunk',
+export const activitiesFetch = createAsyncThunk(
+    'activitiesFetch',
 
     async () => {
-        const response = await fetch("https://localhost:7044/api/Managers/GetAll");
+        const response = await fetch("https://localhost:7044/api/Activites/GetAll");
 
         if (response.ok) {
             const data = await response.json();

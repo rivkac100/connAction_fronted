@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const updateManagerThunk = createAsyncThunk(
-    'updateManagerThunk',
+export const updateActivityThunk = createAsyncThunk(
+    'updateActivityThunk',
 
     async ({details}) => {
 debugger
-        const response = await fetch("https://localhost:7044/api/Managers/Update", {
+        const response = await fetch("https://localhost:7044/api/Activites/Update", {
             method: 'PUT',
             body: JSON.stringify(details),
             headers: {

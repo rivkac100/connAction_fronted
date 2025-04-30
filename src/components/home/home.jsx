@@ -73,6 +73,8 @@ export const Home = () => {
   const event = useSelector(state => state.events.events);
   const params = useParams();
   const id = params.id;
+  const isc=useSelector(state=> state.customer.isC)
+  const isM=useSelector(state=> state.manager.isM)
   
   useEffect(() => {
     dispatch(eventFetchThunk());
@@ -123,21 +125,24 @@ export const Home = () => {
               עלינו
             </Button>
             
+            {isM!==-1 && (
             <Button 
-              variant="contained" 
-              className='nav-button calendar' 
-              startIcon={<EditCalendarIcon />} 
-              onClick={() => navigate(`month`)}
-            >
-              יומן
-            </Button>
+            variant="contained" 
+            className='nav-button calendar' 
+            startIcon={<EditCalendarIcon />} 
+            onClick={() => navigate(`month`)}
+          >
+            יומן
+          </Button>)}
+          {/* :navigate(`/login`) */}
+            
             
             <Button 
               variant="contained" 
               className='nav-button upcoming-orders' 
               startIcon={<HourglassBottomIcon />}
-            >
-              הזמנות קרובות
+              onClick={() => navigate(`activites`)}>
+             טיולים
             </Button>
           </Stack>
         </Grid>

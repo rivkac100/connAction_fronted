@@ -14,7 +14,8 @@ const INITIAL_STATE_USER = {
     token: null,
     sucsses: false,
     failed: false,
-    MyCstomers:[]
+    MyCstomers:[],
+    isM:-1
 }
 
 export const managersSlice = createSlice({
@@ -28,9 +29,9 @@ export const managersSlice = createSlice({
         // editUserName: (state, action) => {
         //     state.InstituteName = action.payload;
         // },
-        // editPassword: (state, action) => {
-        //     state.InstituteName = action.payload;
-        // },
+        editIsM: (state, action) => {
+            state.isM = action.payload;
+        },
         editToken: (state, action) => {
             state.token = action.payload;
         }
@@ -109,4 +110,4 @@ export const managersSlice = createSlice({
 
     }
 })
-export const { editManager, editToken } = managersSlice.actions;
+export const { editManager, editToken,editIsM } = managersSlice.actions;
