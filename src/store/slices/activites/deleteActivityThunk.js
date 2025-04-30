@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-export const deleteManagerThunk = createAsyncThunk(
-    'deleteManagerThunk',
+export const deleteActivityThunk = createAsyncThunk(
+    'deleteActivityThunk',
     async ( id ) => {
 
-        const response = await fetch(`https://localhost:7044/api/Managers/Delete/${id}`,
+        const response = await fetch(`https://localhost:7044/api/Activites/Delete/${id}`,
             {
                 method: 'DELETE',
                 headers: {

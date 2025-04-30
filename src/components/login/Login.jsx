@@ -93,6 +93,8 @@ import EmailIcon from '@mui/icons-material/Email';
 import PersonIcon from '@mui/icons-material/Person';
 import LoginIcon from '@mui/icons-material/Login';
 import { Logo } from '../logoDesign/logo';
+import { editIsM } from "../../store/slices/managers/managersSlice";
+import { customersFetchThunk } from "../../store/slices/customers/customersFetch";
 
 
 export const Login = () => {
@@ -100,13 +102,22 @@ export const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
+  const isC=useSelector(state=>state.customer.isC)
+  const isM=useSelector(state=>state.manager.isM)
+  // const editm=useSelector(state=> state.manager.editIsM)
   const managers = useSelector(state => state.manager.managers);
+  const customers = useSelector(state => state.customer.customers);
+
   const [newManager, setNewManager] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(managersFetchThunk());
   }, [dispatch]);
+
+  useEffect(() => {
+  if(customers?.length==0) dispatch(customersFetchThunk());
+  }, [customers]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -141,11 +152,21 @@ export const Login = () => {
       );
       
       if (!foundManager) {
+        const foundCustomer = customers.find(
+          x => x.Email === manager.email && x.instuiteName === manager.name
+        );
+        
         setError("המשתמש לא נמצא במערכת");
         setNewManager(true);
       } else {
+        // editm(foundManager.id)
+        console.log(foundManager.id);
+        dispatch(editIsM(foundManager.id))
+        console.log(isM);
+        // isM=foundManager.id
+        console.log(isM);
         setNewManager(false);
-        navigate(`/home/${foundManager.id}`);
+        navigate(`/manager/${foundManager.id}`);
       }
     }
   };

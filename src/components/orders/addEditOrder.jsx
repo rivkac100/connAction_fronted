@@ -22,6 +22,8 @@ export const AddEditOrder = () => {
   const navigate = useNavigate();
   //const orders = useSelector(state => state.order.orders)
   const myOrder = useSelector(state => state.order.order)
+  const isM=useSelector(state=>state.manager.isM)
+
   // const [order, setOrder] = useState({
   //     instituteName: "", mobile: "", email: "",
   //     fax: "", contactName: "", contactPhone: "", city: "", community: "", amount: 0,
@@ -94,9 +96,12 @@ export const AddEditOrder = () => {
     }
   }
   const cancele = () => {
+    console.log(isM);
     refDialog.current.close();
     if(params.id && params.orderId)
        navigate(`/home/${params.id}/myOrders`)
+    else if(params.id && parseInt(params.id)===isM)
+       navigate(`/manager/${params.id}`)
     else if(params.id)
        navigate(`/home/${params.id}`)
     else navigate(`/orders`)

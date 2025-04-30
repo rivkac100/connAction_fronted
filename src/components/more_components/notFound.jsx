@@ -3,7 +3,7 @@ import { Container, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import HomeIcon from '@mui/icons-material/Home';
-import './NotFound.css';
+import './notFound.css';
 
 export const NotFound = () => {
   const navigate = useNavigate();

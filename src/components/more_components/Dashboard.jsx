@@ -9,7 +9,7 @@ import {
   Button,
   CircularProgress
 } from '@mui/material';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { eventFetchThunk } from '../../store/slices/events/eventFetchThunk';
 import { DashboardCard } from './DashboardCard';
@@ -102,7 +102,7 @@ export const Dashboard = () => {
               value={managerData.totalEvents} 
               icon={<AssignmentIcon />} 
               color="secondary"
-              onClick={() => navigate(`/home/${id}/myOrders`)}
+              onClick={() => navigate(`orders`)}
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -133,7 +133,7 @@ export const Dashboard = () => {
                 <Button 
                   variant="outlined" 
                   startIcon={<AddIcon />}
-                  onClick={() => navigate(`/home/${id}/newOrder`)}
+                  onClick={() => navigate(`newOrder`)}
                   className="add-button"
                 >
                   אירוע חדש
@@ -183,7 +183,7 @@ export const Dashboard = () => {
                   variant="contained" 
                   fullWidth 
                   className="quick-action-button"
-                  onClick={() => navigate(`/home/${id}/newOrder`)}
+                  onClick={() => navigate(`newOrder`)}
                 >
                   הוספת אירוע חדש
                 </Button>
@@ -191,7 +191,7 @@ export const Dashboard = () => {
                   variant="contained" 
                   fullWidth 
                   className="quick-action-button"
-                  onClick={() => navigate(`/home/${id}/month`)}
+                  onClick={() => navigate(`month`)}
                 >
                   צפייה ביומן
                 </Button>
@@ -199,7 +199,7 @@ export const Dashboard = () => {
                   variant="contained" 
                   fullWidth 
                   className="quick-action-button"
-                  onClick={() => navigate(`/home/${id}/myOrders`)}
+                  onClick={() => navigate(`orders`)}
                 >
                   הסטוריית הזמנות
                 </Button>
@@ -216,6 +216,7 @@ export const Dashboard = () => {
           </Grid>
         </Grid>
       </Container>
+      <Outlet />
     </>
   );
 };
