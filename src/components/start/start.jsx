@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
   Box, Container, Paper, Typography, Button, TextField,
@@ -18,6 +18,9 @@ import {
 } from '@mui/icons-material';
 
 import "./start.css";
+import { useDispatch, useSelector } from "react-redux";
+import { customersFetchThunk } from "../../store/slices/customers/customersFetch";
+import { managersFetchThunk } from "../../store/slices/managers/managersFetch";
 
 // יצירת ערכת נושא מותאמת אישית
 const theme = createTheme({
@@ -150,18 +153,68 @@ export const Start = () => {
     email: "",
     instituteId: ""
   });
-  
+  const customers=useSelector(state=>state.customer.customers)
+  const managers=useSelector(state=>state.manager.managers)
+  const dispatch=useDispatch()
   // UI states
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   
+  useEffect(() => {
+    if(customers?.length===0)dispatch(customersFetchThunk())
+  }, [customers]);
+  useEffect(() => {
+    if(managers?.length===0)dispatch(managersFetchThunk())
+  }, [managers]);
   // Handle tab change
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
     setError("");
   };
-  
+  const cheack=()=>{
+    const customer=customers.find(customer=>customer.email===formData.email)
+    const manager=managers.find(manager=>manager.email===formData.email)
+    if(tabValue===0){
+      if(customer){
+        setFormData({
+          ...formData,
+          instituteId: customer.instituteId
+        })
+        navigate(`/home/${customer.instituteId}`)
+      }
+      else if(manager){
+        setFormData({
+          ...formData,
+          instituteId: manager.instituteId
+        })
+        navigate(`/manager/${manager.instituteId}`)
+      }
+      else{
+        setError("המשתמש אינו קיים")
+        return
+      }
+    }
+    else{
+      if(customer){
+        setFormData({
+          ...formData,
+          instituteId: customer.instituteId
+        })
+       
+       navigate(`/home/${customer.instituteId}`)
+      }
+      else if(manager){
+        setFormData({
+          ...formData,
+          instituteId: manager.instituteId
+        })
+        navigate(`/manager/${manager.instituteId}`)
+      }
+      else{
+        setError("המשתמש אינו קיים")
+        return
+  }}}
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -356,6 +409,7 @@ export const Start = () => {
               type="submit"
               variant="contained"
               color="primary"
+              onClick={()=>cheack()}
               fullWidth
               size="large"
               disabled={isLoading}
