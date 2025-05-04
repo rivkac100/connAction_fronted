@@ -1,14 +1,223 @@
-.strt_bt{
-    border-radius: 12px !important;
-    background-color:  #eec4d5 !important;
-    color: #3b3a3d !important;
-    min-height: 70px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-    font-size: 20px !important;
-    margin-left: 10% !important;
-}
-.strt_bt:hover{
-    border-radius: 12px !important;
+/* === תיקון צבעים כתומים ושיפור גודל כפתורים === */
+
+/* דריסת צבעי ברירת מחדל של Material UI */
+.MuiButton-containedPrimary {
+    background-color: #00bcd4 !important; /* תורכיז במקום כתום */
+  }
+  
+  .MuiButton-outlinedPrimary {
+    border-color: #00bcd4 !important;
+    color: #00bcd4 !important;
+  }
+  
+  .MuiButton-textPrimary {
+    color: #00bcd4 !important;
+  }
+  
+  /* דריסת צבע הפוקוס והריפל אפקט */
+  .MuiTouchRipple-ripple {
+    color: rgba(0, 188, 212, 0.3) !important; /* תורכיז שקוף במקום כתום */
+  }
+  
+  .MuiButton-root.Mui-focusVisible {
+    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.3) !important;
+  }
+  
+  /* דריסת צבעי אינדיקטורים */
+  .MuiCheckbox-colorPrimary.Mui-checked {
+    color: #00bcd4 !important;
+  }
+  
+  .MuiRadio-colorPrimary.Mui-checked {
+    color: #00bcd4 !important;
+  }
+  
+  .MuiSwitch-colorPrimary.Mui-checked {
+    color: #00bcd4 !important;
+  }
+  
+  .MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track {
+    background-color: rgba(0, 188, 212, 0.5) !important;
+  }
+  
+  /* דריסת צבעי פרוגרס */
+  .MuiCircularProgress-colorPrimary {
+    color: #00bcd4 !important;
+  }
+  
+  .MuiLinearProgress-colorPrimary {
+    background-color: rgba(0, 188, 212, 0.2) !important;
+  }
+  
+  .MuiLinearProgress-barColorPrimary {
+    background-color: #00bcd4 !important;
+  }
+  
+  /* הגדלת כפתורים - גובה ורוחב */
+  .login-button {
+    height: 52px !important; /* הגדלת גובה */
+    padding: 0 24px !important; /* הגדלת רוחב באמצעות padding */
+    font-size: 1.05rem !important; /* הגדלת גודל טקסט */
+  }
+  
+  .back-button {
+    height: 48px !important; /* הגדלת גובה */
+    padding: 0 20px !important; /* הגדלת רוחב באמצעות padding */
+  }
+  
+  /* הגדלת כפתורים בתפריט */
+  .MuiListItem-button {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
+  
+  /* הגדלת שדות הטקסט */
+  .form-field .MuiInputBase-input {
+    padding: 14px 14px !important; /* הגדלת padding פנימי */
+    font-size: 1rem !important;
+  }
+  
+  .form-field .MuiOutlinedInput-root {
+    border-radius: 6px !important; /* הגדלת עיגול פינות */
+  }
+  
+  /* הגדלת אייקונים */
+  .field-icon {
+    font-size: 1.3rem !important;
+  }
+  
+  /* הגדלת לשוניות */
+  .login-tab {
+    min-height: 64px !important;
+    font-size: 1.05rem !important;
+  }
+  
+  /* תיקון לאוברלוד (overload) - הסרת צללים מיותרים */
+  .MuiPaper-elevation1,
+  .MuiPaper-elevation2,
+  .MuiPaper-elevation3,
+  .MuiPaper-elevation4 {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important; /* צל עדין יותר */
+  }
+  
+  /* תיקון לאוברלוד ויזואלי - הפחתת אפקטים מיותרים */
+  .MuiButton-root::after,
+  .MuiListItem-button::before,
+  .login-tabs .MuiTab-root::after {
+    opacity: 0.5 !important; /* הפחתת עוצמת האפקטים */
+  }
+  
+  /* הגדלת מרווחים בטופס */
+  .login-form {
+    gap: 24px !important; /* הגדלת מרווח בין שדות */
+  }
+  
+  /* הגדלת כרטיס ההתחברות */
+  .login-card {
+    max-width: 420px !important; /* הגדלת רוחב מקסימלי */
+    padding: 45px !important; /* הגדלת padding פנימי */
+  }
+  
+  /* === תיקון ספציפי לצבע כתום בכפתורים === */
+  /* דריסה ספציפית לכפתורים כתומים */
+  .MuiButton-containedPrimary,
+  .MuiButton-outlinedPrimary,
+  .MuiButton-textPrimary,
+  .MuiIconButton-colorPrimary,
+  button[color="primary"] {
+    color: #00bcd4 !important;
+  }
+  
+  .MuiButton-containedPrimary {
+    background-color: #00bcd4 !important;
     color: white !important;
-    background: linear-gradient(135deg,orange 0%, #ef5293 100%, #764ba2 0%);
-}
+  }
+  
+  /* תיקון לצבע כתום בהובר */
+  .MuiButton-containedPrimary:hover {
+    background-color: #00a5bb !important;
+  }
+  
+  .MuiButton-outlinedPrimary:hover {
+    background-color: rgba(0, 188, 212, 0.05) !important;
+  }
+  
+  .MuiButton-textPrimary:hover {
+    background-color: rgba(0, 188, 212, 0.05) !important;
+  }
+  
+  /* תיקון לצבע כתום בפוקוס */
+  .MuiButton-containedPrimary.Mui-focusVisible,
+  .MuiButton-outlinedPrimary.Mui-focusVisible,
+  .MuiButton-textPrimary.Mui-focusVisible {
+    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.3) !important;
+  }
+  
+  /* תיקון לצבע כתום באייקונים */
+  .MuiSvgIcon-colorPrimary {
+    color: #00bcd4 !important;
+  }
+  
+  /* תיקון לצבע כתום בלינקים */
+  .MuiLink-colorPrimary {
+    color: #00bcd4 !important;
+  }
+  
+  /* תיקון לצבע כתום בטאבים */
+  .MuiTab-textColorPrimary.Mui-selected {
+    color: #00bcd4 !important;
+  }
+  /* === אלמנטים דקורטיביים בלבד === */
+.decorative-circle {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 188, 212, 0.1) 0%, rgba(0, 188, 212, 0) 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    animation: pulse 15s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.1;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.1);
+      opacity: 0.15;
+    }
+  }
+  
+  /* === התאמות למסכים קטנים === */
+  @media (max-width: 600px) {
+    .MuiContainer-root {
+      padding: 16px !important;
+    }
+    
+    .MuiPaper-root {
+      padding: 24px !important;
+    }
+    
+    .MuiTypography-h4 {
+      font-size: 1.8rem !important;
+    }
+    
+    .MuiButton-root {
+      padding: 10px 16px !important;
+      min-height: 50px !important;
+    }
+    
+    .MuiOutlinedInput-root {
+      min-height: 50px !important;
+    }
+    
+    .MuiTab-root {
+      min-height: 60px !important;
+      font-size: 1rem !important;
+    }
+  }
+  
