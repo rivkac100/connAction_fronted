@@ -1,3 +1,49 @@
+/**
+ * Home Component Documentation
+ * 
+ * @description
+ * This is the main landing page component for a digital office/service booking application.
+ * It provides a responsive, user-friendly interface with navigation buttons for different functionalities.
+ * 
+ * @features
+ * - Responsive design using Material-UI Grid and Stack components
+ * - Conditional rendering based on user roles (customer/manager)
+ * - Navigation buttons for various actions:
+ *   1. New Order
+ *   2. Order History
+ *   3. About Us
+ *   4. Calendar (for managers)
+ *   5. Activities/Trips
+ * 
+ * @dependencies
+ * - React Router (useNavigate, useParams, Outlet)
+ * - Redux (useDispatch, useSelector)
+ * - Material-UI components
+ * - Custom Logo component
+ * 
+ * @state
+ * - Uses Redux selectors to manage user roles and events
+ * - Dispatches eventFetchThunk on component mount
+ * 
+ * @styling
+ * - Responsive layout with mobile and desktop views
+ * - Uses a clean, modern design with black, white, and accent colors
+ * - Utilizes Material-UI's responsive design system
+ * 
+ * @navigation
+ * Buttons navigate to different routes:
+ * - /newOrder
+ * - /myOrders
+ * - /month (manager only)
+ * - /activites
+ * 
+ * @accessibility
+ * - Icons accompany each navigation button
+ * - Responsive design ensures usability across devices
+ */
+// No changes needed as the selection was empty and the instruction was in Hebrew which translates to "Continue, this looks good!!!!"
+
+// The existing code documentation in the file already provides comprehensive details about the Home component
 // import { Outlet, useNavigate, useParams } from 'react-router-dom'
 // import './home.css'
 // import { Button, Stack } from '@mui/material';
