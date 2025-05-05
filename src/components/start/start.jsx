@@ -1,11 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { 
-  Box, Container, Paper, Typography, Button, TextField,
-  Tab, Tabs, InputAdornment, IconButton, ThemeProvider, 
-  createTheme, CssBaseline
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+
+import { useDispatch, useSelector } from "react-redux";
+import { customersFetchThunk } from "../../store/slices/customers/customersFetch";
+import { managersFetchThunk } from "../../store/slices/managers/managersFetch";
 
 // Icons
 import {
@@ -14,131 +12,18 @@ import {
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
   AdminPanelSettings as AdminPanelSettingsIcon,
-  Business as BusinessIcon
+  Business as BusinessIcon,
+
+  Email as EmailIcon,
+  Google as GoogleIcon,
+  Facebook as FacebookIcon
 } from '@mui/icons-material';
 
-import "./start.css";
-
-// יצירת ערכת נושא מותאמת אישית
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#00bcd4', // תורכיז במקום כתום
-      light: '#4dd0e1',
-      dark: '#0097a7',
-      contrastText: '#ffffff',
-    },
-    secondary: {
-      main: '#333333', // שחור/אפור כהה
-      light: '#555555',
-      dark: '#111111',
-      contrastText: '#ffffff',
-    },
-    background: {
-      default: '#f8f8f8',
-      paper: '#ffffff',
-    },
-    text: {
-      primary: '#333333',
-      secondary: '#666666',
-    },
-  },
-  typography: {
-    fontFamily: '"Heebo", "Roboto", "Arial", sans-serif',
-    h4: {
-      fontWeight: 700,
-      fontSize: '2.2rem',
-    },
-    subtitle1: {
-      fontSize: '1.1rem',
-    },
-    button: {
-      fontWeight: 600,
-      fontSize: '1.1rem',
-    },
-  },
-  shape: {
-    borderRadius: 8,
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          padding: '12px 24px',
-          minHeight: '56px',
-        },
-      },
-    },
-    MuiOutlinedInput: {
-      styleOverrides: {
-        root: {
-          fontSize: '1.1rem',
-          minHeight: '56px',
-        },
-        input: {
-          padding: '16px 14px',
-        },
-      },
-    },
-    MuiTab: {
-      styleOverrides: {
-        root: {
-          fontSize: '1.1rem',
-          minHeight: '72px',
-        },
-      },
-    },
-  },
-});
-
-// סטיילינג מותאם אישית לקומפוננטות
-const LoginContainer = styled(Container)(({ theme }) => ({
-  minHeight: '100vh',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  position: 'relative',
-  overflow: 'hidden',
-  padding: theme.spacing(4),
-  direction: 'rtl',
-}));
-
-const LoginCard = styled(Paper)(({ theme }) => ({
-  width: '100%',
-  maxWidth: '550px', // הגדלה משמעותית
-  padding: theme.spacing(6), // הגדלה משמעותית
-  borderRadius: theme.shape.borderRadius * 1.5,
-  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-  position: 'relative',
-  zIndex: 1,
-  textAlign: 'center',
-  borderTop: `5px solid ${theme.palette.primary.main}`,
-}));
-
-const LoginForm = styled('form')(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(4), // הגדלה משמעותית
-  marginTop: theme.spacing(4),
-  marginBottom: theme.spacing(4),
-}));
-
-const LoginButton = styled(Button)(({ theme }) => ({
-  marginTop: theme.spacing(2),
-  height: '60px', // הגדלה משמעותית
-  fontSize: '1.2rem',
-}));
-
-const FooterLinks = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  gap: theme.spacing(4),
-  marginTop: theme.spacing(4),
-}));
+import "./auto.css";
 
 export const Start = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   
   // State for tab selection (admin/customer)
   const [tabValue, setTabValue] = useState(0);
@@ -151,15 +36,119 @@ export const Start = () => {
     instituteId: ""
   });
   
+  const customers = useSelector(state => state.customer.customers);
+  const managers = useSelector(state => state.manager.managers);
+  
   // UI states
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   
+  useEffect(() => {
+    if(customers?.length === 0) dispatch(customersFetchThunk());
+  }, [customers, dispatch]);
+  
+  useEffect(() => {
+    if(managers?.length === 0) dispatch(managersFetchThunk());
+  }, [managers, dispatch]);
+  
   // Handle tab change
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
     setError("");
+  };
+  
+  const check = () => {
+
+
+    setIsLoading(true);
+    
+
+
+
+
+
+
+
+    setTimeout(() => {
+      const customer = customers.find(customer => customer.email === formData.email);
+      const manager = managers.find(manager => manager.id === parseInt(formData.password));
+      
+      if(tabValue === 0) {
+        if(customer) {
+          setFormData({
+            ...formData,
+            instituteId: customer.instituteId
+          });
+          navigate(`/home/${customer.instituteId}`);
+        }
+        else if(manager) {
+          setFormData({
+            ...formData,
+            password: manager.id
+          });
+          navigate(`/manager/${manager.id}`);
+        }
+        else {
+          setError("המשתמש אינו קיים");
+          setIsLoading(false);
+          return;
+        }
+      }
+
+
+
+
+
+
+
+      else {
+
+
+        if(customer) {
+          setFormData({
+            ...formData,
+            instituteId: customer.instituteId
+          });
+          navigate(`/home/${customer.instituteId}`);
+        }
+        else if(manager) {
+          setFormData({
+            ...formData,
+            instituteId: manager.instituteId,
+            email: manager.managerEmail
+          });
+          navigate(`/manager/${manager.instituteId}`);
+        }
+        else {
+          setError("המשתמש אינו קיים");
+          setIsLoading(false);
+          return;
+        }
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }, 1000); // סימולציה של זמן טעינה
   };
   
   // Handle input changes
@@ -180,196 +169,199 @@ export const Start = () => {
   };
   
   // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    
-    // Basic validation
-    if (tabValue === 0) { // Admin login
-      if (!formData.username || !formData.password) {
-        setError("נא למלא שם משתמש וסיסמה");
-        return;
-      }
-    } else { // Customer login
-      if (!formData.instituteId || !formData.email) {
-        setError("נא למלא מזהה מוסד ואימייל");
-        return;
-      }
-    }
-    
-    setIsLoading(true);
-    
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      if (tabValue === 0) {
-        // Admin login logic
-        if (formData.username === "admin" && formData.password === "admin") {
-          navigate("/customers");
-        } else {
-          setError("שם משתמש או סיסמה שגויים");
-        }
-      } else {
-        // Customer login logic
-        navigate("/home");
-      }
-    } catch (err) {
-      setError("אירעה שגיאה בהתחברות. נסה שוב מאוחר יותר.");
-    } finally {
-      setIsLoading(false);
-    }
+    check();
   };
   
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <LoginContainer>
-        {/* אלמנטים דקורטיביים */}
-        <div className="decorative-circle"></div>
+
+    <div className="auth-dialog login-dialog" style={{ position: 'fixed', margin: 'auto', top: '10%', right: '25%' }}>
+      <div className="auth-container">
+        <div className="auth-header">
+          <h2 className="auth-title">ברוכים הבאים</h2>
+          <button className="close-button" onClick={() => navigate('/')} aria-label="סגור">×</button>
+        </div>
         
-        {/* כרטיס התחברות */}
-        <LoginCard elevation={3}>
-          <Typography variant="h4" gutterBottom>
-            ברוכים הבאים
-          </Typography>
+        <div className="auth-content">
+          <div className="logo-container1">
+            <img src="/logo.png" alt="לוגו המערכת" className="auth-logo" />
+          </div>
           
-          <Typography variant="subtitle1" color="textSecondary" gutterBottom>
-            מערכת הזמנת תוכניות והפקות
-          </Typography>
-          
-          {/* לשוניות */}
-          <Tabs
-            value={tabValue}
-            onChange={handleTabChange}
-            variant="fullWidth"
-            sx={{ mb: 4, mt: 3 }}
-          >
-            <Tab 
-              icon={<AdminPanelSettingsIcon sx={{ fontSize: 28 }} />} 
-              label="מנהל" 
-              iconPosition="start"
-              sx={{ fontSize: '1.1rem' }}
-            />
-            <Tab 
-              icon={<BusinessIcon sx={{ fontSize: 28 }} />} 
-              label="לקוח" 
-              iconPosition="start"
-              sx={{ fontSize: '1.1rem' }}
-            />
-          </Tabs>
-          
-          {/* טופס התחברות */}
-          <LoginForm onSubmit={handleSubmit}>
-            {tabValue === 0 ? (
-              // טופס מנהל
-              <>
-                <TextField
-                  name="username"
-                  label="שם משתמש"
-                  variant="outlined"
-                  fullWidth
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PersonIcon sx={{ fontSize: 24 }} />
-                      </InputAdornment>
-                    ),
+          <div className="form-container">
+            <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+
+              <p style={{ color: '#666', marginBottom: '20px', fontSize: '1.1rem' }}>
+                מערכת הזמנת תוכניות והפקות
+
+              </p>
+              
+              {/* לשוניות */}
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+                <div 
+                  onClick={() => handleTabChange(null, 0)} 
+                  style={{ 
+                    padding: '10px 20px', 
+                    cursor: 'pointer',
+                    backgroundColor: tabValue === 0 ? 'rgb(172, 36, 84)' : '#f1f1f1',
+                    color: tabValue === 0 ? 'white' : '#666',
+                    borderRadius: '8px 0 0 8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+
+                    transition: 'all 0.3s ease',
+                    fontWeight: tabValue === 0 ? '600' : 'normal'
                   }}
-                />
-                
-                <TextField
-                  name="password"
-                  label="סיסמה"
-                  type={showPassword ? "text" : "password"}
-                  variant="outlined"
-                  fullWidth
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <LockIcon sx={{ fontSize: 24 }} />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={togglePasswordVisibility}
-                          edge="end"
-                          aria-label="toggle password visibility"
-                          size="large"
-                        >
-                          {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
+                >
+
+                  <AdminPanelSettingsIcon style={{ fontSize: '1.2rem' }} />
+                  <span>מנהל</span>
+                </div>
+                <div 
+                  onClick={() => handleTabChange(null, 1)} 
+                  style={{ 
+                    padding: '10px 20px', 
+                    cursor: 'pointer',
+                    backgroundColor: tabValue === 1 ? 'rgb(172, 36, 84)' : '#f1f1f1',
+                    color: tabValue === 1 ? 'white' : '#666',
+                    borderRadius: '0 8px 8px 0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+
+                    transition: 'all 0.3s ease',
+                    fontWeight: tabValue === 1 ? '600' : 'normal'
                   }}
-                />
-              </>
-            ) : (
-              // טופס לקוח
-              <>
-                <TextField
-                  name="instituteId"
-                  label="מזהה מוסד"
-                  variant="outlined"
-                  fullWidth
-                  value={formData.instituteId}
-                  onChange={handleInputChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <BusinessIcon sx={{ fontSize: 24 }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                
-                <TextField
-                  name="email"
-                  label="אימייל"
-                  type="email"
-                  variant="outlined"
-                  fullWidth
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PersonIcon sx={{ fontSize: 24 }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </>
-            )}
+                >
+
+                  <BusinessIcon style={{ fontSize: '1.2rem' }} />
+                  <span>לקוח</span>
+                </div>
+              </div>
+            </div>
             
             {error && (
-              <Typography color="error" sx={{ mt: -1, fontSize: '1rem' }}>
+              <div className="error-message">
                 {error}
-              </Typography>
+              </div>
             )}
             
-            <LoginButton
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              size="large"
-              disabled={isLoading}
-            >
-              {isLoading ? "מתחבר..." : "התחברות"}
-            </LoginButton>
-          </LoginForm>
-          
-          <FooterLinks>
-            <Button variant="text" color="secondary" size="large">שכחתי סיסמה</Button>
-            <Button variant="text" color="secondary" size="large">צור קשר</Button>
-          </FooterLinks>
-        </LoginCard>
-      </LoginContainer>
-    </ThemeProvider>
+            <form onSubmit={handleSubmit}>
+              {tabValue === 0 ? (
+                // טופס מנהל
+                <>
+                  <div className="input-group">
+                    <div className="input-icon">
+                      <PersonIcon />
+                    </div>
+                    <input
+                      type="text"
+                      name="username"
+                      className="auth-input"
+                      placeholder="שם משתמש"
+                      value={formData.username}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  
+                  <div className="input-group">
+                    <div className="input-icon">
+                      <LockIcon />
+                    </div>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      className="auth-input"
+                      placeholder="סיסמה"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                    />
+                    <button 
+                      type="button" 
+                      className="toggle-password"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </button>
+                  </div>
+                </>
+              ) : (
+                // טופס לקוח
+                <>
+                  <div className="input-group">
+                    <div className="input-icon">
+                      <BusinessIcon />
+                    </div>
+                    <input
+                      type="text"
+                      name="instituteId"
+                      className="auth-input"
+                      placeholder="מזהה מוסד"
+                      value={formData.instituteId}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  
+                  <div className="input-group">
+                    <div className="input-icon">
+                      <EmailIcon />
+                    </div>
+                    <input
+                      type="email"
+                      name="email"
+                      className="auth-input"
+                      placeholder="אימייל"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </>
+              )}
+              
+              <div className="remember-me">
+                <input type="checkbox" id="remember-me" />
+                <label htmlFor="remember-me">זכור אותי</label>
+              </div>
+              
+              <button
+                type="submit"
+                className="auth-button"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <div className="loader"></div>
+                ) : (
+                  "התחברות"
+                )}
+              </button>
+            </form>
+            
+            <div className="auth-links">
+              <button className="link-button forgot-password">
+                שכחתי סיסמה
+              </button>
+            </div>
+            
+            <div className="social-login">
+              <span className="social-login-text">או התחבר באמצעות</span>
+            </div>
+            
+            <div className="social-buttons">
+
+
+              <div className="social-button google">
+                <GoogleIcon style={{ fontSize: '1.2rem' }} />
+              </div>
+              <div className="social-button facebook">
+                <FacebookIcon style={{ fontSize: '1.2rem' }} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

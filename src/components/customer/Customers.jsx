@@ -108,7 +108,7 @@
 // } 
 
 
-   import { useEffect, useState, useMemo } from 'react';
+   import { useEffect, useState, useMemo, useRef } from 'react';
    import { useDispatch, useSelector } from "react-redux";
    import { Outlet, useNavigate } from 'react-router-dom';
    import { deleteCustomerThunk } from '../../store/slices/customers/deleteCustomerThunk';
@@ -158,9 +158,11 @@
    // For exports
    import * as XLSX from 'xlsx';
    import { jsPDF } from 'jspdf';
-   import 'jspdf-autotable';
+   import 'jspdf-autotable' 
+   import html2canvas from 'html2canvas';
 
    export const Customers = () => {
+    const refPdf=useRef(null);
      const navigate = useNavigate();
      const dispatch = useDispatch();
      const theme = useTheme();
@@ -196,7 +198,7 @@
        message: '',
        severity: 'success'
      });
-  
+     const [Loading, setLoading] = useState(false);
      // Colors for charts
      const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#00C49F'];
   
@@ -506,55 +508,96 @@
        handleExportMenuClose();
      };
   
-     const exportToPDF = () => {
-       const doc = new jsPDF('landscape');
+    //  const exportToPDF = () => {
+    //    const doc = new jsPDF('landscape');
     
-       // Add title
-       doc.setFont('Helvetica', 'bold');
-       doc.setFontSize(18);
-       doc.text('רשימת לקוחות', doc.internal.pageSize.width / 2, 20, { align: 'center' });
+    //    // Add title
+    //    doc.setFont('Helvetica', 'bold');
+    //    doc.setFontSize(18);
+    //    doc.text('רשימת לקוחות', doc.internal.pageSize.width / 2, 20, { align: 'center' });
     
-       // Add date
-       doc.setFont('Helvetica', 'normal');
-       doc.setFontSize(12);
-       doc.text(`תאריך הפקה: ${new Date().toLocaleDateString('he-IL')}`, doc.internal.pageSize.width - 20, 30, { align: 'right' });
+    //    // Add date
+    //    doc.setFont('Helvetica', 'normal');
+    //    doc.setFontSize(12);
+    //    doc.text(`תאריך הפקה: ${new Date().toLocaleDateString('he-IL')}`, doc.internal.pageSize.width - 20, 30, { align: 'right' });
     
-       // Create table data
-       const tableColumn = ['מזהה', 'שם מוסד', 'איש קשר', 'טלפון', 'עיר', 'סכום', 'תאריך תשלום'];
-       const tableRows = filteredCustomers.map(customer => [
-         customer.instituteId,
-         customer.instituteName,
-         customer.contactName || '',
-         customer.mobile || '',
-         customer.city || '',
-         `₪${customer.amount?.toLocaleString() || 0}`,
-         customer.due ? new Date(customer.due).toLocaleDateString('he-IL') : ''
-       ]);
+    //    // Create table data
+    //    const tableColumn = ['מזהה', 'שם מוסד', 'איש קשר', 'טלפון', 'עיר', 'סכום', 'תאריך תשלום'];
+    //    const tableRows = filteredCustomers.map(customer => [
+    //      customer.instituteId,
+    //      customer.instituteName,
+    //      customer.contactName || '',
+    //      customer.mobile || '',
+    //      customer.city || '',
+    //      `₪${customer.amount?.toLocaleString() || 0}`,
+    //      `₪${customer.due?.toLocaleString() || 0}`
+    //      //customer.due ? //new Date(customer.due).toLocaleDateString('he-IL') : ''
+    //    ]);
+    // console.log(tableRows);
+    //   //  Generate table
+    //   //  doc.autoTable({
+    //   //    head: [tableColumn],
+    //   //    body: tableRows,
+    //   //    startY: 40,
+    //   //    styles: { font: 'Helvetica', halign: 'right' },
+    //   //    headStyles: { fillColor: [123, 31, 162], textColor: 255 },
+    //   //    alternateRowStyles: { fillColor: [245, 247, 250] },
+    //   //    margin: { top: 40 }
+    //   //  });
     
-       // Generate table
-       doc.autoTable({
-         head: [tableColumn],
-         body: tableRows,
-         startY: 40,
-         styles: { font: 'Helvetica', halign: 'right' },
-         headStyles: { fillColor: [123, 31, 162], textColor: 255 },
-         alternateRowStyles: { fillColor: [245, 247, 250] },
-         margin: { top: 40 }
-       });
+    //    // Save PDF
+    //    doc.save('רשימת_לקוחות.pdf');
     
-       // Save PDF
-       doc.save('רשימת_לקוחות.pdf');
+    //    // Show success message
+    //    setSnackbar({
+    //      open: true,
+    //      message: 'הקובץ יוצא בהצלחה',
+    //      severity: 'success'
+    //    });
     
-       // Show success message
-       setSnackbar({
-         open: true,
-         message: 'הקובץ יוצא בהצלחה',
-         severity: 'success'
-       });
+    //    handleExportMenuClose();
+    //  };
     
-       handleExportMenuClose();
-     };
-    
+    const exportToPDF = async () => {
+      // if (!achivments || !achivments.completeMark) return;
+      
+      const content = refPdf.current;
+      console.log(content);
+      if (!content) return;
+  
+      try {
+         setLoading(true);
+  
+        const canvas = await html2canvas(content, {
+          scale: 2, // איכות גבוהה יותר
+          useCORS: true,
+          logging: false,
+          backgroundColor: '#ffffff'
+        });
+  
+        // const imgData = canvas.toDataURL('image/png');
+  
+        // יצירת PDF בגודל A4
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4',
+        });
+  
+        const imgWidth = 210; // רוחב דף A4 במ"מ
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  
+        // pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+  
+        // שמירת הקובץ
+        pdf.save(`רשימת_לקוחות.pdf`);
+      } catch (error) {
+        console.error('Error exporting to PDF:', error);
+      } finally {
+         setLoading(false);
+      }
+    };
+  
      const handleExport = (type) => {
        switch (type) {
          case 'excel':
@@ -930,7 +973,7 @@
          </Box>
         
         {/* Table Section */}
-        <Paper className="table-container" elevation={3}>
+        <Paper className="table-container" ref={refPdf} elevation={3}>
           <TableContainer>
             <Table stickyHeader aria-label="sticky table" className="customers-table">
               <TableHead>
