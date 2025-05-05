@@ -114,14 +114,18 @@ import { About } from './more_components/about';
 import { NotFound } from './more_components/notFound';
 import { Dashboard } from './more_components/Dashboard';
 import { Activities } from './activites/activites';
+import { Logon } from "./logon/logon";
 
 export const Routing = () => {
   return (
     <Routes>
       {/* Public routes */}
       <Route path="/" element={<About />} />
-      <Route path="/login" element={<Start />} />
+      <Route path="/login" element={<Start />} >
+        <Route path="logon" element={<Logon />} />
+      </Route>
       {/* <Route path="/about" element={<About />} /> */}
+      <Route path="/logon" element={<Logon />} />
       
       {/* Manager routes */}
       <Route path="/managers" element={<Managers />}>
