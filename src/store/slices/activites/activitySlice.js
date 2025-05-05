@@ -9,6 +9,7 @@ import { updateActivityThunk } from './updateActivityThunk';
 const INITIAL_STATE_USER = {
     activityName: "",
     Id: "",
+    isLoading: false,
     activities: [],
     activity: {},
     token: null,

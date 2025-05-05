@@ -97,7 +97,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Customers } from "./customer/Customers";
 import { NewEditCustomer } from "./customer/newEditCustomer";
-import { Login } from "./login/Login";
+// import { Login } from "./login/Login";
 import { Home } from "./home/home";
 import { Orders } from "./orders/order";
 import { MyOrders } from "./orders/myOrders";
