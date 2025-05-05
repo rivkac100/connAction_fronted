@@ -187,7 +187,7 @@ export const Home = () => {
               variant="contained" 
               className='nav-button upcoming-orders' 
               startIcon={<HourglassBottomIcon />}
-              onClick={() => navigate(`activites`)}>
+              onClick={() => navigate('activites')}>
              טיולים
             </Button>
           </Stack>

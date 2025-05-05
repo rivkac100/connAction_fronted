@@ -7,6 +7,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 
 
 import '@emotion/styled'
+import "./activites"
 // import { Button } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';

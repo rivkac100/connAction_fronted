@@ -113,15 +113,15 @@ import { Profile } from './more_components/profile';
 import { About } from './more_components/about';
 import { NotFound } from './more_components/notFound';
 import { Dashboard } from './more_components/Dashboard';
-import { Activities } from "./activites/activites";
+import { Activities } from './activites/activites';
 
 export const Routing = () => {
   return (
     <Routes>
       {/* Public routes */}
-      <Route path="/" element={<Start />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/about" element={<About />} />
+      <Route path="/" element={<About />} />
+      <Route path="/login" element={<Start />} />
+      {/* <Route path="/about" element={<About />} /> */}
       
       {/* Manager routes */}
       <Route path="/managers" element={<Managers />}>
@@ -149,7 +149,7 @@ export const Routing = () => {
         <Route path="myOrders" element={<MyOrders />}>
           <Route path="editOrder/:orderId" element={<AddEditOrder />} />
         </Route>
-        <Route path="activites" element={<Activities />} />
+        <Route path={"activites"} element={<Activities />} />
       </Route>
       
       {/* Order routes */}
