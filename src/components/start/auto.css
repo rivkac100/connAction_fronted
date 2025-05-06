@@ -67,7 +67,7 @@
 }
 
 .close-button:hover {
-    color: rgb(172, 36, 84);
+    color: #f39c12;
     background-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -81,7 +81,7 @@
 /* מיכל הלוגו */
 .logo-container1 {
     flex: 0 0 40%;
-    background-color: rgb(172, 36, 84);
+    background-color: #f39c12;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -137,7 +137,7 @@
 }
 
 .input-group:focus-within {
-    border-color: rgb(172, 36, 84);
+    border-color: #f39c12;
     box-shadow: 0 0 0 3px rgba(172, 36, 84, 0.1);
 }
 
@@ -184,7 +184,7 @@ select.auth-input {
 }
 
 .toggle-password:hover {
-    color: rgb(172, 36, 84);
+    color: #f39c12;
 }
 
 .input-error {
@@ -203,7 +203,7 @@ select.auth-input {
 .auth-button {
     width: 100%;
     padding: 14px;
-    background-color: rgb(172, 36, 84);
+    background-color: #f39c12;
     color: white;
     border: none;
     border-radius: 8px;
@@ -260,7 +260,7 @@ select.auth-input {
 .link-button {
     background: none;
     border: none;
-    color: rgb(172, 36, 84);
+    color: #f39c12;
     font-weight: 600;
     cursor: pointer;
     padding: 5px;
@@ -377,12 +377,12 @@ select.auth-input {
 }
 
 .step-dot.active {
-    background-color: rgb(172, 36, 84);
+    background-color: #f39c12;
     color: white;
 }
 
 .step-dot.active::after {
-    background-color: rgb(172, 36, 84);
+    background-color: #f39c12;
 }
 
 .step-dot.current {
@@ -840,7 +840,7 @@ select.auth-input {
     margin-left: 10px;
     width: 18px;
     height: 18px;
-    accent-color: rgb(172, 36, 84);
+    accent-color: #f39c12;
 }
 
 .remember-me label {
@@ -862,7 +862,7 @@ select.auth-input {
     margin-top: 3px;
     width: 18px;
     height: 18px;
-    accent-color: rgb(172, 36, 84);
+    accent-color: #f39c12;
 }
 
 .terms-checkbox label {
@@ -872,7 +872,7 @@ select.auth-input {
 }
 
 .terms-checkbox a {
-    color: rgb(172, 36, 84);
+    color: #f39c12;
     text-decoration: none;
     font-weight: 600;
 }
