@@ -1,0 +1,150 @@
+/* .CustomerPage {
+    border: 2px black solid;
+    text-align: center; 
+    font-family: cursive;
+    align-items: center;
+    padding-left: 30%;
+}
+
+th,
+td {
+    border: 2px black solid;
+    text-align: center;
+    font-family: cursive;
+}
+.myCustomers{
+    margin-left: 20%;
+} */
+.CustomerPage {
+    padding: 3rem;
+    background: linear-gradient(135deg, #f6f8fc 0%, #e9ecef 100%);
+    min-height: 100vh;
+}
+dialog{
+    width: 40%;
+    border: none;
+    text-align: center;
+}
+.myCustomers {
+    text-align: center;
+    color: #1a237e;
+    margin-bottom: 3rem;
+    font-size: 3.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.menuButton{
+    /* width: 25px; */
+    width: 100px !important;
+}
+.cal-button{
+    width:19.75% ;
+    margin-left: 2px;
+}
+
+.div{
+    margin: 0px;
+   color: #3b3a3d;
+}
+
+.dairyTable {
+    width: 70%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    /* box-shadow: 0 10px 30px rgba(0,0,0,0.15); */
+    margin-bottom: 2rem;
+    margin:3% 15%;
+    border: #764ba2 solid 3px;
+    height: 60vh;
+}
+
+th {
+    /* background: linear-gradient(135deg, #4834d4 0%, #686de0 100%); */
+    background-color: #3b3a3d;
+    /* height: 4vh; */
+    color: white;
+    padding: 1.5rem;
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+td {
+    /* padding: 1.2rem 1.5rem; */
+    /* border-bottom: 1px solid #e9ecef; */
+    font-size: 1.1rem;
+    /* color: #2d3436; */
+    /* border: 2px solid; */
+}
+
+tr:hover {
+    background: #f8f9fa;
+    transform: scale(1.01);
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+tr {
+    transition: all 0.3s ease;
+}
+
+/* מותאם למסכים קטנים */
+@media (max-width: 768px) {
+    .CustomerPage {
+        padding: 1.5rem;
+    }
+    
+    .myCustomers {
+        font-size: 2.5rem;
+    }
+    
+    .dairyTable {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    th, td {
+        /* border: 2px solid; */
+        /* padding: 1rem; */
+        font-size: 1rem;
+    }
+} 
+.true{
+    background-color: plum;
+}
+.false{
+    background-color: white;
+    /* background:linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+
+}
+.event-td{
+    border: 2px solid;
+}
+.event-ntd{
+    border: 2px solid;
+
+}
+.th-toDay,.th-notToDay{
+    height: 8vh;
+    text-align: center;
+    color: white;
+    /* background-color: #3b3a3d; */
+    margin-top: 2%;
+    /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+
+
+}
+.notToDay,.toDay{
+    border: #3b3a3d solid 2px;
+    /* border-radius: 5px; */
+    margin-top: 10px !important;
+}

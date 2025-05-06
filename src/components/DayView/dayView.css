@@ -1,0 +1,66 @@
+/* בס"ד */
+
+.day{
+    overflow:auto;
+    width: 86%;
+    height: 75%;
+    margin-left: 7%;
+    background-color: white;
+    border-bottom: 32px;
+    border-bottom: 32px;
+}
+
+.dayView{
+    width: 35%;
+    height: 95vh;
+    border: 1px solid black;
+    background-color: antiquewhite;
+    margin-left: 32.5%;
+}
+
+.h{
+    text-align: end;
+    padding-right: 75px;
+}
+
+.dayHead{
+    width:86% ;
+    margin-left:7%;
+    background-color: rgb(247, 248, 251);
+    height: 12%;
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+    border-bottom: 1px solid rgb(211, 206, 206);
+}
+
+.dayNum{
+    text-align: end;
+    margin-right: 20px;
+}
+
+.hour{
+    width: 60px;
+    height: 100%;
+    padding-right: 30px;
+    text-align: end;
+    border-left: 1px solid black;
+    margin-left: 56%;
+}
+.rowHour{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    width: 100%;
+    border-bottom: 1px solid gray;
+    text-align: center;
+}
+
+.toAddQ{
+    margin: 3px;
+    width: 45px;
+    height: 45px;
+    font-size: x-large;
+}
+.symbolFlags{
+    /* margin-left: 5px; */
+}
