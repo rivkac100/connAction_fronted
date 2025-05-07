@@ -4,7 +4,7 @@ export const addManagerThunk = createAsyncThunk(
     'addManagerThunk',
     async ({details}) => {
 
-        const response = await fetch("https://localhost:7044/api/Managers/Add",
+        const response = await fetch("https://localhost:7044/api/managers/Add",
             {
                 method: 'POST',
                 body: JSON.stringify(details),

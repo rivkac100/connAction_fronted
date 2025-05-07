@@ -115,6 +115,7 @@ import { NotFound } from './more_components/notFound';
 import { Dashboard } from './more_components/Dashboard';
 import { Activities } from './activites/activites';
 import { Logon } from "./logon/logon";
+import { Navigation } from "./more_components/navigation";
 
 export const Routing = () => {
   return (
@@ -145,6 +146,7 @@ export const Routing = () => {
       {/* Home and nested routes */}
       <Route path="/home" element={<Home />} />
       <Route path="/home/:id" element={<Home />}>
+        <Route path="activities/:mid" element={<Activities />} />
         <Route path="newOrder" element={<AddEditOrder />} />
         <Route path="upcoming" element={<MyOrders upcoming={true} />} />
         <Route path="month" element={<Month />} />
@@ -183,6 +185,7 @@ export const Routing = () => {
       <Route path="/activites" element={<Activities />} />
       
       {/* Error handling */}
+      <Route path="/nav" element={<Navigation />} />
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<Navigate to="/404" replace />} />
     </Routes>

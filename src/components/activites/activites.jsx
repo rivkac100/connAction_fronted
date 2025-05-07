@@ -1,6 +1,6 @@
-  import { useEffect, useState } from 'react';
+  import { act, useEffect, useState } from 'react';
   import { useDispatch, useSelector } from "react-redux";
-  import { Outlet, useNavigate } from 'react-router-dom';
+  import { Outlet, useNavigate, useParams } from 'react-router-dom';
   import './activites.css';
 
   // Material UI
@@ -30,13 +30,14 @@
 
   import { activitiesFetch } from '../../store/slices/activites/activitiesFetch';
   import { deleteActivityThunk } from '../../store/slices/activites/deleteActivityThunk';
+import { activitiesByMangerIdThunk } from '../../store/slices/managers/activitiesByMangerIdThunk';
 
   export const Activities = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-  
+    const param=useParams();
     // Redux state
-    const activities = useSelector((state) => state.activity.activities || []);
+    const activities = useSelector((state) => state.manager.activities);
     const isLoading = useSelector((state) => state.activity.isLoading);
 
     // Local state
@@ -58,9 +59,11 @@
     });
 
     // Fetch activities on component mount
-    dispatch(activitiesFetch());
     useEffect(() => {
-    }, [dispatch]);
+    dispatch(activitiesByMangerIdThunk({id:param.id}));
+    console.log(activities);
+
+    }, [activities]);
 
 
 
@@ -132,7 +135,7 @@
 
     const handleEditClick = (event, activity) => {
       event.stopPropagation(); // Prevent opening the details dialog
-      navigate(`editActivity/${activity.id}`);
+     // navigate(`editActivity/${activity.id}`);
     };
 
     const handleDeleteConfirm = () => {
@@ -413,7 +416,10 @@
                   </Box>
                   <CardContent sx={{ flexGrow: 1, bgcolor: getActivityColor(activity.activityId) }}>
                     <Typography variant="h6" component="div" gutterBottom noWrap>
-                      {activity.activityDescription || "פעילות ללא שם"}
+                      {activity.activityName || "פעילות ללא שם"}
+                    </Typography>
+                    <Typography variant="h6" component="div" gutterBottom noWrap>
+                      {activity.activityDescription || "פעילות ללא תיאור"}
                     </Typography>
                     
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
@@ -434,6 +440,12 @@
                       <AttachMoneyIcon fontSize="small" sx={{ mr: 1 }} />
                       <Typography variant="body2" color="text.primary" fontWeight="bold">
                         ₪{activity.price || 0}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                      <AttachMoneyIcon fontSize="small" sx={{ mr: 1 }} />
+                      <Typography variant="body2" color="text.primary" fontWeight="bold">
+                        ₪{activity.nightPrice || 0}
                       </Typography>
                     </Box>
                   </CardContent>
@@ -764,7 +776,7 @@
                 <Button 
                   variant="outlined" 
                   color="primary"
-                  onClick={() => navigate(`editActivity/${selectedActivity.id}`)}
+                 // onClick={() => navigate(`editActivity/${selectedActivity.id}`)}
                   startIcon={<EditIcon />}
                   sx={{ mr: 2, borderRadius: 2, px: 3 }}
                 >

@@ -1,0 +1,256 @@
+/* Event Dialog Styles */
+.event-dialog {
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 500px;
+    background-color: #fff;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .event-dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+  }
+  
+  /* Header Section */
+  .event-header {
+    background: linear-gradient(135deg, #653370 0%, #4a2652 100%);
+    color: white;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .event-header-content {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .event-header-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background-image: url('/pic/pattern.png'); */
+    background-size: cover;
+    opacity: 0.1;
+    z-index: 1;
+  }
+  
+  .event-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+  
+  .event-subtitle {
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.9;
+    margin: 0;
+  }
+  
+  /* Form Section */
+  .event-form {
+    padding: 24px;
+  }
+  
+  .event-form-group {
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .event-form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.9rem;
+  }
+  
+  .event-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  .event-input:focus {
+    border-color: #f58f0a;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(245, 143, 10, 0.1);
+    outline: none;
+  }
+  
+  .event-textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+  
+  .event-input-icon {
+    position: absolute;
+    top: 40px;
+    right: 12px;
+    color: #999;
+  }
+  
+  /* Buttons */
+  .event-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+  }
+  
+  .event-button {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+  }
+  
+  .event-button-cancel {
+    background-color: #f1f1f1;
+    color: #333;
+  }
+  
+  .event-button-cancel:hover {
+    background-color: #e5e5e5;
+  }
+  
+  .event-button-save {
+    background-color: #f58f0a;
+    color: white;
+  }
+  
+  .event-button-save:hover {
+    background-color: #e07c00;
+    box-shadow: 0 2px 8px rgba(245, 143, 10, 0.3);
+  }
+  
+  /* Image Section */
+  .event-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .event-image {
+    max-width: 150px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 3px solid white;
+  }
+  
+  /* Animation Effects */
+  @keyframes slideIn {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .event-dialog[open] {
+    animation: slideIn 0.3s ease forwards;
+  }
+  
+  .event-input-animated {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .event-input-animated::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #f58f0a;
+    transition: width 0.3s ease;
+  }
+  
+  .event-input-animated:focus-within::after {
+    width: 100%;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .event-dialog {
+      width: 95%;
+      max-width: none;
+    }
+    
+    .event-title {
+      font-size: 1.5rem;
+    }
+    
+    .event-actions {
+      flex-direction: column-reverse;
+      gap: 8px;
+    }
+    
+    .event-button {
+      width: 100%;
+      padding: 12px;
+    }
+    
+    .event-form {
+      padding: 16px;
+    }
+  }
+  
+  /* Highlight Effect */
+  .event-highlight {
+    position: relative;
+  }
+  
+  .event-highlight::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: #653370;
+    border-radius: 4px 0 0 4px;
+  }
+  
+  /* Error State */
+  .event-input.error {
+    border-color: #ff3b30;
+  }
+  
+  .event-error-message {
+    color: #ff3b30;
+    font-size: 0.8rem;
+    margin-top: 4px;
+  }
+  
+  /* Success Indicator */
+  .event-success-indicator {
+    position: absolute;
+    right: 12px;
+    top: 40px;
+    color: #34c759;
+  }
+  

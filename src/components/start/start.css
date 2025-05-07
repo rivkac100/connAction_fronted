@@ -2,55 +2,55 @@
 
 /* דрисת צבעי ברירת מחדל של Material UI */
 .MuiButton-containedPrimary {
-    background-color: #00bcd4 !important; /* תורכיז במקום כתום */
+    background-color: #e58000 !important; /* תורכיז במקום כתום */
   }
   
   .MuiButton-outlinedPrimary {
-    border-color: #00bcd4 !important;
-    color: #00bcd4 !important;
+    border-color: #e58000 !important;
+    color: #e58000 !important;
   }
   
   .MuiButton-textPrimary {
-    color: #00bcd4 !important;
+    color: #e58000 !important;
   }
   
   /* דрисת צבע הפוקוס והריפל אפקט */
   .MuiTouchRipple-ripple {
-    color: rgba(0, 188, 212, 0.3) !important; /* תורכיז שקוף במקום כתום */
+    color: rgba(212, 145, 0, 0.3) !important; /* תורכיז שקוף במקום כתום */
   }
   
   .MuiButton-root.Mui-focusVisible {
-    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.3) !important;
+    box-shadow: 0 0 0 3px rgba(212, 145, 0, 0.3) !important;
   }
   
   /* דрисת צבעי אינדיקטורים */
   .MuiCheckbox-colorPrimary.Mui-checked {
-    color: #00bcd4 !important;
+    color: #e58000 !important;
   }
   
   .MuiRadio-colorPrimary.Mui-checked {
-    color: #00bcd4 !important;
+    color: #e58000 !important;
   }
   
   .MuiSwitch-colorPrimary.Mui-checked {
-    color: #00bcd4 !important;
+    color: #e58000 !important;
   }
   
   .MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track {
-    background-color: rgba(0, 188, 212, 0.5) !important;
+    background-color: rgba(212, 127, 0, 0.5) !important;
   }
   
   /* דрисת צבעי פרוגרס */
   .MuiCircularProgress-colorPrimary {
-    color: #00bcd4 !important;
+    color: #e58000 !important;
   }
   
   .MuiLinearProgress-colorPrimary {
-    background-color: rgba(0, 188, 212, 0.2) !important;
+    background-color: rgba(212, 127, 0, 0.2) !important;
   }
   
   .MuiLinearProgress-barColorPrimary {
-    background-color: #00bcd4 !important;
+    background-color: #e58000 !important;
   }
   
   /* הגדלת כפתורים - גובה ורוחב */
@@ -125,47 +125,47 @@
   .MuiButton-textPrimary,
   .MuiIconButton-colorPrimary,
   button[color="primary"] {
-    color: #00bcd4 !important;
+    color: #e58000 !important;
   }
   
   .MuiButton-containedPrimary {
-    background-color: #00bcd4 !important;
+    background-color: #e58000 !important;
     color: white !important;
   }
   
   /* תיקון לצבע כתום בהובר */
   .MuiButton-containedPrimary:hover {
-    background-color: #00a5bb !important;
+    background-color: #e58000 !important;
   }
   
   .MuiButton-outlinedPrimary:hover {
-    background-color: rgba(0, 188, 212, 0.05) !important;
+    background-color: #b16604c5 !important;
   }
   
   .MuiButton-textPrimary:hover {
-    background-color: rgba(0, 188, 212, 0.05) !important;
+    background-color: #b16604c5 !important;
   }
   
   /* תיקון לצבע כתום בפוקוס */
   .MuiButton-containedPrimary.Mui-focusVisible,
   .MuiButton-outlinedPrimary.Mui-focusVisible,
   .MuiButton-textPrimary.Mui-focusVisible {
-    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.3) !important;
+    box-shadow: 0 0 0 3px #faa639c5 !important;
   }
   
   /* תיקון לצבע כתום באייקונים */
   .MuiSvgIcon-colorPrimary {
-    color: #00bcd4 !important;
+    color: #e58000 !important;
   }
   
   /* תיקון לצבע כתום בלינקים */
   .MuiLink-colorPrimary {
-    color: #00bcd4 !important;
+    color: #e58000 !important;
   }
   
   /* תיקון לצבע כתום בטאבים */
   .MuiTab-textColorPrimary.Mui-selected {
-    color: #00bcd4 !important;
+    color: #e58000 !important;
   }
   /* === אלמנטים דקורטיביים בלבד === */
 .decorative-circle {
@@ -177,7 +177,7 @@
 .decorative-circle-1 {
   width: 300px;
   height: 300px;
-  background: linear-gradient(135deg, #4dd0e1 0%, #00bcd4 100%);
+  background: linear-gradient(135deg, #653370 0%, rgba(172, 36, 84, 0.9)50%, #e58000 100%);
   opacity: 0.1;
   top: -100px;
   right: -100px;
@@ -187,7 +187,7 @@
 .decorative-circle-2 {
   width: 200px;
   height: 200px;
-  background: linear-gradient(135deg, #80deea 0%, #26c6da 100%);
+  background: linear-gradient(135deg, #653370 0%, rgba(172, 36, 84, 0.9) 50%, #e58000 100%);
   opacity: 0.1;
   bottom: -50px;
   left: -50px;
@@ -197,7 +197,7 @@
 .decorative-circle-3 {
   width: 150px;
   height: 150px;
-  background: linear-gradient(135deg, #b2ebf2 0%, #4dd0e1 100%);
+  background:linear-gradient(135deg, #653370 0%, rgba(172, 36, 84, 0.9) 50%, #e58000 100%);
   opacity: 0.1;
   top: 50%;
   left: 15%;

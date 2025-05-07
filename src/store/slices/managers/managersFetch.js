@@ -4,7 +4,7 @@ export const managersFetchThunk = createAsyncThunk(
     'managersFetchThunk',
 
     async () => {
-        const response = await fetch("https://localhost:7044/api/Managers/GetAll");
+        const response = await fetch("https://localhost:7044/api/managers/GetAll");
 
         if (response.ok) {
             const data = await response.json();

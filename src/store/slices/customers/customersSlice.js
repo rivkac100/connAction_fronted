@@ -89,6 +89,7 @@ export const customersSlice = createSlice({
         });
 
         builder.addCase(customersFetchThunk.fulfilled, (state, action) => {
+            sessionStorage.setItem("customers", JSON.stringify(action.payload));
             state.customers = action.payload;
         });
 

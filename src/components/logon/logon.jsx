@@ -901,7 +901,7 @@ export const Logon = () => {
 
                 <div className="auth-content">
                     <div className="logo-container1">
-                        <img src="logo2.JPG" alt="לוגו הקליניקה" className="auth-logo" />
+                        <img src={process.env.PUBLIC_URL + "/start.jpg"} alt="לוגו " className="auth-logo" />
                     </div>
 
                     <div className="form-container">
