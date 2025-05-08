@@ -761,7 +761,7 @@ export const Month = () => {
                         </div>
                     )}
                     
-                    {myView === "תצוגה שבועית" && navigate(`/home/${parms.id}/week`)}
+                    {myView === "תצוגה שבועית" && navigate(`/manager/${parms.mid}/week`)}
                     
                     <div><Outlet></Outlet></div>
                 </div>

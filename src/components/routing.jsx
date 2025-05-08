@@ -44,7 +44,7 @@
 
 //             <Route path={'/home/:id'} element={<Home />}>
 //                 <Route path={'newOrder'} element={<AddEditOrder />}>
-                 
+
 //                 </Route>
 //                 <Route path="upcoming" element={<MyOrders upcoming={true} />} />
 
@@ -107,7 +107,7 @@ import { Month } from "./diary/Month";
 import { Week } from "./diary/Week";
 import { DayView } from "./DayView/dayView";
 import { Start } from "./start/start";
-import { NewEditManager } from "./manager/newEditManager";
+// import { NewEditManager } from "./manager/newEditManager";
 import { Managers } from "./manager/Managers";
 import { Profile } from './more_components/profile';
 import { About } from './more_components/about';
@@ -126,64 +126,89 @@ export const Routing = () => {
       <Route path="/" element={<About />} />
       <Route path="/login" element={<Start />} >
         <Route path="logon" element={<Logon />} />
+        {/* <Route path="logmanager" element={<LogonManager />} /> */}
       </Route>
-      {/* <Route path="/about" element={<About />} /> */}
-      <Route path="/logon" element={<Logon />} />
-      
+      <Route path="/about" element={<About />} />
+
+
       {/* Manager routes */}
       <Route path="/managers" element={<Managers />}>
-        <Route path="newManager" element={<NewEditManager />} />
-        <Route path="editManager/:id" element={<NewEditManager />} />
+        {/* <Route path="newManager" element={<NewEditManager />} />
+        <Route path="editManager/:id" element={<NewEditManager />} /> */}
       </Route>
-      
+
       {/* Customer routes */}
-      <Route path="/customers" element={<Customers />}>
+      {/* <Route path="/customers" element={<Customers />}>
         <Route path="newCustomer" element={<NewEditCustomer />} />
         <Route path="editCustomer/:id" element={<NewEditCustomer />} />
       </Route>
-      <Route path="/newCustomer" element={<NewEditCustomer />} />
-      
+      <Route path="/newCustomer" element={<NewEditCustomer />} /> */}
+
       {/* Home and nested routes */}
-      <Route path="/home" element={<Home />} />
+
       <Route path="/home/:id" element={<Home />}>
-        <Route path="activities/:mid" element={<Activities />} />
+        <Route path="activities/:mid" element={<Activities />} >
+          <Route path="profile" element={<Profile />} />
+          <Route path="newOrder" element={<AddEditOrder />} />
+        </Route>
+
+        <Route path="upcoming" element={<MyOrders upcoming={true} />} />
+        {/* <Route path="month" element={<Month />} />
+        <Route path="week" element={<Week />} />
+        <Route path="day/:day/:month/:year" element={<DayView />} />
+        <Route path="event/:month/:day/:year" element={<Event />} />
+        <Route path="event" element={<Event />} /> */}
+        <Route path="myOrders" element={<MyOrders />}>
+          <Route path="newOrder" element={<AddEditOrder />} />
+          <Route path="editOrder/:orderId" element={<AddEditOrder />} />
+        </Route>
+        <Route path="profile/:mid" element={<Profile />} />
+        {/* <Route path={"activites"} element={<Activities />} /> */}
+      </Route>
+
+      {/* Order routes */}
+      {/* <Route path="/orders" element={<Orders />}>
         <Route path="newOrder" element={<AddEditOrder />} />
+        <Route path="editOrder/:orderId" element={<AddEditOrder />} />
+      </Route> */}
+
+      {/* Dashboard routes */}
+      <Route path="/manager/:mid" element={<Dashboard />}>
+        <Route path="activities" element={<Activities />} >
+          <Route path="newOrder" element={<AddEditOrder />} />
+          <Route path="customers" element={<Customers />} />
+          <Route path="orders/:oid" element={<MyOrders />} >
+            <Route path="newOrder" element={<AddEditOrder />} />
+            <Route path="editOrder/:orderId" element={<AddEditOrder />} />
+          </Route>
+          {/* <Route path="newActivity" element={<AddEditOrder />} />
+            <Route path="editActivity:aid" element={<AddEditOrder />} /> */}
+        </Route>
         <Route path="upcoming" element={<MyOrders upcoming={true} />} />
         <Route path="month" element={<Month />} />
         <Route path="week" element={<Week />} />
         <Route path="day/:day/:month/:year" element={<DayView />} />
         <Route path="event/:month/:day/:year" element={<Event />} />
         <Route path="event" element={<Event />} />
-        <Route path="myOrders" element={<MyOrders />}>
-          <Route path="editOrder/:orderId" element={<AddEditOrder />} />
-        </Route>
-        {/* <Route path={"activites"} element={<Activities />} /> */}
-      </Route>
-      
-      {/* Order routes */}
-      <Route path="/orders" element={<Orders />}>
         <Route path="newOrder" element={<AddEditOrder />} />
-        <Route path="editOrder/:orderId" element={<AddEditOrder />} />
-      </Route>
-      
-      {/* Dashboard routes */}
-      <Route path="/manager/:id" element={<Dashboard />}>
-        <Route path="upcoming" element={<MyOrders upcoming={true} />} />
-        <Route path="month" element={<Month />} />
-        <Route path="week" element={<Week />} />
-        <Route path="newOrder" element={<AddEditOrder />} />
+        {/* <Route path="newActivity" element={<AddEditOrder />} />*/}
         <Route path="orders" element={<Orders />}>
           <Route path="newOrder" element={<AddEditOrder />} />
           <Route path="editOrder/:orderId" element={<AddEditOrder />} />
         </Route>
+        <Route path="customers" element={<Customers />}>
+          <Route path="newCustomer" element={<NewEditCustomer />} />
+          <Route path="editCustomer/:id" element={<NewEditCustomer />} />
+        </Route>
+        <Route path="profile" element={<Profile />} />
       </Route>
-      
+
       {/* Profile route */}
       <Route path="/profile/:id" element={<Profile />} />
-      
+
       {/* Activities route */}
       <Route path="/activites" element={<Activities />} />
-      
+
       {/* Error handling */}
       <Route path="/nav" element={<Navigation />} />
       <Route path="/404" element={<NotFound />} />

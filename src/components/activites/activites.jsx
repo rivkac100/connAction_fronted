@@ -31,13 +31,14 @@
   import { activitiesFetch } from '../../store/slices/activites/activitiesFetch';
   import { deleteActivityThunk } from '../../store/slices/activites/deleteActivityThunk';
 import { activitiesByMangerIdThunk } from '../../store/slices/managers/activitiesByMangerIdThunk';
+import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
 
   export const Activities = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const param=useParams();
     // Redux state
-    const activities = useSelector((state) => state.manager.activities);
+    const manager = useSelector((state) => state.manager.myManager);
     const isLoading = useSelector((state) => state.activity.isLoading);
 
     // Local state
@@ -60,10 +61,10 @@ import { activitiesByMangerIdThunk } from '../../store/slices/managers/activitie
 
     // Fetch activities on component mount
     useEffect(() => {
-    dispatch(activitiesByMangerIdThunk({id:param.id}));
-    console.log(activities);
+    dispatch(managersFetchThunkById({id:param.mid}));
+    console.log(manager.activities);
 
-    }, [activities]);
+    }, [manager]);
 
 
 
@@ -94,7 +95,7 @@ import { activitiesByMangerIdThunk } from '../../store/slices/managers/activitie
     };
 
     // Filtered activities
-    const filteredActivities = activities.filter(activity => {
+    const filteredActivities = manager?.activities?.filter(activity => {
       // Check if any search field is filled
       const isSearchActive = Object.values(searchFields).some(value => value !== '');
       
@@ -162,7 +163,7 @@ import { activitiesByMangerIdThunk } from '../../store/slices/managers/activitie
     };
 
     const handleRefresh = () => {
-      dispatch(activitiesFetch());
+      dispatch(managersFetchThunkById({id:param.mid}));
       setSnackbar({
         open: true,
         message: 'הנתונים רועננו בהצלחה',
@@ -179,8 +180,8 @@ import { activitiesByMangerIdThunk } from '../../store/slices/managers/activitie
       
       // Use the activity ID to determine the color
       const colorIndex = typeof activityId === 'number' 
-        ? activityId % colors.length 
-        : String(activityId).charCodeAt(0) % colors.length;
+        ? activityId % colors?.length 
+        : String(activityId).charCodeAt(0) % colors?.length;
       
       return colors[colorIndex];
     };
@@ -357,7 +358,7 @@ import { activitiesByMangerIdThunk } from '../../store/slices/managers/activitie
         {/* Results Summary */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="subtitle1">
-            {filteredActivities.length} פעילויות נמצאו
+            {filteredActivities?.length} פעילויות נמצאו
           </Typography>
           
           {Object.values(searchFields).some(value => value !== '') && (
@@ -372,7 +373,7 @@ import { activitiesByMangerIdThunk } from '../../store/slices/managers/activitie
         </Box>
       
         {/* Activity Cards Grid */}
-        {filteredActivities.length > 0 ? (
+        {filteredActivities?.length > 0 ? (
           <Grid container spacing={3}>
             {filteredActivities.map((activity) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={activity.id || activity.activityId}>

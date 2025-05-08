@@ -11,7 +11,7 @@ const INITIAL_STATE_USER = {
     managerName: "",
     Id: "",
     managers: [],
-    manager: {},
+    myManager: {},
     activities: [],
     token: null,
     sucsses: false,
@@ -117,7 +117,7 @@ export const managersSlice = createSlice({
         builder.addCase(managersFetchThunkById.fulfilled, (state, action) => {
             console.log(action.payload);
             state.MyOrders = action.payload.orders;
-            state.manager=action.payload;
+            state.myManager=action.payload;
         });
 
 
