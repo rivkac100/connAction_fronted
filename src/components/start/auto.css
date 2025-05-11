@@ -67,7 +67,7 @@
 }
 
 .close-button:hover {
-    color: #f39c12;
+    color: #b60557;
     background-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -81,7 +81,7 @@
 /* מיכל הלוגו */
 .logo-container1 {
     flex: 0 0 40%;
-    background-color: #f39c12;
+    background-color: #b60557;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -97,7 +97,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #653370 0%, rgba(172, 36, 84, 0.9) 50%, #e58000 100%)!important;
+    background:linear-gradient(135deg, #791592 0%, #b60557 50%, #d60141 100%)!important;
     z-index: 1;
 }
 
@@ -137,7 +137,7 @@
 }
 
 .input-group:focus-within {
-    border-color: #f39c12;
+    border-color: #b60557;
     box-shadow: 0 0 0 3px rgba(172, 36, 84, 0.1);
 }
 
@@ -184,7 +184,7 @@ select.auth-input {
 }
 
 .toggle-password:hover {
-    color: #f39c12;
+    color: #b60557;
 }
 
 .input-error {
@@ -203,7 +203,7 @@ select.auth-input {
 .auth-button {
     width: 100%;
     padding: 14px;
-    background-color: #f39c12 !important;
+    background-color: #b60557 !important;
     color: white;
     border: none;
     border-radius: 8px;
@@ -218,7 +218,7 @@ select.auth-input {
 }
 
 .auth-button:hover {
-    background-color: rgba(172, 36, 84, 0.9)!important;
+    background-color:#b60557!important;
 }
 
 .auth-button:disabled {
@@ -260,7 +260,7 @@ select.auth-input {
 .link-button {
     background-color: none;
     border: none;
-    color: #f39c12!important;
+    color: #b60557!important;
     font-weight: 600;
     cursor: pointer;
     padding: 5px;
@@ -269,7 +269,7 @@ select.auth-input {
 }
 
 .link-button:hover {
-    color: rgba(172, 36, 84, 0.8);
+    color: #b60557;
 }
 
 .forgot-password {
@@ -377,12 +377,12 @@ select.auth-input {
 }
 
 .step-dot.active {
-    background-color: #f39c12;
+    background-color: #b60557;
     color: white;
 }
 
 .step-dot.active::after {
-    background-color: #f39c12;
+    background-color: #b60557;
 }
 
 .step-dot.current {
@@ -453,7 +453,7 @@ select.auth-input {
 }
 
 .strength-indicator.medium {
-    background-color: #f39c12;
+    background-color: #b60557;
 }
 
 .strength-indicator.strong {
@@ -694,7 +694,7 @@ select.auth-input {
 .message-box.warning {
     background-color: #fff8e1;
     border-right: 4px solid #ffc107;
-    color: #ff6f00;
+    color: #b60557;
 }
 
 .message-box-icon {
@@ -840,7 +840,7 @@ select.auth-input {
     margin-left: 10px;
     width: 18px;
     height: 18px;
-    accent-color: #f39c12;
+    accent-color: #b60557;
 }
 
 .remember-me label {
@@ -862,7 +862,7 @@ select.auth-input {
     margin-top: 3px;
     width: 18px;
     height: 18px;
-    accent-color: #f39c12;
+    accent-color: #b60557;
 }
 
 .terms-checkbox label {
@@ -872,7 +872,7 @@ select.auth-input {
 }
 
 .terms-checkbox a {
-    color: #f39c12;
+    color: #b60557;
     text-decoration: none;
     font-weight: 600;
 }

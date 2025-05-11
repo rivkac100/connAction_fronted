@@ -394,7 +394,7 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
                   <CardMedia
                     component="img"
                     height="140"
-                    image={getActivityImage(activity)}
+                    image={`https://localhost:7064/img/${activity.imgPath}`}
                     alt={activity.activityDescription || "פעילות"}
                   />
                   <Box 

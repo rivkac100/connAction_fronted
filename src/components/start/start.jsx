@@ -220,7 +220,7 @@ export const Start = () => {
                   style={{ 
                     padding: '10px 20px', 
                     cursor: 'pointer',
-                    backgroundColor: tabValue === 0 ? 'rgb(172, 36, 84)' : '#f1f1f1',
+                    backgroundColor: tabValue === 0 ? '#b60557' : '#f1f1f1',
                     color: tabValue === 0 ? 'white' : '#666',
                     borderRadius: '8px 0 0 8px',
                     display: 'flex',
@@ -241,7 +241,7 @@ export const Start = () => {
                   style={{ 
                     padding: '10px 20px', 
                     cursor: 'pointer',
-                    backgroundColor: tabValue === 1 ? 'rgb(172, 36, 84)' : '#f1f1f1',
+                    backgroundColor: tabValue === 1 ? '#b60557' : '#f1f1f1',
                     color: tabValue === 1 ? 'white' : '#666',
                     borderRadius: '0 8px 8px 0',
                     display: 'flex',

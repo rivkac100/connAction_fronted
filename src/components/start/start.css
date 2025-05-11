@@ -2,16 +2,16 @@
 
 /* דрисת צבעי ברירת מחדל של Material UI */
 .MuiButton-containedPrimary {
-    background-color: #e58000 !important; /* תורכיז במקום כתום */
+    background-color: #b60557 !important; /* תורכיז במקום כתום */
   }
   
   .MuiButton-outlinedPrimary {
-    border-color: #e58000 !important;
-    color: #e58000 !important;
+    border-color: #b60557 !important;
+    color: #b60557 !important;
   }
   
   .MuiButton-textPrimary {
-    color: #e58000 !important;
+    color: #b60557 !important;
   }
   
   /* דрисת צבע הפוקוס והריפל אפקט */
@@ -25,15 +25,15 @@
   
   /* דрисת צבעי אינדיקטורים */
   .MuiCheckbox-colorPrimary.Mui-checked {
-    color: #e58000 !important;
+    color: #b60557 !important;
   }
   
   .MuiRadio-colorPrimary.Mui-checked {
-    color: #e58000 !important;
+    color: #b60557 !important;
   }
   
   .MuiSwitch-colorPrimary.Mui-checked {
-    color: #e58000 !important;
+    color: #b60557 !important;
   }
   
   .MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track {
@@ -42,7 +42,7 @@
   
   /* דрисת צבעי פרוגרס */
   .MuiCircularProgress-colorPrimary {
-    color: #e58000 !important;
+    color: #b60557 !important;
   }
   
   .MuiLinearProgress-colorPrimary {
@@ -50,7 +50,7 @@
   }
   
   .MuiLinearProgress-barColorPrimary {
-    background-color: #e58000 !important;
+    background-color: #b60557 !important;
   }
   
   /* הגדלת כפתורים - גובה ורוחב */
@@ -125,17 +125,17 @@
   .MuiButton-textPrimary,
   .MuiIconButton-colorPrimary,
   button[color="primary"] {
-    color: #e58000 !important;
+    color: #b60557 !important;
   }
   
   .MuiButton-containedPrimary {
-    background-color: #e58000 !important;
+    background-color: #b60557 !important;
     color: white !important;
   }
   
   /* תיקון לצבע כתום בהובר */
   .MuiButton-containedPrimary:hover {
-    background-color: #e58000 !important;
+    background-color: #b60557 !important;
   }
   
   .MuiButton-outlinedPrimary:hover {
@@ -155,17 +155,17 @@
   
   /* תיקון לצבע כתום באייקונים */
   .MuiSvgIcon-colorPrimary {
-    color: #e58000 !important;
+    color: #b60557 !important;
   }
   
   /* תיקון לצבע כתום בלינקים */
   .MuiLink-colorPrimary {
-    color: #e58000 !important;
+    color: #b60557 !important;
   }
   
   /* תיקון לצבע כתום בטאבים */
   .MuiTab-textColorPrimary.Mui-selected {
-    color: #e58000 !important;
+    color: #b60557 !important;
   }
   /* === אלמנטים דקורטיביים בלבד === */
 .decorative-circle {
@@ -177,7 +177,7 @@
 .decorative-circle-1 {
   width: 300px;
   height: 300px;
-  background: linear-gradient(135deg, #653370 0%, rgba(172, 36, 84, 0.9)50%, #e58000 100%);
+  background: linear-gradient(135deg, #791592 0%, #b60557 50%, #d60141 100%);
   opacity: 0.1;
   top: -100px;
   right: -100px;
@@ -187,7 +187,7 @@
 .decorative-circle-2 {
   width: 200px;
   height: 200px;
-  background: linear-gradient(135deg, #653370 0%, rgba(172, 36, 84, 0.9) 50%, #e58000 100%);
+  background: linear-gradient(135deg, #791592 0%, #b60557 50%, #d60141 100%);
   opacity: 0.1;
   bottom: -50px;
   left: -50px;
@@ -197,7 +197,7 @@
 .decorative-circle-3 {
   width: 150px;
   height: 150px;
-  background:linear-gradient(135deg, #653370 0%, rgba(172, 36, 84, 0.9) 50%, #e58000 100%);
+  background:linear-gradient(135deg, #791592 0%, #b60557 50%, #d60141 100%);
   opacity: 0.1;
   top: 50%;
   left: 15%;

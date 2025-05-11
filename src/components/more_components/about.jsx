@@ -20,7 +20,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './about.css';
-import { customersFetchThunk } from '../../store/slices/customersFetch';
+import { customersFetchThunk } from '../../store/slices/customers/customersFetch';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
