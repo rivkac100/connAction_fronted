@@ -4,7 +4,7 @@ export const deleteManagerThunk = createAsyncThunk(
     'deleteManagerThunk',
     async ( id ) => {
 
-        const response = await fetch(`https://localhost:7044/api/Managers/Delete/${id}`,
+        const response = await fetch(`https://localhost:7044/api/managers/Delete/${id}`,
             {
                 method: 'DELETE',
                 headers: {

@@ -1,66 +1,333 @@
-/* בס"ד */
-
-.day{
-    overflow:auto;
-    width: 86%;
-    height: 75%;
-    margin-left: 7%;
-    background-color: white;
-    border-bottom: 32px;
-    border-bottom: 32px;
-}
-
-.dayView{
-    width: 35%;
-    height: 95vh;
-    border: 1px solid black;
-    background-color: antiquewhite;
-    margin-left: 32.5%;
-}
-
-.h{
-    text-align: end;
-    padding-right: 75px;
-}
-
-.dayHead{
-    width:86% ;
-    margin-left:7%;
-    background-color: rgb(247, 248, 251);
-    height: 12%;
-    border-top-left-radius: 32px;
-    border-top-right-radius: 32px;
-    border-bottom: 1px solid rgb(211, 206, 206);
-}
-
-.dayNum{
-    text-align: end;
-    margin-right: 20px;
-}
-
-.hour{
-    width: 60px;
-    height: 100%;
-    padding-right: 30px;
-    text-align: end;
-    border-left: 1px solid black;
-    margin-left: 56%;
-}
-.rowHour{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: end;
-    width: 100%;
-    border-bottom: 1px solid gray;
+/* Day View Dialog Styles */
+.day-view-dialog {
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    background-color: #fff;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .day-view-dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+  }
+  
+  /* Header Section */
+  .day-view-header {
+    background: linear-gradient(135deg, #653370 0%, #4a2652 100%);
+    color: white;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
     text-align: center;
-}
-
-.toAddQ{
-    margin: 3px;
-    width: 45px;
-    height: 45px;
-    font-size: x-large;
-}
-.symbolFlags{
-    /* margin-left: 5px; */
-}
+  }
+  
+  .day-view-header-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background-image: url('/pic/pattern.png'); */
+    background-size: cover;
+    opacity: 0.1;
+    z-index: 1;
+  }
+  
+  .day-view-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .day-view-subtitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .day-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #f58f0a;
+    line-height: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .day-name {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  
+  /* Hours Container */
+  .hours-container {
+    padding: 16px;
+    overflow-y: auto;
+    max-height: calc(85vh - 180px);
+  }
+  
+  /* Hour Row */
+  .hour-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+    background-color: #f9f9f9;
+  }
+  
+  .hour-row:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .hour-row.available {
+    background-color: rgba(245, 143, 10, 0.1);
+    border-right: 3px solid #f58f0a;
+  }
+  
+  .hour-row.booked {
+    background-color: rgba(101, 51, 112, 0.1);
+    border-right: 3px solid #653370;
+  }
+  
+  .hour-time {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    width: 70px;
+    text-align: center;
+  }
+  
+  .hour-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+  
+  /* Action Buttons */
+  .action-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: #653370;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.2rem;
+  }
+  
+  .action-button:hover {
+    background-color: #653370;
+    color: white;
+    border-color: #653370;
+    transform: scale(1.1);
+  }
+  
+  .action-button.woman {
+    color: #f58f0a;
+  }
+  
+  .action-button.woman:hover {
+    background-color: #f58f0a;
+    color: white;
+    border-color: #f58f0a;
+  }
+  
+  .action-button.double {
+    color: #ff5722;
+  }
+  
+  .action-button.double:hover {
+    background-color: #ff5722;
+    color: white;
+    border-color: #ff5722;
+  }
+  
+  /* Patient Info */
+  .patient-info {
+    font-size: 0.9rem;
+    color: #333;
+    background-color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Footer */
+  .day-view-footer {
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+  }
+  
+  .close-button {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    background-color: #653370;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .close-button:hover {
+    background-color: #4a2652;
+    box-shadow: 0 2px 8px rgba(101, 51, 112, 0.3);
+  }
+  
+  /* Time Indicator */
+  .current-time-indicator {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #f58f0a;
+    z-index: 10;
+  }
+  
+  .current-time-label {
+    position: absolute;
+    right: 0;
+    background-color: #f58f0a;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px 0 0 4px;
+    font-size: 0.8rem;
+    transform: translateY(-50%);
+  }
+  
+  /* Empty State */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #757575;
+    text-align: center;
+  }
+  
+  .empty-state-icon {
+    font-size: 3rem;
+    color: #e0e0e0;
+    margin-bottom: 16px;
+  }
+  
+  .empty-state-text {
+    font-size: 1rem;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .day-view-dialog {
+      width: 95%;
+      max-width: none;
+      max-height: 90vh;
+    }
+    
+    .day-view-title {
+      font-size: 1.5rem;
+    }
+    
+    .day-number {
+      font-size: 2rem;
+      width: 50px;
+      height: 50px;
+    }
+    
+    .day-name {
+      font-size: 1rem;
+    }
+    
+    .hour-row {
+      padding: 10px 12px;
+    }
+    
+    .hour-time {
+      font-size: 1rem;
+      width: 60px;
+    }
+    
+    .action-button {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .patient-info {
+      max-width: 150px;
+      font-size: 0.8rem;
+    }
+  }
+  
+  /* Animation Effects */
+  @keyframes slideIn {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .day-view-dialog[open] {
+    animation: slideIn 0.3s ease forwards;
+  }
+  
+  /* Scrollbar Styling */
+  .hours-container::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .hours-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  .hours-container::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 10px;
+  }
+  
+  .hours-container::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+  }
+  

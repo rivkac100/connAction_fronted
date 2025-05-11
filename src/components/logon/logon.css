@@ -67,7 +67,7 @@
   }
   
   .close-button:hover {
-      color:  rgb(11, 132, 148);
+      color: #e58000;
       background-color: rgba(0, 0, 0, 0.05);
   }
   
@@ -81,7 +81,7 @@
   /* מיכל הלוגו */
   .logo-container1 {
       flex: 0 0 40%;
-      background-color:  rgb(11, 132, 148);
+      background-color: #e58000;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -97,7 +97,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(172, 36, 84, 0.8) 0%, rgba(172, 36, 84, 0.4) 100%);
+      background: linear-gradient(135deg, #653370 0%, rgba(172, 36, 84, 0.9) 50%, #e58000 100%);
       z-index: 1;
   }
   
@@ -137,7 +137,7 @@
   }
   
   .input-group:focus-within {
-      border-color:  rgb(11, 132, 148);
+      border-color:  #f39c12;
       box-shadow: 0 0 0 3px rgba(172, 36, 84, 0.1);
   }
   
@@ -184,7 +184,7 @@
   }
   
   .toggle-password:hover {
-      color:  rgb(11, 132, 148);
+      color:  #f39c12;
   }
   
   .input-error {
@@ -203,7 +203,7 @@
   .auth-button {
       width: 100%;
       padding: 14px;
-      background-color:  rgb(11, 132, 148);
+      background-color:  #f39c12;
       color: white;
       border: none;
       border-radius: 8px;
@@ -260,7 +260,7 @@
   .link-button {
       background: none;
       border: none;
-      color:  rgb(11, 132, 148);
+      color:  #f39c12;
       font-weight: 600;
       cursor: pointer;
       padding: 5px;
@@ -377,12 +377,12 @@
   }
   
   .step-dot.active {
-      background-color:  rgb(11, 132, 148);
+      background-color: #f39c12;
       color: white;
   }
   
   .step-dot.active::after {
-      background-color:  rgb(11, 132, 148);
+      background-color: #f39c12;
   }
   
   .step-dot.current {
@@ -694,7 +694,7 @@
   .message-box.warning {
       background-color: #fff8e1;
       border-right: 4px solid #ffc107;
-      color: #ff6f00;
+      color: #f39c12;
   }
   
   .message-box-icon {
@@ -840,7 +840,7 @@
       margin-left: 10px;
       width: 18px;
       height: 18px;
-      accent-color:  rgb(11, 132, 148);
+      accent-color: #f39c12;
   }
   
   .remember-me label {
@@ -862,7 +862,7 @@
       margin-top: 3px;
       width: 18px;
       height: 18px;
-      accent-color:  rgb(11, 132, 148);
+      accent-color:  #f39c12;
   }
   
   .terms-checkbox label {
@@ -872,7 +872,7 @@
   }
   
   .terms-checkbox a {
-      color: rgb(11, 132, 148);
+      color: #f39c12;
       text-decoration: none;
       font-weight: 600;
   }

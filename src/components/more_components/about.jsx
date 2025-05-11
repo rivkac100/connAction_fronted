@@ -20,16 +20,23 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './about.css';
+import { customersFetchThunk } from '../../store/slices/customersFetch';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 export const About = () => {
   const navigate = useNavigate();
-
+  const customers = useSelector(state => state.customer.customers);
+  const dispatch = useDispatch();
   useEffect(() => {
     AOS.init({
       duration: 1000,
       once: true,
     });
   }, []);
+  useEffect(() => {
+    if(customers?.length === 0) dispatch(customersFetchThunk());
+  }, [customers]);
 
   const features = [
     {

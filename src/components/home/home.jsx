@@ -108,34 +108,45 @@ import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { eventFetchThunk } from '../../store/slices/events/eventFetchThunk';
 import { Logo } from '../logoDesign/logo';
+import { managersFetchThunk } from '../../store/slices/managers/managersFetch';
+import { motion, AnimatePresence, m } from "framer-motion";
+
 
 export const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const event = useSelector(state => state.events.events);
+  // const event = useSelector(state => state.events.events);
   const params = useParams();
   const id = params.id;
-  const isc=useSelector(state=> state.customer.isC)
-  const isM=useSelector(state=> state.manager.isM)
-  
+  const managers = useSelector(state => state.manager.managers)
+  const isC = useSelector(state => state.customer.isC)
+  const isM = useSelector(state => state.manager.isM)
+  const [view, setView] = useState(true)
+  const managersView = []
+  useEffect(()=>{
+    if (managers?.length === 0) dispatch(managersFetchThunk());
+   console.log(managers);
+  },[])
   useEffect(() => {
-    dispatch(eventFetchThunk());
-  }, [dispatch]);
-
+    debugger
+    if (managers?.length === 0) dispatch(managersFetchThunk());
+   // creatView()
+  }, [managers]);
+  
   return (
-    <Container maxWidth="xl" className="home-container">
+    <Container maxWidth="xl" className="home-container" >
       <Box className="header">
         <Logo size="large" />
         <Typography variant="h6" className="welcome-text">
           ברוכים הבאים למשרד הדיגיטלי שלך
         </Typography>
       </Box>
-      
-      <Grid container spacing={2} className="navigation-grid">
+
+      {/* <Grid container spacing={2} className="navigation-grid">
         <Grid item xs={12} md={10} lg={8} className="nav-buttons-container">
           <Stack 
             direction={{ xs: 'column', sm: 'row' }} 
@@ -180,7 +191,7 @@ export const Home = () => {
           >
             יומן
           </Button>)}
-          {/* :navigate(`/login`) */}
+          {/* :navigate(`/login`) 
             
             
             <Button 
@@ -193,8 +204,61 @@ export const Home = () => {
           </Stack>
         </Grid>
       </Grid>
-      
+       */}
       <Box className="content-area">
+     { view && <div style={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: "20px",
+        marginBottom: "20px",
+     }}>{managers.map((manager)=>( <><div key={manager.id} className="manager-card" style={{
+          width: "30%",
+          height: "300%",
+          color: "white",
+          // display: "flex",
+          // flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "black",
+          borderRadius: "10px",
+          padding: "20px",
+          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+          margin: "10px",
+          position: "relative",
+          overflow: "hidden",
+          transition: "all 0.3s ease-in-out",
+          cursor: "pointer",
+          border: "1px solid #ccc",
+          boxSizing: "border-box",
+          marginBottom: "20px",
+          marginTop: "20px",
+          marginLeft: "20px",
+          marginRight: "20px"
+        }}>
+          <div className="manager-name">{manager.compName}</div>
+          <div className="manager">{manager.description}</div>
+          <div className="manager">{manager.kategoty}</div>
+          <div className="manager-email">{manager.managerEmail}</div>
+          <div style={{ width: "70%" }}>
+            <img src={process.env.PUBLIC_URL + "/start.jpg"} style={{ width: "100%" }} alt="" />
+          </div>
+          <motion.button
+            className="auth-button"
+            onClick={()=>{setView(false);navigate(`activities/${manager.id}`)}}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+          >
+            כניסה
+          </motion.button>
+
+        </div></>) 
+      
+         )}
+        </div>}
         <Outlet />
       </Box>
     </Container>

@@ -1,0 +1,316 @@
+/* Week View Styles */
+.week-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    font-family: 'Roboto', 'Arial', sans-serif;
+  }
+  
+  .week-paper {
+    padding: 24px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
+  }
+  
+  /* Header and Navigation */
+  .week-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .week-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #212121;
+    margin: 0;
+  }
+  
+  .week-title span {
+    color: #f58f0a;
+  }
+  
+  .week-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 12px;
+  }
+  
+  .week-nav-button {
+    background-color: white;
+    color: #424242;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+  }
+  
+  .week-nav-button:hover {
+    background-color: #f5f5f5;
+    border-color: #f58f0a;
+  }
+  
+  .week-nav-button.active {
+    background-color: #653370;
+    color: white;
+    border-color: #653370;
+  }
+  
+  .week-nav-button.today {
+    background-color: white;
+    color: #f58f0a;
+    border-color: #f58f0a;
+  }
+  
+  .week-nav-button.today:hover {
+    background-color: rgba(245, 143, 10, 0.08);
+  }
+  
+  .week-arrow-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: #424242;
+    border: 1px solid #e0e0e0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .week-arrow-button:hover {
+    background-color: #f5f5f5;
+    border-color: #f58f0a;
+    color: #f58f0a;
+  }
+  
+  /* Week Table */
+  .week-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .week-table thead tr {
+    background-color: #f9f9f9;
+  }
+  
+  .week-table th {
+    padding: 12px 8px;
+    text-align: center;
+    font-weight: 500;
+    color: #424242;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .week-table th.today {
+    background-color: rgba(245, 143, 10, 0.08);
+    color: #f58f0a;
+    font-weight: 600;
+    border-bottom: 2px solid #f58f0a;
+  }
+  
+  .week-table td {
+    vertical-align: top;
+    height: 120px;
+    padding: 8px;
+    border: 1px solid #f0f0f0;
+    width: 14.28%;
+  }
+  
+  .week-table td.today {
+    background-color: rgba(245, 143, 10, 0.05);
+    border-bottom:#653370 solid 3px !important ;
+  }
+  
+  .week-table td.spacer {
+    width: 4px;
+    padding: 0;
+    /* border: none; */
+    border-bottom:#653370 solid 3px !important ;
+    background-color: #ffffff;
+  }
+  
+  /* Events */
+  .week-event {
+    margin-bottom: 8px;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    background-color: #f9f9f9;
+    border-left: 3px solid #757575;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .week-event:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f5f5f5;
+  }
+  
+  .week-event.today {
+    background-color: #f5f5f5;
+    border-left: 3px solid #f58f0a;
+  }
+  
+  .week-event .time {
+    font-weight: 600;
+    color: #424242;
+    margin-bottom: 4px;
+  }
+  
+  .week-event .title {
+    color: #616161;
+  }
+  
+  .week-event.my-order {
+    border-left: 3px solid #653370;
+  }
+  
+  /* Context Menu */
+  .context-menu {
+    position: absolute;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    z-index: 1000;
+  }
+  
+  .context-menu-button {
+    width: 100%;
+    padding: 10px 16px;
+    text-align: right;
+    background-color: white;
+    border: none;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    color: #424242;
+  }
+  
+  .context-menu-button:last-child {
+    border-bottom: none;
+  }
+  
+  .context-menu-button:hover {
+    background-color: #f5f5f5;
+    color: #f58f0a;
+  }
+  
+  /* Menu Bar */
+  .week-menu-bar {
+    background-color: black;
+    color: white;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-radius: 4px;
+  }
+  
+  .week-menu-title {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .week-menu-title span {
+    color: #f58f0a;
+  }
+  
+  .week-menu-actions {
+    display: flex;
+    gap: 16px;
+  }
+  .notToDay{
+   border-bottom:#653370 solid 3px !important ;
+  }
+  .th-nottoDay{
+    color: #f58f0a !important;
+  }
+  .week-menu-button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+  td:hover{
+    border-bottom:#653370 solid 3px !important ;
+
+  }
+  .week-menu-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .week-menu-button.primary {
+    background-color: #f58f0a;
+  }
+  
+  .week-menu-button.primary:hover {
+    background-color: #e58000;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .week-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .week-nav {
+      flex-wrap: wrap;
+    }
+    
+    .week-table {
+      font-size: 0.85rem;
+    }
+    
+    .week-table td {
+      height: 100px;
+      padding: 4px;
+    }
+    
+    .week-event {
+      padding: 4px;
+      font-size: 0.75rem;
+    }
+    
+    .week-menu-bar {
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    
+    .week-menu-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+  

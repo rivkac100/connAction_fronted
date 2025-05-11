@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { use, useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { customersFetchThunk } from "../../store/slices/customers/customersFetch";
@@ -20,10 +20,13 @@ import {
 } from '@mui/icons-material';
 
 import "./auto.css";
+import { editIsC } from "../../store/slices/customers/customersSlice";
+import { editIsM } from "../../store/slices/managers/managersSlice";
 
 export const Start = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [view, setView] = useState(true);
   
   // State for tab selection (admin/customer)
   const [tabValue, setTabValue] = useState(0);
@@ -36,25 +39,33 @@ export const Start = () => {
     instituteId: ""
   });
   
-  const customers = useSelector(state => state.customer.customers);
+
   const managers = useSelector(state => state.manager.managers);
+  const customers = useSelector(state => state.customer.customers);
+
+  const isMng=useSelector(state => state.manager.isM);
+  const isCst=useSelector(state => state.customer.isC);
   
   // UI states
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   
-  useEffect(() => {
-    if(customers?.length === 0) dispatch(customersFetchThunk());
-  }, [customers, dispatch]);
+  useEffect(()=>{
+   dispatch(editIsC(-1))
+   dispatch(editIsM(-1))
+  },[])
+
   
   useEffect(() => {
     if(managers?.length === 0) dispatch(managersFetchThunk());
-  }, [managers, dispatch]);
+  }, [managers]);
   
   // Handle tab change
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+ 
+    
     setError("");
   };
   
@@ -71,15 +82,17 @@ export const Start = () => {
 
 
     setTimeout(() => {
-      const customer = customers.find(customer => customer.email === formData.email);
-      const manager = managers.find(manager => manager.id === parseInt(formData.password));
-      
+      const c= JSON.parse( sessionStorage.getItem('customers'));
+      const customer = c.find(customer => customer.email === formData.email);
+      const manager = managers.find(manager => manager.id ===parseInt(formData.password));
+      debugger
       if(tabValue === 0) {
         if(customer) {
           setFormData({
             ...formData,
             instituteId: customer.instituteId
           });
+          dispatch(editIsC(customer.instituteId));
           navigate(`/home/${customer.instituteId}`);
         }
         else if(manager) {
@@ -87,11 +100,13 @@ export const Start = () => {
             ...formData,
             password: manager.id
           });
+          dispatch(editIsM(manager.id));
           navigate(`/manager/${manager.id}`);
         }
         else {
           setError("המשתמש אינו קיים");
           setIsLoading(false);
+          navigate('/managers/newManager');
           return;
         }
       }
@@ -122,6 +137,8 @@ export const Start = () => {
         }
         else {
           setError("המשתמש אינו קיים");
+          setView(false)
+          navigate(`logon`);
           setIsLoading(false);
           return;
         }
@@ -177,7 +194,7 @@ export const Start = () => {
   return (
 
     <div className="auth-dialog login-dialog" style={{ position: 'fixed', margin: 'auto', top: '10%', right: '25%' }}>
-      <div className="auth-container">
+     {view && <div className="auth-container">
         <div className="auth-header">
           <h2 className="auth-title">ברוכים הבאים</h2>
           <button className="close-button" onClick={() => navigate('/')} aria-label="סגור">×</button>
@@ -185,7 +202,7 @@ export const Start = () => {
         
         <div className="auth-content">
           <div className="logo-container1">
-            <img src="/logo.png" alt="לוגו המערכת" className="auth-logo" />
+            <img src={process.env.PUBLIC_URL + "/start.jpg"} alt="לוגו המערכת" className="auth-logo" />
           </div>
           
           <div className="form-container">
@@ -199,7 +216,7 @@ export const Start = () => {
               {/* לשוניות */}
               <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
                 <div 
-                  onClick={() => handleTabChange(null, 0)} 
+                  onClick={() => handleTabChange(null, 0,)} 
                   style={{ 
                     padding: '10px 20px', 
                     cursor: 'pointer',
@@ -220,7 +237,7 @@ export const Start = () => {
                   <span>מנהל</span>
                 </div>
                 <div 
-                  onClick={() => handleTabChange(null, 1)} 
+                  onClick={() => handleTabChange(null, 1,)} 
                   style={{ 
                     padding: '10px 20px', 
                     cursor: 'pointer',
@@ -345,7 +362,7 @@ export const Start = () => {
               </button>
             </div>
             
-            <div className="social-login">
+            {/* <div className="social-login">
               <span className="social-login-text">או התחבר באמצעות</span>
             </div>
             
@@ -358,10 +375,11 @@ export const Start = () => {
               <div className="social-button facebook">
                 <FacebookIcon style={{ fontSize: '1.2rem' }} />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
-      </div>
+      </div>}
+      <Outlet />
     </div>
   );
 };

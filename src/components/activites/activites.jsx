@@ -1,6 +1,6 @@
-  import { useEffect, useState } from 'react';
+  import { act, useEffect, useState } from 'react';
   import { useDispatch, useSelector } from "react-redux";
-  import { Outlet, useNavigate } from 'react-router-dom';
+  import { Outlet, useNavigate, useParams } from 'react-router-dom';
   import './activites.css';
 
   // Material UI
@@ -30,13 +30,15 @@
 
   import { activitiesFetch } from '../../store/slices/activites/activitiesFetch';
   import { deleteActivityThunk } from '../../store/slices/activites/deleteActivityThunk';
+import { activitiesByMangerIdThunk } from '../../store/slices/managers/activitiesByMangerIdThunk';
+import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
 
   export const Activities = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-  
+    const param=useParams();
     // Redux state
-    const activities = useSelector((state) => state.activity.activities || []);
+    const manager = useSelector((state) => state.manager.myManager);
     const isLoading = useSelector((state) => state.activity.isLoading);
 
     // Local state
@@ -58,9 +60,11 @@
     });
 
     // Fetch activities on component mount
-    dispatch(activitiesFetch());
     useEffect(() => {
-    }, [dispatch]);
+    dispatch(managersFetchThunkById({id:param.mid}));
+    console.log(manager.activities);
+
+    }, [manager]);
 
 
 
@@ -91,7 +95,7 @@
     };
 
     // Filtered activities
-    const filteredActivities = activities.filter(activity => {
+    const filteredActivities = manager?.activities?.filter(activity => {
       // Check if any search field is filled
       const isSearchActive = Object.values(searchFields).some(value => value !== '');
       
@@ -132,7 +136,7 @@
 
     const handleEditClick = (event, activity) => {
       event.stopPropagation(); // Prevent opening the details dialog
-      navigate(`editActivity/${activity.id}`);
+     // navigate(`editActivity/${activity.id}`);
     };
 
     const handleDeleteConfirm = () => {
@@ -159,7 +163,7 @@
     };
 
     const handleRefresh = () => {
-      dispatch(activitiesFetch());
+      dispatch(managersFetchThunkById({id:param.mid}));
       setSnackbar({
         open: true,
         message: 'הנתונים רועננו בהצלחה',
@@ -176,8 +180,8 @@
       
       // Use the activity ID to determine the color
       const colorIndex = typeof activityId === 'number' 
-        ? activityId % colors.length 
-        : String(activityId).charCodeAt(0) % colors.length;
+        ? activityId % colors?.length 
+        : String(activityId).charCodeAt(0) % colors?.length;
       
       return colors[colorIndex];
     };
@@ -354,7 +358,7 @@
         {/* Results Summary */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="subtitle1">
-            {filteredActivities.length} פעילויות נמצאו
+            {filteredActivities?.length} פעילויות נמצאו
           </Typography>
           
           {Object.values(searchFields).some(value => value !== '') && (
@@ -369,7 +373,7 @@
         </Box>
       
         {/* Activity Cards Grid */}
-        {filteredActivities.length > 0 ? (
+        {filteredActivities?.length > 0 ? (
           <Grid container spacing={3}>
             {filteredActivities.map((activity) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={activity.id || activity.activityId}>
@@ -413,7 +417,10 @@
                   </Box>
                   <CardContent sx={{ flexGrow: 1, bgcolor: getActivityColor(activity.activityId) }}>
                     <Typography variant="h6" component="div" gutterBottom noWrap>
-                      {activity.activityDescription || "פעילות ללא שם"}
+                      {activity.activityName || "פעילות ללא שם"}
+                    </Typography>
+                    <Typography variant="h6" component="div" gutterBottom noWrap>
+                      {activity.activityDescription || "פעילות ללא תיאור"}
                     </Typography>
                     
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
@@ -434,6 +441,12 @@
                       <AttachMoneyIcon fontSize="small" sx={{ mr: 1 }} />
                       <Typography variant="body2" color="text.primary" fontWeight="bold">
                         ₪{activity.price || 0}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                      <AttachMoneyIcon fontSize="small" sx={{ mr: 1 }} />
+                      <Typography variant="body2" color="text.primary" fontWeight="bold">
+                        ₪{activity.nightPrice || 0}
                       </Typography>
                     </Box>
                   </CardContent>
@@ -764,7 +777,7 @@
                 <Button 
                   variant="outlined" 
                   color="primary"
-                  onClick={() => navigate(`editActivity/${selectedActivity.id}`)}
+                 // onClick={() => navigate(`editActivity/${selectedActivity.id}`)}
                   startIcon={<EditIcon />}
                   sx={{ mr: 2, borderRadius: 2, px: 3 }}
                 >
