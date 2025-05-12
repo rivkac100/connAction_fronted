@@ -6,12 +6,18 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 // import { FaEye, FaEyeSlash, Facustomer, FaIdCard, FaPhone, FaEnvelope, FaStethoscope, FaLock } from "react-icons/fa";
 import "./logon.css";
+import { r } from "framer-motion/dist/types.d-DSjX-LJB";
+import { addManagerThunk } from "../../store/slices/managers/addManagerThunk";
 
 
 
 export const Logon = () => {
     const dispatch = useDispatch();
-
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: '',
+        severity: 'success'
+      });
     const [manager, setManager] = useState({
         managerName: "string",
         pass: 0,
@@ -28,8 +34,9 @@ export const Logon = () => {
         bankBranch: 0,
         accountNum: 0,
         kategoty: "",
-        escription: "",
+        description: "",
         imgPath: "",
+        confirmPassword: 0,
     });
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
@@ -37,7 +44,8 @@ export const Logon = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
     const [registrationSuccess, setRegistrationSuccess] = useState(false);
-
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [uploadingImage, setUploadingImage] = useState(false);
     const dialogRef = useRef(null);
     const navigate = useNavigate();
     const israeliCities = [
@@ -46,8 +54,8 @@ export const Logon = () => {
         "כפר סבא", "מודיעין", "רעננה", "רמלה", "לוד", "נצרת", "קריית אתא", "אילת", "כרמיאל", "אור עקיבא", "בית שמש", "ערד", "חצור", "דימונה"
     ];
 
-    const kategoties=[
-        "טיולים","מופעים אור קוליים","הרצאות","פעילויות בטבע","פעילויות מוזיקליות","סדנאות","סיפורים אישיים","קליקרים וטריוויה","תוכניות במה קהל ","מופעים והצגות"
+    const kategoties = [
+        "טיולים", "מופעים אור קוליים", "הרצאות", "פעילויות בטבע", "פעילויות מוזיקליות", "סדנאות", "סיפורים אישיים", "קליקרים וטריוויה", "תוכניות במה קהל ", "מופעים והצגות"
     ]
     useEffect(() => {
         dialogRef.current.showModal();
@@ -62,36 +70,46 @@ export const Logon = () => {
         );
     }, []);
     useEffect(() => {
-        console.log("Current customer data:", customer);
-    }, [customer]);
+        console.log("Current manager data:", manager);
+    }, [manager]);
     const validateStep1 = () => {
         const newErrors = {};
 
 
 
-        if (!customer.instituteName.trim()) {
-            newErrors.instituteName = "יש להזין שם ";
+        if (!manager.managerName.trim()) {
+            newErrors.managerName = "יש להזין שם ";
         }
-        if (!customer.mobile.trim()) {
-            newErrors.mobile = "יש להזין מספר טלפון";
-        } else if (!/^0\d{8}$/.test(customer.mobile)) {
-            newErrors.mobile = "יש להזין מספר טלפון תקין (10 ספרות המתחיל ב-0)";
+        if (!manager.managerEmail.trim()) {
+            newErrors.managerEmail = "יש להזין כתובת אימייל";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(manager.managerEmail)) {
+            newErrors.managerEmail = "יש להזין כתובת אימייל תקינה";
         }
-        if (!customer.fax.trim()) {
-            newErrors.fax = "יש להזין מספר פקס";
-        } else if (!/^0\d{8}$/.test(customer.fax)) {
-            newErrors.fax = "יש להזין מספר פקס תקין (10 ספרות המתחיל ב-0)";
+        if (!manager.managerPhone.trim()) {
+            newErrors.managerPhone = "יש להזין מספר פלאפון";
+        } else if (!/^0\d{9}$/.test(manager.managerPhone)) {
+            newErrors.managerPhone = "יש להזין מספר טלפון תקין (10 ספרות המתחיל ב-0)";
         }
-        if (!customer.city.trim()) {
+        // if (!manager.mobile.trim()) {
+        //     newErrors.mobile = "יש להזין מספר טלפון";
+        // } else if (!/^0\d{8}$/.test(manager.mobile)) {
+        //     newErrors.mobile = "יש להזין מספר טלפון תקין (10 ספרות המתחיל ב-0)";
+        // }
+        // if (!manager.fax.trim()) {
+        //     newErrors.fax = "יש להזין מספר פקס";
+        // } else if (!/^0\d{8}$/.test(manager.fax)) {
+        //     newErrors.fax = "יש להזין מספר פקס תקין (10 ספרות המתחיל ב-0)";
+        // }
+        if (!manager.city.trim()) {
             newErrors.city = "יש להזין  עיר ";
         }
-        if (!customer.community.trim()) {
-            newErrors.community = "יש להזין  קהילה ";
+        if (!manager.address.trim()) {
+            newErrors.address = "יש להזין  קהילה ";
         }
 
-        // if (!customer.customerId.trim()) {
+        // if (!manager.customerId.trim()) {
         //     newErrors.customerId = "יש להזין מספר זהות";
-        // } else if (!/^\d{9}$/.test(customer.customerId)) {
+        // } else if (!/^\d{9}$/.test(manager.customerId)) {
         //     newErrors.customerId = "מספר זהות חייב להכיל 9 ספרות";
         // }
 
@@ -104,38 +122,60 @@ export const Logon = () => {
     const validateStep2 = () => {
         const newErrors = {};
 
-        if (!customer.email.trim()) {
-            newErrors.email = "יש להזין כתובת אימייל";
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email)) {
-            newErrors.email = "יש להזין כתובת אימייל תקינה";
+
+        if (!manager.compName.trim()) {
+            newErrors.compName = "יש להזין שם ";
         }
-        if (!customer.contactName.trim()) {
-            newErrors.instituteName = "יש להזין שם ";
+        if (!manager.numOfComp.trim()) {
+            newErrors.numOfComp = "יש להזין מספר עסק ";
         }
-        if (!customer.contactPhone.trim()) {
-            newErrors.contactPhone = "יש להזין מספר פלאפון";
-        } else if (!/^0\d{9}$/.test(customer.contactPhone)) {
-            newErrors.contactPhone = "יש להזין מספר טלפון תקין (10 ספרות המתחיל ב-0)";
+        if (!manager.kategoty.trim()) {
+            newErrors.kategoty = "יש להזין קטגוריה ";
         }
-        // } else if (!/^05\d{8}$/.test(customer.mobile)) {
+        if (!manager.description.trim()) {
+            newErrors.description = "יש להזין תיאור העסק ";
+        }
+
+
+        // } else if (!/^05\d{8}$/.test(manager.mobile)) {
         //     newErrors.mobile = "יש להזין מספר טלפון תקין (10 ספרות המתחיל ב-05)";
         // }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-
     const validateStep3 = () => {
         const newErrors = {};
 
-        if (!customer.password) {
-            newErrors.password = "יש להזין סיסמא";
-        } else if (customer.password.length < 6) {
-            newErrors.password = "הסיסמא חייבת להכיל לפחות 6 תווים";
+
+        if (!manager.bank.trim()) {
+            newErrors.bank = "יש להזין שם בנק ";
+        }
+        if (!manager.bankBranch.trim()) {
+            newErrors.bankBranch = "יש להזין מספר סניף ";
+        }
+        if (!manager.accountNum.trim()) {
+            newErrors.accountNum = "יש להזין  מספר חשבון ";
         }
 
-        if (!customer.confirmPassword) {
+
+        // } else if (!/^05\d{8}$/.test(manager.mobile)) {
+        //     newErrors.mobile = "יש להזין מספר טלפון תקין (10 ספרות המתחיל ב-05)";
+        // }
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+    const validateStep4 = () => {
+        const newErrors = {};
+
+        if (!manager.pass) {
+            newErrors.pass = "יש להזין סיסמא";
+        } else if (manager.pass.length < 6) {
+            newErrors.pass = "הסיסמא חייבת להכיל לפחות 6 תווים";
+        }
+
+        if (!manager.confirmPassword) {
             newErrors.confirmPassword = "יש לאשר את הסיסמה";
-        } else if (customer.password !== customer.confirmPassword) {
+        } else if (manager.password !== manager.confirmPassword) {
             newErrors.confirmPassword = "הסיסמאות אינן תואמות";
         }
 
@@ -144,11 +184,13 @@ export const Logon = () => {
     };
 
     const handleNextStep = () => {
-        console.log("Current step data:", customer);
+        console.log("Current step data:", manager);
         if (currentStep === 1 && validateStep1()) {
             setCurrentStep(2);
         } else if (currentStep === 2 && validateStep2()) {
             setCurrentStep(3);
+        } else if (currentStep === 3 && validateStep3()) {
+            setCurrentStep(4);
         }
     };
 
@@ -163,20 +205,30 @@ export const Logon = () => {
 
         // try {
         //     // הסרת שדה confirmPassword לפני שליחה לשרת
-        //     const { confirmPassword, ...customerToRegister } = customer;
+        //     const { confirmPassword, ...customerToRegister } = manager;
         //     const { password, ...customerTosend } = customerToRegister;
-        if (!validateStep3()) return;
+        if (!validateStep4()) return;
 
         setIsLoading(true);
 
         try {
             // הסרת שדה confirmPassword לפני שליחה לשרת
-            const { confirmPassword, ...customerToRegister } = customer;
-            const { password, ...customerToSend } = customerToRegister;
-
-            console.log("Data being sent to server:", customerToSend);
-            console.log(customerToSend);
-            await dispatch(addCustomerThunk({ details: customerToSend }));
+            const imageUrl = await uploadImage();
+            if (!imageUrl) return;
+            setManager({ ...manager, imgPath: imageUrl });
+            const { confirmPassword, ...managerToRegister } = manager;
+            // const { password, ...customerToSend } = customerToRegister;
+   
+        
+            // Add product with image URL
+            // const activityToAdd = {
+            //   ...newActivity,
+            //   imgPath: imageUrl
+            // };
+            console.log("Data being sent to server:", managerToRegister);
+            console.log(managerToRegister);
+            setSelectedImage(null);
+            await dispatch(addManagerThunk({ details: managerToRegister }));
 
             setRegistrationSuccess(true);
 
@@ -202,7 +254,67 @@ export const Logon = () => {
             setIsLoading(false);
         }
     };
+    const handleImageSelect = (e) => {
+        if (e.target.files && e.target.files[0]) {
+          setSelectedImage(e.target.files[0]);
+        }
+      };
 
+
+      const uploadImage = async () => {
+        if (!selectedImage) {
+          setSnackbar({
+            open: true,
+            message: 'אנא בחר תמונה',
+            severity: 'warning'
+          });
+          return null;
+        }
+
+        setUploadingImage(true);
+
+        const formData = new FormData();
+        formData.append('file', selectedImage);
+
+        try {
+          const response = await fetch('https://localhost:7044/api/Img/upload', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error(`שגיאת שרת: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log("תגובת השרת להעלאת תמונה:", data); // לוג מפורט של התגובה
+          setUploadingImage(false);
+
+          setSnackbar({
+            open: true,
+            message: 'התמונה הועלתה בהצלחה',
+            severity: 'success'
+          });
+    
+          // בדוק אם יש נתיב תמונה בתגובה
+          if (data.imageUrl) {
+            console.log("נתיב התמונה שהתקבל:", data.imageUrl);
+            return data.imageUrl;
+          } else {
+            console.error("לא התקבל נתיב תמונה בתגובה:", data);
+            return null;
+          }
+        } catch (error) {
+          console.error("שגיאה בהעלאת תמונה:", error);
+          setUploadingImage(false);
+          setSnackbar({
+            open: true,
+            message: 'שגיאה בהעלאת התמונה',
+            severity: 'error'
+          });
+          return null;
+        }
+      };
     const closeDialog = () => {
         // אנימציה לסגירת הדיאלוג
         const animation = dialogRef.current.animate(
@@ -238,13 +350,13 @@ export const Logon = () => {
                             </div>
                             <input
                                 type="text"
-                                className={`auth-input ${errors.instituteName ? 'input-error' : ''}`}
+                                className={`auth-input ${errors.managerName ? 'input-error' : ''}`}
                                 placeholder="שם משתמש"
-                                value={customer.instituteName || ""}
-                                onChange={e => setCustomer({ ...customer, instituteName: e.target.value })}
+                                value={manager.managerName || ""}
+                                onChange={e => setManager({ ...manager, managerName: e.target.value })}
                             />
                         </div>
-                        {errors.instituteName && <div className="error-text">{errors.instituteName}</div>}
+                        {errors.managerName && <div className="error-text">{errors.managerName}</div>}
                         {/*                         
                         <div className="input-group">
                             <div className="input-icon">
@@ -254,8 +366,8 @@ export const Logon = () => {
                                 type="text" 
                                 className={`auth-input ${errors.lastName ? 'input-error' : ''}`}
                                 placeholder="שם משפחה"
-                                value={customer.lastName}
-                                onChange={e => setCustomer({ ...customer, lastName: e.target.value })}
+                                value={manager.lastName}
+                                onChange={e => setManager({ ...manager, lastName: e.target.value })}
                             />
                         </div> */}
                         {/* {errors.lastName && <div className="error-text">{errors.lastName}</div>} */}
@@ -266,46 +378,73 @@ export const Logon = () => {
                             </div>
                             <input
                                 type="text"
-                                className={`auth-input ${errors.mobile ? 'input-error' : ''}`}
-                                placeholder=" טלפון"
-                                value={customer.mobile}
-                                onChange={e => setCustomer({ ...customer, mobile: e.target.value })}
+                                className={`auth-input ${errors.managerPhone ? 'input-error' : ''}`}
+                                placeholder=" מספר פלאפון"
+                                value={manager.managerPhone || ""}
+                                onChange={e => setManager({ ...manager, managerPhone: e.target.value })}
                             />
                         </div>
-                        {errors.mobile && <div className="error-text">{errors.mobile}</div>}
+                        {errors.managerPhone && <div className="error-text">{errors.managerPhone}</div>}
+                        <div className="input-group">
+                            <div className="input-icon">
+                                {/* <FaEnvelope /> */}
+                            </div>
+                            <input
+                                type="email"
+                                className={`auth-input ${errors.managerEmail ? 'input-error' : ''}`}
+                                placeholder="כתובת אימייל"
+                                value={manager.managerEmail}
+                                onChange={e => setManager({ ...manager, managerEmail: e.target.value })}
+                            />
+                        </div>
+                        {errors.managerEmail && <div className="error-text">{errors.managerEmail}</div>}
                         <div className="input-group">
                             <div className="input-icon">
                                 {/* <FaPhone /> */}
                             </div>
                             <input
                                 type="tel"
-                                className={`auth-input ${errors.fax ? 'input-error' : ''}`}
-                                placeholder='פקס'
-                                value={customer.fax}
-                                onChange={e => setCustomer({ ...customer, fax: e.target.value })}
+                                className={`auth-input ${errors.managerTel ? 'input-error' : ''}`}
+                                placeholder='מספר טלפון'
+                                value={manager.managerTel}
+                                onChange={e => setManager({ ...manager, managerTel: e.target.value })}
                             />
                         </div>
-                        {errors.fax && <div className="error-text">{errors.fax}</div>}    <div className="input-group">
+                        {/* {errors.fax && <div className="error-text">{errors.fax}</div>}   */}
+                        <div className="input-group">
+                            <div className="input-icon">
+                                {/* <FaPhone /> */}
+                            </div>
+                            <input
+                                type="tel"
+                                className={`auth-input ${errors.managerFax ? 'input-error' : ''}`}
+                                placeholder='פקס'
+                                value={manager.managerFax}
+                                onChange={e => setManager({ ...manager, managerFax: e.target.value })}
+                            />
+                        </div>
+                        {/* {errors.fax && <div className="error-text">{errors.fax}</div>}   */}
+                        <div className="input-group">
                             <div className="input-icon">
                                 {/* <FaPhone /> */}
                             </div>
                             <input
                                 type="text"
-                                className={`auth-input ${errors.community ? 'input-error' : ''}`}
-                                placeholder="קהילה "
-                                value={customer.community}
-                                onChange={e => setCustomer({ ...customer, community: e.target.value })}
+                                className={`auth-input ${errors.address ? 'input-error' : ''}`}
+                                placeholder="כתובת "
+                                value={manager.address}
+                                onChange={e => setManager({ ...manager, address: e.target.value })}
                             />
                         </div>
-                        {errors.community && <div className="error-text">{errors.community}</div>}
+                        {errors.address && <div className="error-text">{errors.address}</div>}
                         <div className="input-group">
                             <div className="input-icon">
                                 {/* <FaStethoscope /> */}
                             </div>
                             <select
                                 className={`auth-input ${errors.city ? 'input-error' : ''}`}
-                                value={customer.city}
-                                onChange={e => setCustomer({ ...customer, city: e.target.value })}
+                                value={manager.city}
+                                onChange={e => setManager({ ...manager, city: e.target.value })}
                             >
                                 <option value="" disabled> עיר</option>
                                 {israeliCities.map((type, index) => (
@@ -314,6 +453,9 @@ export const Logon = () => {
                             </select>
                         </div>
                         {errors.city && <div className="error-text">{errors.city}</div>}
+                        <div className="info-box">
+                            <p>פרטי ההתקשרות שלך ישמשו לשליחת עדכונים ותזכורות לגבי הפגישות שלך.</p>
+                        </div>
                     </motion.div>
                 );
             case 2:
@@ -325,21 +467,21 @@ export const Logon = () => {
                         exit={{ opacity: 0, x: -20 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <h3 className="step-title">פרטי התקשרות</h3>
+                        <h3 className="step-title">פרטי העסק</h3>
 
                         <div className="input-group">
                             <div className="input-icon">
                                 {/* <FaEnvelope /> */}
                             </div>
                             <input
-                                type="email"
-                                className={`auth-input ${errors.email ? 'input-error' : ''}`}
-                                placeholder="כתובת אימייל"
-                                value={customer.email}
-                                onChange={e => setCustomer({ ...customer, email: e.target.value })}
+                                type="text"
+                                className={`auth-input ${errors.compName ? 'input-error' : ''}`}
+                                placeholder="שם העסק"
+                                value={manager.compName}
+                                onChange={e => setManager({ ...manager, compName: e.target.value })}
                             />
                         </div>
-                        {errors.email && <div className="error-text">{errors.email}</div>}
+                        {errors.compName && <div className="error-text">{errors.compName}</div>}
 
                         {/* <div className="input-group">
                             <div className="input-icon">
@@ -349,8 +491,8 @@ export const Logon = () => {
                                 type="tel" 
                                 className={`auth-input ${errors.phone ? 'input-error' : ''}`}
                                 placeholder="טלפון נייד"
-                                value={customer.phone}
-                                onChange={e => setCustomer({ ...customer, phone: e.target.value })}
+                                value={manager.phone}
+                                onChange={e => setManager({ ...manager, phone: e.target.value })}
                             />
                         </div>
                         {errors.phone && <div className="error-text">{errors.phone}</div>} */}
@@ -360,32 +502,129 @@ export const Logon = () => {
                             </div>
                             <input
                                 type="text"
-                                className={`auth-input ${errors.contactName ? 'input-error' : ''}`}
-                                placeholder='שם איש קשר'
-                                value={customer.contactName}
-                                onChange={e => setCustomer({ ...customer, contactName: e.target.value })}
+                                className={`auth-input ${errors.numOfComp ? 'input-error' : ''}`}
+                                placeholder='מספר עסק  '
+                                value={manager.numOfComp}
+                                onChange={e => setManager({ ...manager, numOfComp: parseInt(e.target.value) })}
                             />
                         </div>
-                        {errors.contactName && <div className="error-text">{errors.contactName}</div>}
+                        {errors.numOfComp && <div className="error-text">{errors.numOfComp}</div>}
                         <div className="input-group">
                             <div className="input-icon">
-                                {/* <FaPhone /> */}
+                                {/* <FaEnvelope /> */}
                             </div>
                             <input
-                                type="tel"
-                                className={`auth-input ${errors.contactPhone ? 'input-error' : ''}`}
-                                placeholder="טלפון נייד"
-                                value={customer.contactPhone}
-                                onChange={e => setCustomer({ ...customer, contactPhone: e.target.value })}
+                                type="text"
+                                className={`auth-input ${errors.description ? 'input-error' : ''}`}
+                                placeholder="תיאור העסק"
+                                value={manager.description}
+                                onChange={e => setManager({ ...manager, description: e.target.value })}
                             />
                         </div>
-                        {errors.contactPhone && <div className="error-text">{errors.contactPhone}</div>}
-                        <div className="info-box">
-                            <p>פרטי ההתקשרות שלך ישמשו לשליחת עדכונים ותזכורות לגבי הפגישות שלך.</p>
+                        {errors.description && <div className="error-text">{errors.description}</div>}
+                        <div className="remember-me">
+                            <input type="checkbox" id="remember-me"  onChange={e => setManager({ ...manager, mOrP: e.target.value==true?1:0 })} />
+                            <label htmlFor="remember-me"> עוסק מורשה</label>
                         </div>
+                        <Grid item xs={12}>
+                            <Box sx={{ border: '1px dashed', borderColor: 'primary.main', borderRadius: 2, p: 3, textAlign: 'center' }}>
+                                <input
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    id="product-image-upload"
+                                    type="file"
+                                    onChange={handleImageSelect}
+                                />
+                                <label htmlFor="product-image-upload">
+                                    <Button
+                                        variant="outlined"
+                                        component="span"
+                                        startIcon={<UploadIcon />}
+                                        sx={{ mb: 2 }}
+                                    >
+                                        בחר תמונה למוצר
+                                    </Button>
+                                </label>
+                                {selectedImage && (
+                                    <Box sx={{ mt: 2 }}>
+                                        <Typography variant="body2" gutterBottom>
+                                            נבחרה תמונה: {selectedImage.name}
+                                        </Typography>
+                                        <Box
+                                            component="img"
+                                            src={URL.createObjectURL(selectedImage)}
+                                            alt="תצוגה מקדימה"
+                                            sx={{
+                                                maxHeight: 200,
+                                                maxWidth: '100%',
+                                                objectFit: 'contain',
+                                                mt: 1,
+                                                borderRadius: 1
+                                            }}
+                                        />
+                                    </Box>
+                                )}
+                            </Box>
+                        </Grid>
                     </motion.div>
                 );
             case 3:
+                return (
+                    <motion.div
+                        className="step-content"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <h3 className="step-title">פרטי חשבון בעל העסק</h3>
+
+                        <div className="input-group">
+                            <div className="input-icon">
+                                {/* <FaEnvelope /> */}
+                            </div>
+                            <input
+                                type="text"
+                                className={`auth-input ${errors.bank ? 'input-error' : ''}`}
+                                placeholder="שם  הבנק"
+                                value={manager.bank}
+                                onChange={e => setManager({ ...manager, bank: e.target.value })}
+                            />
+                        </div>
+                        {errors.bank && <div className="error-text">{errors.bank}</div>}
+                        <div className="input-group">
+                            <div className="input-icon">
+                                {/* <FaEnvelope /> */}
+                            </div>
+                            <input
+                                type="text"
+                                className={`auth-input ${errors.bankBranch ? 'input-error' : ''}`}
+                                placeholder="מס'  סניף"
+                                value={manager.bankBranch}
+                                onChange={e => setManager({ ...manager, bankBranch: parseInt(e.target.value) })}
+                            />
+                        </div>
+
+                        {errors.bankBranch && <div className="error-text">{errors.bankBranch}</div>}
+                        <div className="input-group">
+                            <div className="input-icon">
+                                {/* <FaEnvelope /> */}
+                            </div>
+                            <input
+                                type="text"
+                                className={`auth-input ${errors.accountNum ? 'input-error' : ''}`}
+                                placeholder="מס' חשבון  "
+                                value={manager.accountNum}
+                                onChange={e => setManager({ ...manager, accountNum: parseInt(e.target.value) })}
+                            />
+                        </div>
+                        {errors.accountNum && <div className="error-text">{errors.accountNum}</div>}
+                        {/* <div className="info-box">
+                            <p>פרטי ההתקשרות שלך ישמשו לשליחת עדכונים ותזכורות לגבי הפגישות שלך.</p>
+                        </div> */}
+                    </motion.div>
+                );
+            case 4:
                 return (
                     <motion.div
                         className="step-content"
@@ -402,10 +641,10 @@ export const Logon = () => {
                             </div>
                             <input
                                 type={showPassword ? "text" : "password"}
-                                className={`auth-input ${errors.password ? 'input-error' : ''}`}
+                                className={`auth-input ${errors.pass ? 'input-error' : ''}`}
                                 placeholder="בחר סיסמה"
-                                value={customer.password}
-                                onChange={e => setCustomer({ ...customer, password: e.target.value })}
+                                value={manager.pass}
+                                onChange={e => setManager({ ...manager, pass: e.target.value })}
                             />
                             <button
                                 type="button"
@@ -426,8 +665,8 @@ export const Logon = () => {
                                 type={showConfirmPassword ? "text" : "password"}
                                 className={`auth-input ${errors.confirmPassword ? 'input-error' : ''}`}
                                 placeholder="אימות סיסמה"
-                                value={customer.confirmPassword}
-                                onChange={e => setCustomer({ ...customer, confirmPassword: e.target.value })}
+                                value={manager.confirmPassword}
+                                onChange={e => setManager({ ...manager, confirmPassword: e.target.value })}
                             />
                             <button
                                 type="button"
@@ -444,21 +683,21 @@ export const Logon = () => {
                             <div className="strength-label">חוזק הסיסמה:</div>
                             <div className="strength-meter">
                                 <div
-                                    className={`strength-indicator ${!customer.password ? 'empty' :
-                                        customer.password.length < 6 ? 'weak' :
-                                            customer.password.length < 8 ? 'medium' : 'strong'
+                                    className={`strength-indicator ${!manager.password ? 'empty' :
+                                        manager.password.length < 6 ? 'weak' :
+                                            manager.password.length < 8 ? 'medium' : 'strong'
                                         }`}
                                     style={{
-                                        width: !customer.password ? '0%' :
-                                            customer.password.length < 6 ? '33%' :
-                                                customer.password.length < 8 ? '66%' : '100%'
+                                        width: !manager.password ? '0%' :
+                                            manager.password.length < 6 ? '33%' :
+                                                manager.password.length < 8 ? '66%' : '100%'
                                     }}
                                 ></div>
                             </div>
                             <div className="strength-text">
-                                {!customer.password ? '' :
-                                    customer.password.length < 6 ? 'חלשה' :
-                                        customer.password.length < 8 ? 'בינונית' : 'חזקה'}
+                                {!manager.password ? '' :
+                                    manager.password.length < 6 ? 'חלשה' :
+                                        manager.password.length < 8 ? 'בינונית' : 'חזקה'}
                             </div>
                         </div>
 
