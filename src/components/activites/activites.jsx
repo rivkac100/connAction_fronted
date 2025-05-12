@@ -44,11 +44,14 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
     // Local state
     const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
     const [searchFields, setSearchFields] = useState({
-      activityDescription: '',
-      location: '',
-      price: '',
-      lenOfActivity: '',
-      managerId: ''
+      activityName: "",
+      activityDescription: "",
+      lenOfActivity: -1,
+      location: "",
+      price: -1,
+      nightPrice: -1,
+      managerId: -1,
+      imgPath: "",
     });
     const [selectedActivity, setSelectedActivity] = useState(null);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -86,11 +89,14 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
     // Clear all search fields
     const clearSearch = () => {
       setSearchFields({
-        activityDescription: '',
-        location: '',
-        price: '',
-        lenOfActivity: '',
-        managerId: ''
+        activityName: "",
+        activityDescription: "",
+        lenOfActivity: -1,
+        location: "",
+        price: -1,
+        nightPrice: -1,
+        managerId: -1,
+        imgPath: "",
       });
     };
 
@@ -186,31 +192,7 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
       return colors[colorIndex];
     };
 
-    // Get activity image based on description or generate a placeholder
-    const getActivityImage = (activity) => {
-      // Default placeholder images based on activity type
-      const defaultImages = {
-        'טיול': process.env.PUBLIC_URL + "/start.jpg",
-        'סדנה': process.env.PUBLIC_URL + "/start.jpg",
-        'הרצאה': process.env.PUBLIC_URL + "/start.jpg",
-        'סיור': 'https://source.unsplash.com/random/300x200/?tour',
-        'אטרקציה': 'https://source.unsplash.com/random/300x200/?attraction',
-        'default': 'https://source.unsplash.com/random/300x200/?activity'
-      };
-      
-      // Try to match activity description with default images
-      if (activity.activityDescription) {
-        const desc = activity.activityDescription.toLowerCase();
-        for (const [key, url] of Object.entries(defaultImages)) {
-          if (desc.includes(key.toLowerCase())) {
-            return url;
-          }
-        }
-      }
-      
-      // Return default image if no match
-      return defaultImages.default;
-    };
+    
 
     if (isLoading) {
       return (
@@ -285,8 +267,8 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
             placeholder="חיפוש לפי שם פעילות..."
             variant="outlined"
             size="small"
-            value={searchFields.activityDescription}
-            onChange={(e) => handleSearchChange('activityDescription', e.target.value)}
+            value={searchFields.activityName}
+            onChange={(e) => handleSearchChange('activityName', e.target.value)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -394,7 +376,7 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
                   <CardMedia
                     component="img"
                     height="140"
-                    image={`https://localhost:7064/img/${activity.imgPath}`}
+                    image={`https://localhost:7044/img/${activity.imgPath}`}
                     alt={activity.activityDescription || "פעילות"}
                   />
                   <Box 
@@ -535,7 +517,7 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
                   <CardMedia
                     component="img"
                     height="240"
-                    image={getActivityImage(selectedActivity)}
+                    image={`https://localhost:7044/img/${selectedActivity.imgPath}`}
                     alt={selectedActivity.activityDescription || "פעילות"}
                     sx={{ 
                       objectFit: 'cover',

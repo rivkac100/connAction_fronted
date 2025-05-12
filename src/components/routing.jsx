@@ -116,6 +116,7 @@ import { Dashboard } from './more_components/Dashboard';
 import { Activities } from './activites/activites';
 import { Logon } from "./logon/logon";
 import { Navigation } from "./more_components/navigation";
+import { AddEditActivity } from "./activites/newEditActivity";
 
 export const Routing = () => {
   return (
@@ -171,6 +172,7 @@ export const Routing = () => {
         <Route path="newOrder" element={<AddEditOrder />} />
         <Route path="editOrder/:orderId" element={<AddEditOrder />} />
       </Route> */}
+           <Route path="/newActivity" element={<AddEditActivity />} />
 
       {/* Dashboard routes */}
       <Route path="/manager/:mid" element={<Dashboard />}>
@@ -181,8 +183,8 @@ export const Routing = () => {
             <Route path="newOrder" element={<AddEditOrder />} />
             <Route path="editOrder/:orderId" element={<AddEditOrder />} />
           </Route>
-          {/* <Route path="newActivity" element={<AddEditActivity />} />
-            <Route path="editActivity:aid" element={<AddEditActivity />} /> */}
+           {/* <Route path="/newActivity" element={<AddEditActivity />} /> */}
+           {/* <Route path="editActivity:aid" element={<AddEditActivity />} /> */}
         </Route>
         <Route path="upcoming" element={<MyOrders upcoming={true} />} />
         <Route path="month" element={<Month />} />
