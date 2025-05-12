@@ -1,30 +1,35 @@
 
 import { useDispatch } from "react-redux";
-import { useEffect,  useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { motion, AnimatePresence } from "framer-motion";
 // import { FaEye, FaEyeSlash, Facustomer, FaIdCard, FaPhone, FaEnvelope, FaStethoscope, FaLock } from "react-icons/fa";
 import "./logon.css";
-import { addCustomerThunk } from "../../store/slices/customers/addCustomerThunk";
+
 
 
 export const Logon = () => {
     const dispatch = useDispatch();
-   
-    const [customer, setCustomer] = useState({
-        instituteName: "",
-        fax: "",
-        mobile: "",
-        email: "",
-        contactName: "",
-        contactPhone: "",
+
+    const [manager, setManager] = useState({
+        managerName: "string",
+        pass: 0,
+        compName: "",
+        managerEmail: "",
+        managerPhone: "",
+        managerFax: "",
+        managerTel: "",
+        address: "",
         city: "",
-        community: "",
-        password: "",
-        confirmPassword: ""
-        // amount: 0,
-        // due: 0,   
+        mOrP: 0,
+        numOfComp: 0,
+        bank: "",
+        bankBranch: 0,
+        accountNum: 0,
+        kategoty: "",
+        escription: "",
+        imgPath: "",
     });
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
@@ -38,10 +43,12 @@ export const Logon = () => {
     const israeliCities = [
         "ירושלים", "תל אביב", "חיפה", "ראשון לציון", "פתח תקווה", "אשדוד", "נתניה",
         "באר שבע", "חולון", "בני ברק", "רמת גן", "אשקלון", "רחובות", "בת ים", "הרצליה",
-        "כפר סבא", "מודיעין", "רעננה", "רמלה", "לוד", "נצרת", "קריית אתא", "אילת", "כרמיאל","אור עקיבא", "בית שמש","ערד","חצור","דימונה"
+        "כפר סבא", "מודיעין", "רעננה", "רמלה", "לוד", "נצרת", "קריית אתא", "אילת", "כרמיאל", "אור עקיבא", "בית שמש", "ערד", "חצור", "דימונה"
     ];
- 
 
+    const kategoties=[
+        "טיולים","מופעים אור קוליים","הרצאות","פעילויות בטבע","פעילויות מוזיקליות","סדנאות","סיפורים אישיים","קליקרים וטריוויה","תוכניות במה קהל ","מופעים והצגות"
+    ]
     useEffect(() => {
         dialogRef.current.showModal();
 
@@ -138,11 +145,11 @@ export const Logon = () => {
 
     const handleNextStep = () => {
         console.log("Current step data:", customer);
-    if (currentStep === 1 && validateStep1()) {
-        setCurrentStep(2);
-    } else if (currentStep === 2 && validateStep2()) {
-        setCurrentStep(3);
-    }
+        if (currentStep === 1 && validateStep1()) {
+            setCurrentStep(2);
+        } else if (currentStep === 2 && validateStep2()) {
+            setCurrentStep(3);
+        }
     };
 
     const handlePrevStep = () => {
