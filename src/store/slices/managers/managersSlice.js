@@ -133,6 +133,7 @@ export const managersSlice = createSlice({
             console.log(action.payload);
             // state.MyOrders = action.payload.orders;
             state.myManager=action.payload;
+            state.activities=action.payload.activities;
         });
 
 

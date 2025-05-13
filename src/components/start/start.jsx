@@ -88,7 +88,7 @@ export const Start = () => {
 
     setTimeout(() => {
       const c= JSON.parse( sessionStorage.getItem('customers'));
-      const customer = c.find(customer => customer.email === formData.email);
+      const customer = c?.find(customer => customer.email === formData.email);
       const manager = managers.find(manager => manager.id ===parseInt(formData.password));
       debugger
       if(tabValue === 0) {
