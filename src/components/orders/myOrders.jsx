@@ -16,16 +16,20 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 // import {EditDocumentIcon} from '@mui/icons-material/EditDocument';
 import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import { deleteOrderThunk } from '../../store/slices/orders/deleteOrderThunk';
+import { ordersByMangerIdThunk } from '../../store/slices/managers/ordersByMangerIdThunk';
 
 export const MyOrders = () => {
     const navigate = useNavigate()
-    debugger
+   
     //const status = useForm();
     //const status =useFormStatus();
     const params = useParams();
     const dispatch = useDispatch();
-    const myOrders = useSelector(state => state.customer.MyOrders);
-    console.log(myOrders);
+    
+    const myOrdersC = useSelector(state => state.customer.MyOrders);
+    const myOrdersM = useSelector(state => state.manager.MyOrders);
+
+    // console.log(myOrders);
     const id = params.id;
     const token = useSelector(state => state.order.token);
     const failed = useSelector(state => state.order.failed);
@@ -33,10 +37,14 @@ export const MyOrders = () => {
     const [before, setBefore] = useState(false);
 
     useEffect(() => {
-        debugger
+       debugger
         //dispatch(ordersFetchThunkById(id));
-        dispatch(customersFetchThunkById({ id }));
-        console.log(myOrders);
+        if(params.id && myOrdersC.length===0){
+        dispatch(customersFetchThunkById({id:params.id}));
+        console.log(myOrdersC);}
+        if(params.mid && myOrdersM.length===0){
+            dispatch(ordersByMangerIdThunk({ id:params.mid }));
+            console.log( myOrdersM);}
         //alert("I am in myOrders");
         // navigate(`/calendar`)
 
@@ -45,22 +53,7 @@ export const MyOrders = () => {
         }
 
     }, [])
-    // useEffect(() => {
-
-    //     // if(orders.length>0)
-
-    //     // navigate(`/calendar`)
-
-    // }, [orders])
     
-    useEffect(() => {
-
-        // dispatch(ordersFetchThunkById(id));
-        console.log(myOrders);
-
-        // navigate(`/calendar`)
-
-    }, [myOrders])
     const splitToDate = (d) => {
         const s = d.split("/");
         console.log(s);
@@ -72,8 +65,9 @@ export const MyOrders = () => {
         console.log(d);
         return d;
     }
+    
     const deleteOrder = async (orderId) => {
-        debugger
+      
         dispatch(deleteOrderThunk(orderId))
         console.log("success");
 
@@ -116,13 +110,37 @@ export const MyOrders = () => {
                 </tr>
             </thead>
             <tbody>
-                {myOrders && myOrders.map(o => {
+                {params.id && myOrdersC?.map(o => {
+
                     return <>{cheakDate(o.date) === false && <tr key={o.orderId}>
                         <td>{o.orderId}</td>
                         <td>{o.brokerName}</td>
                         <td>{o.amountOfParticipants}</td>
                         <td>{o.date}</td>
-                        <td>{o.activityName}</td>
+                        <td>{o.activityId}</td>
+                        <td>{o.activeHour}</td>
+                        {/* <td>{o.activeMinutes}</td> */}
+                        <td>{o.payment}</td>
+                        <td>
+                            <IconButton onClick={() => deleteOrder(o.orderId)} aria-label="delete" size='large' >
+                                <DeleteForeverOutlinedIcon htmlColor=' #3b3a3d' />
+                            </IconButton>
+                        </td>
+                        <td>
+                            <IconButton onClick={() => navigate(`editOrder/${o.orderId}`)} aria-label="edit" size='large' >
+                                <EditNoteOutlinedIcon htmlColor=' #3b3a3d' />
+                            </IconButton>
+                        </td>
+                    </tr>}</>
+                })}
+                {params.mid && myOrdersM?.map(o => {
+                    debugger
+                    return <>{cheakDate(o.date) === false && <tr key={o.orderId}>
+                        <td>{o.orderId}</td>
+                        <td>{o.brokerName}</td>
+                        <td>{o.amountOfParticipants}</td>
+                        <td>{o.date}</td>
+                        <td>{o.activityId}</td>
                         <td>{o.activeHour}</td>
                         {/* <td>{o.activeMinutes}</td> */}
                         <td>{o.payment}</td>
@@ -154,14 +172,27 @@ export const MyOrders = () => {
                 </tr>
             </thead>
             <tbody>
-                {myOrders && myOrders.map(o => {
+                {params.mid && myOrdersM.map(o => {
                     cheakDate(o.date)
                     return <>{cheakDate(o.date) === true && <tr key={o.orderId}>
                         <td>{o.orderId}</td>
                         <td>{o.brokerName}</td>
                         <td>{o.amountOfParticipants}</td>
                         <td>{o.date}</td>
-                        <td>{o.activityName}</td>
+                        <td>{o.activityId}</td>
+                        <td>{o.activeHour}</td>
+                        <td>{o.payment}</td>
+                     
+                    </tr>}</>
+                })}
+                  {params.id && myOrdersC.map(o => {
+                    cheakDate(o.date)
+                    return <>{cheakDate(o.date) === true && <tr key={o.orderId}>
+                        <td>{o.orderId}</td>
+                        <td>{o.brokerName}</td>
+                        <td>{o.amountOfParticipants}</td>
+                        <td>{o.date}</td>
+                        <td>{o.activityId}</td>
                         <td>{o.activeHour}</td>
                         <td>{o.payment}</td>
                      
@@ -169,7 +200,7 @@ export const MyOrders = () => {
                 })}
             </tbody>
         </table>
-        <Button  variant='contained' className='button' onClick={() => navigate(`/home/${params.id}`)}>back</Button>
+        <Button  variant='contained' className='button' onClick={() => navigate(-1)}>back</Button>
         <div><Outlet></Outlet></div>
     </div>
 } 

@@ -5,7 +5,8 @@ import { managersFetchThunk } from './managersFetch';
 import { deleteManagerThunk } from './deleteManagerThunk';
 import { managersFetchThunkById } from './managerFetchThunkById';
 import { updateManagerThunk } from './updateManagerThunk';
-import { activitiesByMangerIdThunk } from './activitiesByMangerIdThunk';
+import { ordersByMangerIdThunk } from './ordersByMangerIdThunk';
+import { customersByMangerIdThunk } from './customersByMangerIdThunk';
 
 const INITIAL_STATE_USER = {
     managerName: "",
@@ -16,7 +17,9 @@ const INITIAL_STATE_USER = {
     token: null,
     sucsses: false,
     failed: false,
-    MyCstomers:[],
+    MyCustomers:[],
+    MyOrders:[],
+
     isM:-1
 }
 
@@ -67,14 +70,26 @@ export const managersSlice = createSlice({
             state.sucsses = true;
         });
         //הוספת מקרה שהט'נק נכשל
-        builder.addCase(activitiesByMangerIdThunk.rejected, (state, action) => {
+        builder.addCase(ordersByMangerIdThunk.rejected, (state, action) => {
             state.failed = true;
         });
-        builder.addCase(activitiesByMangerIdThunk.pending, (state, action) => {
+        builder.addCase(ordersByMangerIdThunk.pending, (state, action) => {
         });
         //הוספת מקרה שהט'נק הסתיים בהצלחה
-        builder.addCase(activitiesByMangerIdThunk.fulfilled, (state, action) => {
-            state.activities=action.payload
+        builder.addCase(ordersByMangerIdThunk.fulfilled, (state, action) => {
+            state.MyOrders=action.payload
+            // state.token = action.payload;
+            state.sucsses = true;
+        });
+        builder.addCase(customersByMangerIdThunk.rejected, (state, action) => {
+            state.failed = true;
+        });
+        builder.addCase(customersByMangerIdThunk.pending, (state, action) => {
+        });
+        //הוספת מקרה שהט'נק הסתיים בהצלחה
+        builder.addCase(customersByMangerIdThunk.fulfilled, (state, action) => {
+            state.MyCustomers=action.payload
+            console.log(state.MyCustomers);
             // state.token = action.payload;
             state.sucsses = true;
         });
@@ -116,7 +131,7 @@ export const managersSlice = createSlice({
 
         builder.addCase(managersFetchThunkById.fulfilled, (state, action) => {
             console.log(action.payload);
-            state.MyOrders = action.payload.orders;
+            // state.MyOrders = action.payload.orders;
             state.myManager=action.payload;
         });
 

@@ -342,6 +342,8 @@ import PlaylistAddCheckCircleIcon from '@mui/icons-material/PlaylistAddCheckCirc
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Button } from '@mui/material';
+
 
 import './calendar.css';
 
@@ -758,6 +760,8 @@ export const Month = () => {
                                     <span>הזמנות אחרות</span>
                                 </div>
                             </div>
+                    <Button  variant='contained' className='button' onClick={() => navigate(-1)}>back</Button>
+
                         </div>
                     )}
                     

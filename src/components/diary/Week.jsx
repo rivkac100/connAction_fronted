@@ -282,6 +282,8 @@ import { eventFetchThunk } from '../../store/slices/events/eventFetchThunk';
 import { ordersFetchThunk } from '../../store/slices/orders/ordersFetch';
 import { customersFetchThunkById } from '../../store/slices/customers/customerFetchThunkById';
 import { Month } from './Month';
+import { Button } from '@mui/material';
+
 
 // Icons
 import TimerSharpIcon from '@mui/icons-material/TimerSharp';
@@ -496,7 +498,7 @@ export const Week = () => {
     
     // If view is changed to month view, render Month component
     if (view === 'תצוגה חודשית') {
-        return <Month />;
+        navigate(`/home/${param.id}/month`);
     }
     
     return (
@@ -630,6 +632,8 @@ export const Week = () => {
                         </tr>
                     </tbody>
                 </table>
+                <Button  variant='contained' className='button' onClick={() => navigate(-1)}>back</Button>
+
             </div>
             
             <div><Outlet /></div>

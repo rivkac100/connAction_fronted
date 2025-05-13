@@ -110,7 +110,7 @@
 
    import { useEffect, useState, useMemo, useRef } from 'react';
    import { useDispatch, useSelector } from "react-redux";
-   import { Outlet, useNavigate } from 'react-router-dom';
+   import { Outlet, useNavigate, useParams } from 'react-router-dom';
    import { deleteCustomerThunk } from '../../store/slices/customers/deleteCustomerThunk';
    import { customersFetchThunk } from '../../store/slices/customers/customersFetch';
    import './customer.css';
@@ -160,16 +160,18 @@
    import { jsPDF } from 'jspdf';
    import 'jspdf-autotable' 
    import html2canvas from 'html2canvas';
+import { customersByMangerIdThunk } from '../../store/slices/managers/customersByMangerIdThunk';
 
    export const Customers = () => {
     const refPdf=useRef(null);
+    const param= useParams();
      const navigate = useNavigate();
      const dispatch = useDispatch();
      const theme = useTheme();
      const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   
      // Redux state
-     const customers = useSelector((state) => state.customer.customers || []);
+     const customers = useSelector((state) => state.manager.MyCustomers || []);
      const isLoading = useSelector((state) => state.customer.isLoading);
   
      // Local state
@@ -204,7 +206,8 @@
   
      // Fetch customers on component mount
      useEffect(() => {
-       dispatch(customersFetchThunk());
+      if(param.mid)
+       dispatch(customersByMangerIdThunk({id:param.mid}));
      }, [dispatch]);
   
      // Memoized filtered and sorted customers

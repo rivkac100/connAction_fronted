@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-export const activitiesByMangerIdThunk = createAsyncThunk(
-    'activitiesByMangerIdThunk',
+export const customersByMangerIdThunk = createAsyncThunk(
+    'customersByMangerIdThunk',
     async ({id}) => {
 
-        const response = await fetch(`https://localhost:7044/api/Managers/GetActivitiesById/${id}`);
+        const response = await fetch(`https://localhost:7044/api/Managers/GetCustomersById/${id}`);
 
         if (response.ok) {
             const data = await response.json();

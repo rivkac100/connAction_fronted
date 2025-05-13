@@ -98,13 +98,14 @@ export const AddEditOrder = () => {
   const cancele = () => {
     console.log(isM);
     refDialog.current.close();
-    if(params.id && params.orderId)
-       navigate(`/home/${params.id}/myOrders`)
-    else if(params.id && parseInt(params.id)===isM)
-       navigate(`/manager/${params.id}`)
-    else if(params.id)
-       navigate(`/home/${params.id}`)
-    else navigate(`/orders`)
+    // if(params.id && params.orderId)
+    //    navigate(`/home/${params.id}/myOrders`)
+    // else if(params.id && parseInt(params.id)===isM)
+    //    navigate(`/manager/${params.id}`)
+    // else if(params.id)
+    //    navigate(`/home/${params.id}`)
+    // else navigate(`/orders`)
+    navigate(-1);
 }
   return <dialog ref={refDialog} className="inDiv" >
 

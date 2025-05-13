@@ -355,7 +355,7 @@ export const NewEditCustomer = () => {
                     </Typography>
                     <IconButton
                         className="back-button"
-                        onClick={() => navigate('/customers')}
+                        onClick={() => navigate(-1)}
                         aria-label="חזור לרשימת הלקוחות"
                     >
                         <ArrowBackIcon />

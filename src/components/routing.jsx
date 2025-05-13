@@ -180,7 +180,7 @@ export const Routing = () => {
         <Route path="activities" element={<Activities />} >
           <Route path="newOrder" element={<AddEditOrder />} />
           <Route path="customers" element={<Customers />} />
-          <Route path="orders/:oid" element={<MyOrders />} >
+          <Route path="myOrders/:oid" element={<MyOrders />} >
             <Route path="newOrder" element={<AddEditOrder />} />
             <Route path="editOrder/:orderId" element={<AddEditOrder />} />
           </Route>
@@ -195,7 +195,7 @@ export const Routing = () => {
         <Route path="event" element={<Event />} />
         <Route path="newOrder" element={<AddEditOrder />} />
         {/* <Route path="newActivity" element={<AddEditActivity />} />*/}
-        <Route path="orders" element={<Orders />}>
+        <Route path="orders" element={<MyOrders />}>
           <Route path="newOrder" element={<AddEditOrder />} />
           <Route path="editOrder/:orderId" element={<AddEditOrder />} />
         </Route>
