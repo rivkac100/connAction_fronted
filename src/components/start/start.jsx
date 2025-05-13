@@ -22,6 +22,7 @@ import {
 import "./auto.css";
 import { editIsC } from "../../store/slices/customers/customersSlice";
 import { editIsM } from "../../store/slices/managers/managersSlice";
+// import { t } from "framer-motion/dist/types.d-DSjX-LJB";
 
 export const Start = () => {
   const navigate = useNavigate();
@@ -58,8 +59,12 @@ export const Start = () => {
 
   
   useEffect(() => {
-    if(managers?.length === 0) dispatch(managersFetchThunk());
-  }, [managers]);
+    if(tabValue === 1) {
+      if(customers?.length === 0) dispatch(customersFetchThunk());
+    }
+    else if(tabValue === 0) {
+    if(managers?.length === 0) dispatch(managersFetchThunk());}
+  }, [tabValue]);
   
   // Handle tab change
   const handleTabChange = (event, newValue) => {
@@ -87,15 +92,15 @@ export const Start = () => {
       const manager = managers.find(manager => manager.id ===parseInt(formData.password));
       debugger
       if(tabValue === 0) {
-        if(customer) {
-          setFormData({
-            ...formData,
-            instituteId: customer.instituteId
-          });
-          dispatch(editIsC(customer.instituteId));
-          navigate(`/home/${customer.instituteId}`);
-        }
-        else if(manager) {
+        // if(customer) {
+        //   setFormData({
+        //     ...formData,
+        //     instituteId: customer.instituteId
+        //   });
+        //   dispatch(editIsC(customer.instituteId));
+        //   navigate(`/home/${customer.instituteId}`);
+        // }
+         if(manager) {
           setFormData({
             ...formData,
             password: manager.id
@@ -106,7 +111,7 @@ export const Start = () => {
         else {
           setError("המשתמש אינו קיים");
           setIsLoading(false);
-          navigate('/managers/newManager');
+          navigate('logManager');
           return;
         }
       }
@@ -127,14 +132,14 @@ export const Start = () => {
           });
           navigate(`/home/${customer.instituteId}`);
         }
-        else if(manager) {
-          setFormData({
-            ...formData,
-            instituteId: manager.instituteId,
-            email: manager.managerEmail
-          });
-          navigate(`/manager/${manager.instituteId}`);
-        }
+        // else if(manager) {
+        //   setFormData({
+        //     ...formData,
+        //     instituteId: manager.instituteId,
+        //     email: manager.managerEmail
+        //   });
+        //   navigate(`/manager/${manager.id}`);
+        // }
         else {
           setError("המשתמש אינו קיים");
           setView(false)
@@ -143,25 +148,6 @@ export const Start = () => {
           return;
         }
       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

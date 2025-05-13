@@ -117,6 +117,7 @@ import { Activities } from './activites/activites';
 import { Logon } from "./logon/logon";
 import { Navigation } from "./more_components/navigation";
 import { AddEditActivity } from "./activites/newEditActivity";
+import { LogonManager } from "./logon/logonManager";
 
 export const Routing = () => {
   return (
@@ -127,7 +128,7 @@ export const Routing = () => {
       <Route path="/" element={<About />} />
       <Route path="/login" element={<Start />} >
         <Route path="logon" element={<Logon />} />
-        {/* <Route path="logmanager" element={<LogonManager />} /> */}
+        <Route path="logManager" element={<LogonManager />} />
       </Route>
       <Route path="/about" element={<About />} />
 

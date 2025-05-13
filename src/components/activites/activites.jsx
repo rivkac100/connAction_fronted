@@ -46,11 +46,11 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
     const [searchFields, setSearchFields] = useState({
       activityName: "",
       activityDescription: "",
-      lenOfActivity: -1,
+      lenOfActivity: "",
       location: "",
-      price: -1,
-      nightPrice: -1,
-      managerId: -1,
+      price: "",
+      nightPrice: "",
+      managerId: "",
       imgPath: "",
     });
     const [selectedActivity, setSelectedActivity] = useState(null);
@@ -64,10 +64,11 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
 
     // Fetch activities on component mount
     useEffect(() => {
-    dispatch(managersFetchThunkById({id:param.mid}));
+    //if(!manager)dispatch(managersFetchThunkById({id:param.mid}));
+    handleRefresh();
     console.log(manager.activities);
 
-    }, [manager]);
+    },[]);
 
 
 
@@ -91,11 +92,11 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
       setSearchFields({
         activityName: "",
         activityDescription: "",
-        lenOfActivity: -1,
+        lenOfActivity: "",
         location: "",
-        price: -1,
-        nightPrice: -1,
-        managerId: -1,
+        price: "",
+        nightPrice: "",
+        managerId: "",
         imgPath: "",
       });
     };
@@ -127,7 +128,7 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
       // Return true if all filled fields match
       return matchesDescription && matchesLocation && matchesPrice && matchesLength && matchesManagerId;
     });
-
+    console.log(filteredActivities);
     // Event handlers
     const handleActivityClick = (activity) => {
       setSelectedActivity(activity);

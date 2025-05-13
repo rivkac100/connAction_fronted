@@ -128,14 +128,14 @@ export const Home = () => {
   const [view, setView] = useState(true)
   const managersView = []
   useEffect(()=>{
-    if (managers?.length === 0) dispatch(managersFetchThunk());
-   console.log(managers);
+    if (managers?.length === 0) {dispatch(managersFetchThunk());
+   console.log(managers);}
   },[])
-  useEffect(() => {
-    debugger
-    if (managers?.length === 0) dispatch(managersFetchThunk());
-   // creatView()
-  }, [managers]);
+  // useEffect(() => {
+  //   debugger
+  //   if (managers?.length === 0) dispatch(managersFetchThunk());
+  //  // creatView()
+  // }, [managers]);
   
   return (
     <Container maxWidth="xl" className="home-container" >
@@ -244,7 +244,7 @@ export const Home = () => {
           <div className="manager">{manager.kategoty}</div>
           <div className="manager-email">{manager.managerEmail}</div>
           <div style={{ width: "70%" }}>
-            <img src={process.env.PUBLIC_URL + "/start.jpg"} style={{ width: "100%" }} alt="" />
+            <img src={`https://localhost:7044/img/${manager.imgPath}`} style={{ width: "100%" }} alt="" />
           </div>
           <motion.button
             className="auth-button"

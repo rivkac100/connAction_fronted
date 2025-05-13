@@ -5,22 +5,38 @@ import { useNavigate } from "react-router-dom";
 
 import { motion, AnimatePresence } from "framer-motion";
 // import { FaEye, FaEyeSlash, Facustomer, FaIdCard, FaPhone, FaEnvelope, FaStethoscope, FaLock } from "react-icons/fa";
-import "./logon.css";
-import { r } from "framer-motion/dist/types.d-DSjX-LJB";
+import "./logonManager.css";
+// import { r } from "framer-motion/dist/types.d-DSjX-LJB";
 import { addManagerThunk } from "../../store/slices/managers/addManagerThunk";
 
+import {
+    Box, Container, Typography, Paper, Grid, Card, CardContent, CardMedia, CardActions,
+    Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, IconButton,
+    InputAdornment, Divider, Chip, Tooltip, Snackbar, Alert, FormControl, InputLabel,
+    Select, MenuItem, CircularProgress, TablePagination
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
+import UploadIcon from '@mui/icons-material/Upload';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import SearchIcon from '@mui/icons-material/Search';
+import SortIcon from '@mui/icons-material/Sort';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
 
-
-export const Logon = () => {
+export const LogonManager = () => {
     const dispatch = useDispatch();
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: '',
         severity: 'success'
-      });
+    });
     const [manager, setManager] = useState({
-        managerName: "string",
-        pass: 0,
+        managerName: "",
+        pass: "",
         compName: "",
         managerEmail: "",
         managerPhone: "",
@@ -28,15 +44,15 @@ export const Logon = () => {
         managerTel: "",
         address: "",
         city: "",
-        mOrP: 0,
-        numOfComp: 0,
+        mOrP: "",
+        numOfComp: "",
         bank: "",
-        bankBranch: 0,
-        accountNum: 0,
+        bankBranch: "",
+        accountNum: "",
         kategoty: "",
         description: "",
         imgPath: "",
-        confirmPassword: 0,
+        confirmPassword: "",
     });
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
@@ -175,7 +191,7 @@ export const Logon = () => {
 
         if (!manager.confirmPassword) {
             newErrors.confirmPassword = "יש לאשר את הסיסמה";
-        } else if (manager.password !== manager.confirmPassword) {
+        } else if (manager.pass !== manager.confirmPassword) {
             newErrors.confirmPassword = "הסיסמאות אינן תואמות";
         }
 
@@ -184,6 +200,7 @@ export const Logon = () => {
     };
 
     const handleNextStep = () => {
+        console.log(currentStep);
         console.log("Current step data:", manager);
         if (currentStep === 1 && validateStep1()) {
             setCurrentStep(2);
@@ -199,14 +216,9 @@ export const Logon = () => {
     };
 
     const handleRegister = async () => {
-        // if (!validateStep3()) return;
-
-        // setIsLoading(true);
-
-        // try {
-        //     // הסרת שדה confirmPassword לפני שליחה לשרת
-        //     const { confirmPassword, ...customerToRegister } = manager;
-        //     const { password, ...customerTosend } = customerToRegister;
+       
+        debugger
+       
         if (!validateStep4()) return;
 
         setIsLoading(true);
@@ -216,10 +228,14 @@ export const Logon = () => {
             const imageUrl = await uploadImage();
             if (!imageUrl) return;
             setManager({ ...manager, imgPath: imageUrl });
+            setManager({ ...manager, numOfComp: parseInt(manager.numOfComp) });
+            setManager({ ...manager, accountNum: parseInt(manager.accountNum) });
+            setManager({ ...manager, bankBranch: parseInt(manager.bankBranch) });
+
             const { confirmPassword, ...managerToRegister } = manager;
             // const { password, ...customerToSend } = customerToRegister;
-   
-        
+
+
             // Add product with image URL
             // const activityToAdd = {
             //   ...newActivity,
@@ -244,7 +260,7 @@ export const Logon = () => {
                 );
 
                 animation.onfinish = () => {
-                    navigate(`../login`);
+                    navigate(`login`);
                 };
             }, 1500);
         } catch (error) {
@@ -256,19 +272,19 @@ export const Logon = () => {
     };
     const handleImageSelect = (e) => {
         if (e.target.files && e.target.files[0]) {
-          setSelectedImage(e.target.files[0]);
+            setSelectedImage(e.target.files[0]);
         }
-      };
+    };
 
 
-      const uploadImage = async () => {
+    const uploadImage = async () => {
         if (!selectedImage) {
-          setSnackbar({
-            open: true,
-            message: 'אנא בחר תמונה',
-            severity: 'warning'
-          });
-          return null;
+            setSnackbar({
+                open: true,
+                message: 'אנא בחר תמונה',
+                severity: 'warning'
+            });
+            return null;
         }
 
         setUploadingImage(true);
@@ -277,44 +293,44 @@ export const Logon = () => {
         formData.append('file', selectedImage);
 
         try {
-          const response = await fetch('https://localhost:7044/api/Img/upload', {
-            method: 'POST',
-            body: formData,
-          });
+            const response = await fetch('https://localhost:7044/api/Img/upload', {
+                method: 'POST',
+                body: formData,
+            });
 
-          if (!response.ok) {
-            throw new Error(`שגיאת שרת: ${response.status}`);
-          }
+            if (!response.ok) {
+                throw new Error(`שגיאת שרת: ${response.status}`);
+            }
 
-          const data = await response.json();
-          console.log("תגובת השרת להעלאת תמונה:", data); // לוג מפורט של התגובה
-          setUploadingImage(false);
+            const data = await response.json();
+            console.log("תגובת השרת להעלאת תמונה:", data); // לוג מפורט של התגובה
+            setUploadingImage(false);
 
-          setSnackbar({
-            open: true,
-            message: 'התמונה הועלתה בהצלחה',
-            severity: 'success'
-          });
-    
-          // בדוק אם יש נתיב תמונה בתגובה
-          if (data.imageUrl) {
-            console.log("נתיב התמונה שהתקבל:", data.imageUrl);
-            return data.imageUrl;
-          } else {
-            console.error("לא התקבל נתיב תמונה בתגובה:", data);
-            return null;
-          }
+            setSnackbar({
+                open: true,
+                message: 'התמונה הועלתה בהצלחה',
+                severity: 'success'
+            });
+
+            // בדוק אם יש נתיב תמונה בתגובה
+            if (data.imageUrl) {
+                console.log("נתיב התמונה שהתקבל:", data.imageUrl);
+                return data.imageUrl;
+            } else {
+                console.error("לא התקבל נתיב תמונה בתגובה:", data);
+                return null;
+            }
         } catch (error) {
-          console.error("שגיאה בהעלאת תמונה:", error);
-          setUploadingImage(false);
-          setSnackbar({
-            open: true,
-            message: 'שגיאה בהעלאת התמונה',
-            severity: 'error'
-          });
-          return null;
+            console.error("שגיאה בהעלאת תמונה:", error);
+            setUploadingImage(false);
+            setSnackbar({
+                open: true,
+                message: 'שגיאה בהעלאת התמונה',
+                severity: 'error'
+            });
+            return null;
         }
-      };
+    };
     const closeDialog = () => {
         // אנימציה לסגירת הדיאלוג
         const animation = dialogRef.current.animate(
@@ -505,7 +521,7 @@ export const Logon = () => {
                                 className={`auth-input ${errors.numOfComp ? 'input-error' : ''}`}
                                 placeholder='מספר עסק  '
                                 value={manager.numOfComp}
-                                onChange={e => setManager({ ...manager, numOfComp: parseInt(e.target.value) })}
+                                onChange={e => setManager({ ...manager, numOfComp: e.target.value })}
                             />
                         </div>
                         {errors.numOfComp && <div className="error-text">{errors.numOfComp}</div>}
@@ -522,8 +538,24 @@ export const Logon = () => {
                             />
                         </div>
                         {errors.description && <div className="error-text">{errors.description}</div>}
+                        <div className="input-group">
+                            <div className="input-icon">
+                                {/* <FaStethoscope /> */}
+                            </div>
+                            <select
+                                className={`auth-input ${errors.kategoty ? 'input-error' : ''}`}
+                                value={manager.kategoty}
+                                onChange={e => setManager({ ...manager, kategoty: e.target.value })}
+                            >
+                                <option value="" disabled> קטגוריה</option>
+                                {kategoties.map((type, index) => (
+                                    <option key={index} value={type}>{type}</option>
+                                ))}
+                            </select>
+                        </div>
+                        {errors.kategoty && <div className="error-text">{errors.kategoty}</div>}
                         <div className="remember-me">
-                            <input type="checkbox" id="remember-me"  onChange={e => setManager({ ...manager, mOrP: e.target.value==true?1:0 })} />
+                            <input type="checkbox" id="remember-me" onChange={e => setManager({ ...manager, mOrP: e.target.value == true ? 1 : 0 })} />
                             <label htmlFor="remember-me"> עוסק מורשה</label>
                         </div>
                         <Grid item xs={12}>
@@ -601,7 +633,7 @@ export const Logon = () => {
                                 className={`auth-input ${errors.bankBranch ? 'input-error' : ''}`}
                                 placeholder="מס'  סניף"
                                 value={manager.bankBranch}
-                                onChange={e => setManager({ ...manager, bankBranch: parseInt(e.target.value) })}
+                                onChange={e => setManager({ ...manager, bankBranch: e.target.value })}
                             />
                         </div>
 
@@ -615,7 +647,7 @@ export const Logon = () => {
                                 className={`auth-input ${errors.accountNum ? 'input-error' : ''}`}
                                 placeholder="מס' חשבון  "
                                 value={manager.accountNum}
-                                onChange={e => setManager({ ...manager, accountNum: parseInt(e.target.value) })}
+                                onChange={e => setManager({ ...manager, accountNum: e.target.value })}
                             />
                         </div>
                         {errors.accountNum && <div className="error-text">{errors.accountNum}</div>}
@@ -746,7 +778,7 @@ export const Logon = () => {
                             ) : (
                                 <>
                                     <div className="steps-indicator">
-                                        {[1, 2, 3].map(step => (
+                                        {[1, 2, 3,4].map(step => (
                                             <div
                                                 key={step}
                                                 className={`step-dot ${currentStep >= step ? 'active' : ''} ${currentStep === step ? 'current' : ''}`}
@@ -781,7 +813,7 @@ export const Logon = () => {
                                             </motion.button>
                                         )}
 
-                                        {currentStep < 3 ? (
+                                        {currentStep < 4 ? (
                                             <motion.button
                                                 className="auth-button"
                                                 onClick={handleNextStep}
