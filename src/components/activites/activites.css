@@ -1,0 +1,1521 @@
+/* === כללי === */
+.activities-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 24px 0;
+}
+
+.gradient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
+  background: linear-gradient(to bottom, rgba(182, 5, 87, 0.05), transparent);
+  z-index: -1;
+}
+
+/* === כותרת === */
+.activities-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.page-title {
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.page-subtitle {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+/* === כפתורים === */
+.action-button {
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.action-button.primary {
+  background-color: #b60557;
+  color: white;
+}
+
+.action-button.primary:hover {
+  background-color: #940446;
+}
+
+.action-button.secondary {
+  color: #b60557;
+  border-color: #b60557;
+}
+
+/* === חיפוש === */
+.search-paper {
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+  font-weight: 600;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  background-color: #f9f9f9;
+}
+
+.search-field {
+  background-color: #f9f9f9;
+}
+
+.clear-button {
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* === תוצאות === */
+.results-count {
+  font-weight: 600;
+  color: #555;
+}
+
+.clear-search-button {
+  font-weight: 600;
+  color: #b60557;
+}
+
+/* === כרטיסי פעילויות === */
+.activities-grid {
+  margin-bottom: 40px;
+}
+
+.activity-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.activity-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-image-container {
+  position: relative;
+  height: 160px;
+  overflow: hidden;
+}
+
+.activity-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.activity-card:hover .activity-image {
+  transform: scale(1.05);
+}
+
+.activity-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+.activity-id-chip {
+  background-color: rgba(255, 255, 255, 0.9);
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.activity-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.activity-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.activity-description {
+  color: #666;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-details {
+  flex-grow: 1;
+}
+
+.activity-detail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.detail-icon {
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+.detail-icon.location {
+  color: #2196F3;
+}
+
+.detail-icon.time {
+  color: #FF9800;
+}
+
+.detail-icon.price {
+  color: #4CAF50;
+}
+
+.activity-price {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.price-value {
+  font-weight: 700;
+  color: #4CAF50;
+  font-size: 1.2rem;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 0 0 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  margin-top: 12px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.action-button.info {
+  color: var(--primary-dark) !important;
+}
+
+.action-button.order {
+  color: #4CAF50;
+}
+
+.action-button.edit {
+  color: #2196F3;
+}
+
+.action-button.delete {
+  color: #F44336;
+}
+
+.action-button:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* ===== דיאלוג פרטי פעילות ===== */
+.details-dialog {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.dialog-header {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+}
+
+.dialog-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7);
+}
+
+.dialog-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(121, 21, 146, 0.5), rgba(182, 5, 87, 0.7));
+  z-index: 1;
+}
+
+.dialog-header-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+}
+
+.dialog-title {
+  color: var(--white) !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.5rem !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dialog-description {
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin-bottom: 1rem !important;
+  max-width: 600px;
+  opacity: 0.9;
+}
+
+.dialog-id-chip {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-sm);
+}
+
+.dialog-close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 3;
+  border-color: var(--text-color);
+}
+
+.dialog-close-button:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialog-content {
+  padding: 24px;
+}
+
+.details-section, .pricing-section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  color: var(--primary-color) !important;
+  font-weight: 600 !important;
+  margin-bottom: 1.5rem !important;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--primary-color);
+  display: inline-block;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.detail-icon-container {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  color: white;
+}
+
+.detail-icon-container.location {
+  background-color: #2196F3;
+}
+
+.detail-icon-container.time {
+  background-color: #FF9800;
+}
+
+.detail-icon-container.manager {
+  background-color: #9C27B0;
+}
+
+.detail-content {
+  flex: 1;
+}
+
+.detail-label {
+  color: var(--text-light) !important;
+  font-weight: 500 !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.detail-value {
+  color: var(--text-color) !important;
+  font-weight: 600 !important;
+}
+
+.price-box {
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-color);
+  background-color: var(--white);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.price-box:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.price-box.regular {
+  border-right: 4px solid var(--primary-color);
+  background-color: rgba(76, 175, 80, 0.1);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+.price-box.night {
+  border-right: 4px solid var(--primary-dark);
+  background-color: rgba(33, 150, 243, 0.1);
+  border: 1px solid rgba(33, 150, 243, 0.2);
+}
+
+.price-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.price-icon {
+  margin-right: 8px;
+  font-size: 1.5rem !important;
+}
+
+.price-box.regular .price-icon {
+  color: var(--primary-color);
+}
+
+.price-box.night .price-icon {
+  color: var(--primary-dark);
+}
+
+.price-label {
+  color: var(--text-light) !important;
+  font-weight: 500 !important;
+}
+
+.price-amount {
+  font-weight: 700 !important;
+  font-size: 2.5rem !important;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: pulse 2s infinite;
+}
+
+.price-box.regular .price-amount {
+  color: #4CAF50;
+}
+
+.price-box.night .price-amount {
+  color: #2196F3;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 24px;
+  gap: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.dialog-action-button {
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+}
+
+.dialog-action-button.edit {
+  color: #2196F3;
+  border-color: #2196F3;
+}
+
+.dialog-action-button.order {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.dialog-action-button.close {
+  background-color: #b60557;
+  color: white;
+}
+
+/* ===== דיאלוג מחיקה ===== */
+.delete-dialog .MuiPaper-root {
+  border-radius: var(--border-radius-md) !important;
+  padding: 1rem;
+}
+
+.delete-dialog-title {
+  color: #F44336;
+  font-weight: 600;
+}
+
+.delete-dialog-text {
+  color: #333;
+}
+
+.delete-dialog-actions {
+  padding: 16px;
+}
+
+.cancel-button {
+  color: #666;
+}
+
+.confirm-delete-button {
+  background-color: #F44336;
+  color: white;
+}
+
+.confirm-delete-button:hover {
+  background-color: #D32F2F;
+}
+
+/* ===== התראות ===== */
+.snackbar-alert {
+  font-weight: 600;
+}
+
+/* ===== אנימציות ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.activity-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.activity-card:hover .price-value {
+  animation: pulse 1.5s infinite;
+}
+
+.dialog-action-button.order:hover {
+  animation: pulse 1.5s infinite;
+}
+
+.section-title {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--primary-gradient);
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+}
+
+/* ===== רספונסיביות ===== */
+@media (max-width: 960px) {
+  .page-title {
+    font-size: 2rem !important;
+  }
+  
+  .dialog-title {
+    font-size: 2rem !important;
+  }
+  
+  .price-amount {
+    font-size: 2rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .activities-header {
+    padding: 2rem 0 1.5rem;
+  }
+  
+  .page-title {
+    font-size: 1.75rem !important;
+  }
+  
+  .search-paper {
+    padding: 1rem;
+  }
+  
+  .dialog-header {
+    height: 200px;
+  }
+  
+  .dialog-title {
+    font-size: 1.5rem !important;
+  }
+  
+  .dialog-content {
+    padding: 1.5rem !important;
+  }
+  
+  .dialog-actions {
+    flex-direction: column;
+    padding: 1rem !important;
+  }
+  
+  .dialog-action-button {
+    width: 100%;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .detail-icon-container {
+    padding: 0.75rem;
+  }
+  
+  .price-box {
+    padding: 1rem;
+  }
+  
+  .price-amount {
+    font-size: 1.75rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.5rem !important;
+  }
+  
+  .page-subtitle {
+    font-size: 0.9rem !important;
+  }
+  
+  .activity-card {
+    border-radius: var(--border-radius-sm) !important;
+  }
+  
+  .card-image-container {
+    height: 150px;
+  }
+  
+  .activity-content {
+    padding: 1rem !important;
+  }
+  
+  .activity-name {
+    font-size: 1rem !important;
+  }
+  
+  .activity-description {
+    font-size: 0.85rem !important;
+  }
+  
+  .activity-detail {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .detail-icon {
+    font-size: 0.9rem !important;
+    margin-left: 0.5rem;
+  }
+  
+  .card-actions {
+    padding: 0.5rem !important;
+  }
+  
+  .price-value {
+    font-size: 1rem !important;
+  }
+  
+  .dialog-header {
+    height: 180px;
+  }
+  
+  .dialog-title {
+    font-size: 1.25rem !important;
+  }
+  
+  .dialog-description {
+    font-size: 0.85rem !important;
+  }
+  
+  .dialog-id-chip {
+    font-size: 0.8rem !important;
+    padding: 0.25rem 0.75rem !important;
+  }
+  
+  .section-title {
+    font-size: 1.1rem !important;
+  }
+  
+  .detail-value {
+    font-size: 1rem !important;
+  }
+  
+  .price-amount {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* ===== תיקוני באגים ===== */
+/* תיקון לבעיית גלישת טקסט */
+.MuiTypography-root {
+  word-break: break-word;
+}
+
+/* תיקון לבעיית תצוגת תמונות */
+.activity-image {
+  min-height: 180px;
+  background-color: #f0f0f0;
+}
+
+/* תיקון לבעיית גובה כרטיסים */
+.activity-card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* תיקון לבעיית מיקום אייקונים */
+.MuiSvgIcon-root {
+  vertical-align: middle;
+}
+
+/* תיקון לבעיית כפתורים בדיאלוג */
+.dialog-actions {
+  flex-wrap: wrap;
+}
+
+/* תיקון לבעיית גלישת דיאלוג במסכים קטנים */
+.details-dialog .MuiDialog-paper {
+  margin: 16px;
+  width: calc(100% - 32px);
+  max-height: calc(100% - 32px);
+}
+
+/* תיקון לבעיית תצוגת צ'יפים */
+.MuiChip-root {
+  max-width: 100%;
+}
+
+/* תיקון לבעיית גלישת תוכן בדיאלוג */
+.dialog-content {
+  overflow-y: auto;
+}
+
+/* תיקון לבעיית תצוגת אייקונים בכפתורים */
+.MuiButton-startIcon {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+.MuiButton-endIcon {
+  margin-right: 8px;
+  margin-left: 0;
+}
+
+/* תיקון לבעיית כיוון טקסט בשדות חיפוש */
+.MuiInputBase-input {
+  text-align: right;
+  direction: rtl;
+}
+
+/* תיקון לבעיית מיקום אייקונים בשדות חיפוש */
+.MuiInputAdornment-root {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+/* תיקון לבעיית תצוגת תפריטים */
+.MuiMenu-paper {
+  direction: rtl;
+}
+
+/* תיקון לבעיית גלישת גריד */
+.MuiGrid-container {
+  width: 100%;
+  margin: 0;
+}
+
+/* תיקון לבעיית מרווחים בגריד */
+.MuiGrid-item {
+  padding: 16px;
+}
+
+/* תיקון לבעיית צבעי רקע בדיאלוגים */
+.MuiDialog-paper {
+  background-color: var(--white);
+}
+
+/* תיקון לבעיית תצוגת התראות */
+.MuiAlert-root {
+  direction: rtl;
+}
+
+/* תיקון לבעיית מיקום כפתור סגירה בהתראות */
+.MuiAlert-action {
+  margin-right: auto;
+  margin-left: -8px;
+  padding: 0;
+}
+
+/* תיקון לבעיית תצוגת טקסט בכפתורים */
+.MuiButton-root {
+  white-space: nowrap;
+}
+
+/* תיקון לבעיית גובה קלט בשדות חיפוש */
+.MuiInputBase-root {
+  min-height: 40px;
+}
+
+/* תיקון לבעיית תצוגת תמונות שלא נטענו */
+img.activity-image:not([src]), 
+img.activity-image[src=""], 
+img.activity-image[src="null"], 
+img.activity-image[src="undefined"] {
+  visibility: hidden;
+  position: relative;
+}
+
+img.activity-image:not([src])::after, 
+img.activity-image[src=""]::after, 
+img.activity-image[src="null"]::after, 
+img.activity-image[src="undefined"]::after {
+  content: 'תמונה לא זמינה';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+  color: #666;
+  font-size: 14px;
+  visibility: visible;
+}
+
+/* תיקון לבעיית גלישת טקסט ארוך */
+.activity-name, 
+.activity-description,
+.dialog-title,
+.dialog-description {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* תיקון לבעיית מרווחים בין אלמנטים */
+.MuiCardContent-root:last-child {
+  padding-bottom: 16px;
+}
+
+/* תיקון לבעיית צבעי רקע בכרטיסים */
+.activity-card {
+  position: relative;
+  z-index: 1;
+}
+
+.activity-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--primary-gradient);
+  z-index: 2;
+}
+
+/* תיקון לבעיית אנימציות בדפדפנים שונים */
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.03);
+  }
+  100% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@-webkit-keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* תיקון לבעיית תצוגת צבעים בדפדפנים ישנים */
+.price-amount {
+  color: var(--primary-color);
+}
+
+.dialog-action-button.order {
+  background-color: var(--primary-color) !important;
+}
+
+/* תיקון לבעיית מיקום אלמנטים בדיאלוג */
+.dialog-content {
+  position: relative;
+}
+
+/* תיקון לבעיית גובה מינימלי של כרטיסים */
+.activity-card {
+  min-height: 350px;
+}
+
+/* תיקון לבעיית תצוגת אייקונים בכרטיסים */
+.detail-icon {
+  flex-shrink: 0;
+}
+
+/* תיקון לבעיית תצוגת מחירים */
+.price-value {
+  direction: ltr;
+  display: inline-block;
+}
+
+/* תיקון לבעיית תצוגת תאריכים */
+.date-value {
+  direction: ltr;
+  display: inline-block;
+}
+
+/* תיקון לבעיית תצוגת כפתורים בדיאלוג */
+.dialog-action-button {
+  margin: 0 !important;
+}
+
+/* תיקון לבעיית תצוגת צבעים בגרדיאנט */
+.primary-gradient {
+  background: var(--primary-gradient);
+}
+
+/* תיקון לבעיית תצוגת צללים */
+.card-shadow {
+  box-shadow: var(--shadow-md);
+}
+
+/* תיקון לבעיית תצוגת גבולות */
+.card-border {
+  border: 1px solid var(--border-color);
+}
+
+/* תיקון לבעיית תצוגת רקעים */
+.card-background {
+  background-color: var(--white);
+}
+
+/* תיקון לבעיית תצוגת טקסט */
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* תיקון לבעיית תצוגת אנימציות */
+.animate-on-hover:hover {
+  transition: all var(--transition-normal);
+}
+
+/* תיקון לבעיית תצוגת כפתורים */
+.square-button {
+  border-radius: var(--border-radius-sm) !important;
+}
+
+/* תיקון לבעיית תצוגת צ'יפים */
+.square-chip {
+  border-radius: var(--border-radius-sm) !important;
+}
+
+/* תיקון לבעיית תצוגת דיאלוגים */
+.square-dialog {
+  border-radius: var(--border-radius-md) !important;
+}
+
+/* תיקון לבעיית תצוגת שדות קלט */
+.square-input {
+  border-radius: var(--border-radius-sm) !important;
+}
+
+/* תיקון לבעיית תצוגת כרטיסים */
+.square-card {
+  border-radius: var(--border-radius-md) !important;
+}
+
+/* תיקון לבעיית תצוגת תמונות */
+.square-image {
+  border-radius: var(--border-radius-sm) !important;
+}
+
+/* תיקון לבעיית תצוגת אייקונים */
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* תיקון לבעיית תצוגת טקסט בכותרות */
+.heading-text {
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+/* תיקון לבעיית תצוגת טקסט בתיאורים */
+.description-text {
+  font-weight: 400;
+  color: var(--text-light);
+}
+
+/* תיקון לבעיית תצוגת טקסט במחירים */
+.price-text {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* תיקון לבעיית תצוגת טקסט בכפתורים */
+.button-text {
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* תיקון לבעיית תצוגת טקסט בתגיות */
+.tag-text {
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+/* תיקון לבעיית תצוגת טקסט בהתראות */
+.alert-text {
+  font-weight: 500;
+}
+
+/* תיקון לבעיית תצוגת טקסט בדיאלוגים */
+.dialog-text {
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+/* תיקון לבעיית תצוגת טקסט בשדות קלט */
+.input-text {
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+/* תיקון לבעיית תצוגת טקסט בתפריטים */
+.menu-text {
+  font-weight: 400;
+  color: var(--text-color);
+}
+
+/* תיקון לבעיית תצוגת טקסט בתפריטי ניווט */
+.nav-text {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+/* תיקון לבעיית תצוגת טקסט בכותרות משנה */
+.subtitle-text {
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+/* תיקון לבעיית תצוגת טקסט בכותרות ראשיות */
+.title-text {
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+/* תיקון לבעיית תצוגת טקסט בכפתורי פעולה */
+.action-text {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* תיקון לבעיית תצוגת טקסט בהודעות שגיאה */
+.error-text {
+  font-weight: 500;
+  color: #F44336;
+}
+
+/* תיקון לבעיית תצוגת טקסט בהודעות הצלחה */
+.success-text {
+  font-weight: 500;
+  color: #4CAF50;
+}
+
+/* תיקון לבעיית תצוגת טקסט בהודעות אזהרה */
+.warning-text {
+  font-weight: 500;
+  color: #FF9800;
+}
+
+/* תיקון לבעיית תצוגת טקסט בהודעות מידע */
+.info-text {
+  font-weight: 500;
+  color: #2196F3;
+}
+
+/* תיקון לעימוד צפוף ושיפור הקשר בין האייקונים לפעילות */
+
+/* הקטנת גובה כרטיסי פעילות והדגשת האייקונים */
+
+/* הקטנת גובה כרטיסי פעילות */
+.activity-card {
+  min-height: 280px; /* הקטנת הגובה המינימלי */
+  max-height: 420px; /* הגבלת הגובה המקסימלי */
+  margin-bottom: 16px;
+}
+
+/* הקטנת גובה תמונת הפעילות */
+.card-image-container {
+  height: 140px; /* הקטנת גובה התמונה */
+}
+
+.activity-image {
+  min-height: 140px; /* התאמת גובה מינימלי לתמונה */
+}
+
+/* הקטנת פדינג ומרווחים בתוכן הכרטיס */
+.activity-content {
+  padding: 12px !important; /* הקטנת הפדינג */
+  gap: 8px; /* הקטנת מרווח בין אלמנטים */
+}
+
+/* הקטנת גודל וגובה הכותרת */
+.activity-name {
+  font-size: 15px !important; /* הקטנת גודל פונט */
+  margin-bottom: 0.5rem !important; /* הקטנת מרווח */
+  padding-bottom: 0.25rem; /* הקטנת פדינג */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* הקטנת גובה התיאור */
+.activity-description {
+  margin-bottom: 0.75rem !important; /* הקטנת מרווח */
+  -webkit-line-clamp: 2; /* הגבלה ל-2 שורות */
+  max-height: 40px; /* הגבלת גובה מקסימלי */
+  font-size: 0.85rem !important; /* הקטנת גודל פונט */
+}
+
+/* הקטנת מרווחים בפרטי הפעילות */
+.activity-details {
+  margin-top: 0.75rem; /* הקטנת מרווח */
+  gap: 8px; /* הקטנת מרווח בין שורות */
+}
+
+/* הקטנת גובה שורות פרטים */
+.activity-detail {
+  padding: 4px 8px; /* הקטנת פדינג */
+  min-height: 32px; /* גובה מינימלי */
+  display: flex;
+  align-items: center;
+}
+
+/* הקטנת גובה מחיר */
+.activity-price {
+  margin-top: 0.5rem; /* הקטנת מרווח */
+  padding: 8px; /* הקטנת פדינג */
+}
+
+/* הקטנת גובה כפתורי פעולה */
+.card-actions {
+  padding: 8px !important; /* הקטנת פדינג */
+}
+
+/* הדגשת האייקונים - הגדלה והבלטה */
+.detail-icon {
+  margin-left: 10px;
+  font-size: 1.4rem !important; /* הגדלת האייקון */
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* הוספת צל */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.activity-detail:hover .detail-icon {
+  transform: scale(1.1); /* הגדלה בעת hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* הגדלת צל בעת hover */
+}
+
+/* צבעים בולטים יותר לאייקונים */
+.detail-icon.location {
+  color: white;
+  background: linear-gradient(135deg, #791592, #9C27B0); /* גרדיאנט בולט יותר */
+}
+
+.detail-icon.time {
+  color: white;
+  background: linear-gradient(135deg, #b60557, #E91E63); /* גרדיאנט בולט יותר */
+}
+
+.detail-icon.price {
+  color: white;
+  background: linear-gradient(135deg, #d60141, #FF4081); /* גרדיאנט בולט יותר */
+}
+
+/* הדגשת טקסט פרטי הפעילות */
+.activity-detail .MuiTypography-root {
+  font-weight: 500; /* הדגשת הטקסט */
+  font-size: 0.85rem; /* התאמת גודל הטקסט */
+}
+
+/* הדגשת מחיר */
+.price-value {
+  font-size: 1.2rem !important; /* הגדלת גודל המחיר */
+  font-weight: 700 !important; /* הדגשת המחיר */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* הוספת צל לטקסט */
+}
+
+/* הדגשת אייקונים בכפתורי פעולה */
+.action-button {
+  padding: 6px !important; /* הקטנת פדינג */
+}
+
+.action-button .MuiSvgIcon-root {
+  font-size: 1.3rem !important; /* הגדלת האייקון */
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2)); /* הוספת צל */
+}
+
+.action-button:hover .MuiSvgIcon-root {
+  transform: scale(1.15); /* הגדלה בעת hover */
+  transition: transform 0.2s;
+}
+
+/* שיפור תצוגת הצ'יפ של מזהה הפעילות */
+.activity-id-chip {
+  font-size: 0.8rem !important; /* הקטנת גודל פונט */
+  padding: 4px 8px !important; /* הקטנת פדינג */
+  font-weight: 700 !important; /* הדגשת הטקסט */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* הוספת צל */
+}
+
+/* התאמות לתצוגה במסכים קטנים */
+@media (max-width: 600px) {
+  .activity-card {
+    min-height: 260px;
+  }
+  
+  .card-image-container {
+    height: 120px;
+  }
+  
+  .activity-image {
+    min-height: 120px;
+  }
+  
+  .activity-content {
+    padding: 10px !important;
+  }
+  
+  .activity-name {
+    font-size: 1rem !important;
+  }
+  
+  .activity-description {
+    font-size: 0.8rem !important;
+    max-height: 36px;
+  }
+  
+  .detail-icon {
+    font-size: 1.2rem !important;
+  }
+  
+  .price-value {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* תיקון גודל האותיות ובעיית הטרנקציה בכרטיסי פעילות */
+
+/* תיקון תצוגת הכותרת */
+.activity-name {
+  font-size: 1.1rem !important;
+  line-height: 1.3;
+  margin-bottom: 8px !important;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  /* תיקון טרנקציה */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal; /* במקום nowrap */
+  height: auto; /* במקום גובה קבוע */
+  max-height: 1.3em; /* גובה מקסימלי של שורה אחת */
+}
+
+/* תיקון תצוגת התיאור */
+.activity-description {
+  font-size: 0.9rem !important;
+  line-height: 1.4;
+  margin-bottom: 12px !important;
+  color: rgba(0, 0, 0, 0.7);
+  /* תיקון טרנקציה */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  height: auto;
+  max-height: 2.8em; /* גובה מקסימלי של 2 שורות */
+}
+
+/* תיקון תצוגת פרטי הפעילות */
+.activity-detail {
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+}
+
+.activity-detail .MuiTypography-root {
+  font-size: 0.9rem !important;
+  line-height: 1.2;
+  /* תיקון טרנקציה */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-width: calc(100% - 40px); /* להשאיר מקום לאייקון */
+}
+
+/* תיקון תצוגת המחיר */
+.price-value {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+  /* וידוא שהמחיר לא נחתך */
+  display: inline-block;
+  padding: 2px 0;
+}
+
+/* תיקון תצוגת הצ'יפ של מזהה הפעילות */
+.activity-id-chip {
+  font-size: 0.8rem !important;
+  line-height: 1.2;
+  padding: 4px 8px !important;
+  height: auto !important; /* לאפשר גובה דינמי */
+  max-height: none !important; /* לבטל הגבלת גובה */
+}
+
+/* תיקון כללי לכל הטקסטים בכרטיס */
+.activity-card .MuiTypography-root {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  text-overflow: ellipsis;
+}
+
+/* תיקון גובה כרטיס הפעילות */
+.activity-card {
+  height: auto !important; /* לאפשר גובה דינמי */
+  min-height: 300px; /* גובה מינימלי */
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* תיקון לבעיית גלישת טקסט בדיאלוג */
+.dialog-title {
+  font-size: 1.5rem !important;
+  line-height: 1.3;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+.dialog-description {
+  font-size: 1rem !important;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* תיקון לבעיית גלישת טקסט בפרטי הדיאלוג */
+.detail-value {
+  font-size: 1rem !important;
+  line-height: 1.4;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* תיקון לבעיית גלישת טקסט בכפתורים */
+.MuiButton-root {
+  line-height: 1.2;
+  white-space: normal;
+  height: auto;
+  min-height: 36px;
+}
+
+/* תיקון לבעיית גלישת טקסט בתפריטים */
+.MuiMenuItem-root {
+  line-height: 1.2;
+  white-space: normal;
+  height: auto;
+  min-height: 36px;
+}
+
+/* תיקון לבעיית גלישת טקסט בשדות קלט */
+.MuiInputBase-input {
+  line-height: 1.2;
+}
+
+/* תיקון לבעיית גלישת טקסט בהתראות */
+.MuiAlert-message {
+  line-height: 1.2;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* תיקון לבעיית גלישת טקסט בצ'יפים */
+.MuiChip-label {
+  line-height: 1.2;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  white-space: normal;
+}
+
+/* תיקון לבעיית גלישת טקסט בכותרות */
+.MuiTypography-h1, .MuiTypography-h2, .MuiTypography-h3, 
+.MuiTypography-h4, .MuiTypography-h5, .MuiTypography-h6 {
+  line-height: 1.3;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* תיקון לבעיית גלישת טקסט בפסקאות */
+.MuiTypography-body1, .MuiTypography-body2 {
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* תיקון לבעיית גלישת טקסט בכותרות משנה */
+.MuiTypography-subtitle1, .MuiTypography-subtitle2 {
+  line-height: 1.4;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* תיקון לבעיית גלישת טקסט בכפתורי פעולה */
+.MuiIconButton-root {
+  padding: 8px;
+}
+
+/* תיקון לבעיית גלישת טקסט בתגיות */
+.MuiTab-root {
+  line-height: 1.2;
+  white-space: normal;
+  height: auto;
+  min-height: 48px;
+}
+
+.refresh-button {
+  background-color: #b60557;
+  color: white;
+  margin-top: 16px;
+}
+
+.refresh-button:hover {
+  background-color: #940446;
+}
