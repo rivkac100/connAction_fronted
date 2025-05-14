@@ -80,12 +80,6 @@ export const Start = () => {
     setIsLoading(true);
     
 
-
-
-
-
-
-
     setTimeout(() => {
       const c= JSON.parse( sessionStorage.getItem('customers'));
       const customer = c?.find(customer => customer.email === formData.email);

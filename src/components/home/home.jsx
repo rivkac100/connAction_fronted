@@ -123,8 +123,8 @@ const ModernLogo = ({ size = 'medium' }) => {
   const { width, height, fontSize, iconSize } = sizeMap[size];
   
   return (
-    <div className="modern-logo" style={{ width, height }}>
-      <div className="logo-container">
+    <div className="modern-logo" style={{ width, height,}}>
+      <div className="logo-container" >
         <div className="logo-icon-container">
           <div className="logo-icon">
             <ExploreIcon style={{ fontSize: iconSize }} />
@@ -158,7 +158,9 @@ export const Home = () => {
     <Container maxWidth={false} className="home-container">
       {/* Header Section */}
       <Box className="header-section">
-        <ModernLogo size="large" />
+      <div className='spaceTop'></div>
+        <ModernLogo  size="large" />
+     
         
         <Typography variant="h3" className="welcome-title">
           ברוכים הבאים למשרד הדיגיטלי
@@ -166,8 +168,7 @@ export const Home = () => {
         <Typography variant="h6" className="welcome-subtitle">
           נהל את האירועים והפעילויות שלך בצורה חכמה ויעילה
         </Typography>
-      </Box>
-
+     
       {/* Navigation Buttons - Only show if not viewing managers */}
       {view && (
         <Box className="navigation-section">
@@ -235,7 +236,8 @@ export const Home = () => {
             </Grid>
           </Grid>
         </Box>
-      )}
+      )} </Box>
+
 
       {/* Managers Grid */}
       <Box className="content-area">

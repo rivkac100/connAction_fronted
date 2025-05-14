@@ -24,8 +24,8 @@
 /* === General Styles === */
 .home-container {
   width: 100% !important;
-  padding: 2rem 1rem;
-  background-color: var(--light-bg);
+  padding: 0px !important;
+  background-color: var(--white);
   min-height: 100vh;
   position: relative;
   overflow: hidden;
@@ -45,13 +45,17 @@
 
 /* === Header Section === */
 .header-section {
+  background-color: #333;
   text-align: center;
+  height: 35vh;
   margin-bottom: 3rem;
+  padding: 1.5rem;
   position: relative;
   z-index: 1;
 }
 
 .welcome-title {
+  margin-top: 5vh !important;
   margin: 1.5rem 0 0.5rem;
   font-weight: 700;
   background: var(--primary-gradient);
@@ -61,7 +65,7 @@
 }
 
 .welcome-subtitle {
-  color: var(--text-light);
+  color: var(--light-bg);
   margin-bottom: 1.5rem;
   font-weight: 400;
 }
@@ -76,6 +80,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* margin-top: 25px !important; */
   height: 100%;
 }
 
@@ -110,7 +115,15 @@
 }
 
 .logo-text-secondary {
-  color: var(--primary-color);
+   color: var(--primary-color);
+ 
+   /* margin-top: 5vh !important; */
+   /* margin: 1.5rem 0 0.5rem; */
+   /* font-weight: 700; */
+   /* background: var(--primary-gradient);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent; */
+   /* display: inline-block; */
 }
 
 /* === Navigation Section === */
@@ -180,6 +193,7 @@
 }
 
 .manager-card {
+  /* background-color: var(--text-light) !important; */
   border-radius: var(--border-radius-lg) !important;
   overflow: hidden;
   box-shadow: var(--shadow-md) !important;
@@ -250,6 +264,10 @@
   color: var(--text-color);
   margin-bottom: 0.75rem !important;
   font-size: 1.25rem !important;
+}
+.content-area{
+  background-color: var(- --white) !important;
+  padding: 1rem;
 }
 
 .manager-description {

@@ -224,6 +224,14 @@ export const Dashboard = () => {
                     variant="contained"
                     fullWidth
                     className="quick-action-button"
+                    onClick={() => { setView(false); navigate(`activities`) }}
+                  >
+                    רשימת פעילויות
+                  </Button>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    className="quick-action-button"
                     onClick={() => { setView(false); navigate(`orders`) }}
                   >
                     הסטוריית הזמנות
