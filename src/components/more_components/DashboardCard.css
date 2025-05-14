@@ -18,6 +18,7 @@
   }
   
   .card-icon-container {
+    background-color: #b60557;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -57,7 +58,7 @@
   }
   
   .card-action-button:hover {
-    color: #FF7043;
+    color:  #b60557;
     background-color: rgba(255, 112, 67, 0.1);
   }
   

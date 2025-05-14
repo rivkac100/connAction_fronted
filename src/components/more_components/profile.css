@@ -28,7 +28,7 @@
   }
   
   .edit-button:hover {
-    color: #FF7043;
+    color:  #b60557;
     background-color: rgba(255, 112, 67, 0.1);
   }
   
@@ -62,7 +62,7 @@
     width: 120px;
     height: 120px;
     font-size: 3rem;
-    background-color: #FF7043;
+    background-color:  #b60557;
     color: white;
     margin-bottom: 1rem;
   }

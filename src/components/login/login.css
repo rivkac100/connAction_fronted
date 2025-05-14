@@ -50,7 +50,7 @@ a {
     margin: 10px;
 } */
 /* :root {
-    --primary-color: #FF7043; Warm orange
+    --primary-color:  #b60557; Warm orange
     --secondary-color: #8D6E63; Warm brown
     --dark-color: #212121;
     --light-color: #FFFFFF;
@@ -59,7 +59,7 @@ a {
     -- */
 
     :root {
-        --primary-color: #FF7043; /* Warm orange */
+        --primary-color:  #b60557; /* Warm orange */
         --secondary-color: #8D6E63; /* Warm brown */
         --dark-color: #212121;
         --light-color: #FFFFFF;

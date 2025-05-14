@@ -153,7 +153,15 @@ export const Dashboard = () => {
                     onClick={() => navigate(`newOrder`)}
                     className="add-button"
                   >
-                    אירוע חדש
+                    הזמנה חדשה
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<AddIcon />}
+                    onClick={() => navigate(`newEvent`)}
+                    className="add-button"
+                  >
+                    אירוע חדש 
                   </Button>
                 </Box>
                 <Divider />
