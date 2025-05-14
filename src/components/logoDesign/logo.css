@@ -26,7 +26,7 @@
     width: 100%;
     height: 60%;
     bottom: 0;
-    background: linear-gradient(135deg, #FF7043 0%, #E64A19 100%);
+    background: linear-gradient(135deg,  #b60557 0%,  #b60557 100%);
     clip-path: polygon(0% 100%, 40% 30%, 60% 60%, 100% 10%, 100% 100%);
   }
   

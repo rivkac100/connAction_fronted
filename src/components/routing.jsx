@@ -195,8 +195,9 @@ export const Routing = () => {
         <Route path="week" element={<Week />} />
         <Route path="day/:day/:month/:year" element={<DayView />} />
         <Route path="event/:month/:day/:year" element={<Event />} />
-        <Route path="event" element={<Event />} />
+        <Route path="newEvent" element={<Event />} />
         <Route path="newOrder" element={<AddEditOrder />} />
+        
         {/* <Route path="newActivity" element={<AddEditActivity />} />*/}
         <Route path="orders" element={<MyOrders />}>
           <Route path="newOrder" element={<AddEditOrder />} />

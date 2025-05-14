@@ -62,7 +62,7 @@ export const Navigation = ({ managerId, managerName }) => {
 
   const drawerContent = (
     <Box className="drawer-content" role="presentation">
-      <Box className="drawer-header">
+      <Box className=" #b60557">
         <Avatar className="user-avatar">
           {managerName ? managerName.charAt(0).toUpperCase() : 'U'}
         </Avatar>

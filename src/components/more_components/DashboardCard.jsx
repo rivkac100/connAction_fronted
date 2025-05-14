@@ -11,21 +11,21 @@ export const DashboardCard = ({
   onClick,
   subtitle
 }) => {
-  const colorMap = {
-    primary: '#FF7043',
-    secondary: '#8D6E63',
-    info: '#29B6F6',
-    success: '#66BB6A',
-    warning: '#FFA726',
-    error: '#EF5350'
-  };
+  // const colorMap = {
+  //   primary: '#FF7043',
+  //   secondary: '#8D6E63',
+  //   info: '#29B6F6',
+  //   success: '#66BB6A',
+  //   warning: '#FFA726',
+  //   error: '#EF5350'
+  // };
 
-  const bgColor = colorMap[color] || color;
+  // const bgColor = colorMap[color] || color;
 
   return (
     <Paper className="dashboard-card" onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
       <Box className="card-content">
-        <Box className="card-icon-container" style={{ backgroundColor: bgColor }}>
+        <Box className="card-icon-container" >
           {icon}
         </Box>
         <Box className="card-text">
