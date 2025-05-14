@@ -34,6 +34,7 @@ import { activitiesFetch } from '../../store/slices/activites/activitiesFetch';
 import { deleteActivityThunk } from '../../store/slices/activites/deleteActivityThunk';
 //import { activitiesByMangerIdThunk } from '../../store/slices/managers/ordersByMangerIdThunk';
 import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
+import { editActivityName } from '../../store/slices/orders/orderSlice';
 
   export const Activities = () => {
     const navigate = useNavigate();
@@ -187,7 +188,8 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
 
     const handleOrderClick = (event, activity) => {
       event.stopPropagation(); // Prevent opening the details dialog
-      navigate(`/orders/new/${activity.activityId}`);
+      dispatch(editActivityName(activity.activityName));
+      navigate(`newOrder/${activity.activityId}`);
     };
 
   const handleDeleteConfirm = () => {

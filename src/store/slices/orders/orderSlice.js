@@ -9,6 +9,7 @@ import { ordersFetchThunkById } from './orderFetchById';
 const INITIAL_STATE_ORDER = {
     //InstituteName: -1,
     orderId: "",
+    activityName: "",
     Myorders:[],
     orders: [],
     order:{},
@@ -33,6 +34,9 @@ export const ordersSlice = createSlice({
         // },
         editToken: (state, action) => {
             state.token = action.payload;
+        },
+        editActivityName: (state, action) => {
+            state.activityName = action.payload;
         }
     },
 
@@ -118,4 +122,4 @@ export const ordersSlice = createSlice({
 
     }
 })
-export const { editorder, editToken } = ordersSlice.actions;
+export const { editorder, editToken ,editActivityName} = ordersSlice.actions;
