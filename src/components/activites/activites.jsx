@@ -445,6 +445,7 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
                 <Grid item xs={12} sm={6} md={4} lg={3} key={activity.id || index}>
                   <Card 
                     className="activity-card"
+                    // data-aos="fade-up"
                     onClick={() => handleActivityClick(activity)}
                   >
                     <Box className="card-image-container">

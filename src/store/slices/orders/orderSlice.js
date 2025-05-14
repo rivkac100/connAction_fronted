@@ -12,6 +12,7 @@ const INITIAL_STATE_ORDER = {
     Myorders:[],
     orders: [],
     order:{},
+    
     token: null,
     sucsses: false,
     failed: false

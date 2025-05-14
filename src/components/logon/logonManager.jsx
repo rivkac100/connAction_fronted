@@ -296,7 +296,7 @@ export const LogonManager = () => {
             const response = await fetch('https://localhost:7044/api/Img/upload', {
                 method: 'POST',
                 body: formData,
-            });
+            })
 
             if (!response.ok) {
                 throw new Error(`שגיאת שרת: ${response.status}`);
