@@ -226,7 +226,7 @@ export const LogonManager = () => {
         try {
             // הסרת שדה confirmPassword לפני שליחה לשרת
             const imageUrl = await uploadImage();
-            if (!imageUrl) return;
+            
             setManager({ ...manager, imgPath: imageUrl });
             setManager({ ...manager, numOfComp: parseInt(manager.numOfComp) });
             setManager({ ...manager, accountNum: parseInt(manager.accountNum) });
@@ -244,6 +244,7 @@ export const LogonManager = () => {
             console.log("Data being sent to server:", managerToRegister);
             console.log(managerToRegister);
             setSelectedImage(null);
+            if (!imageUrl) return;
             await dispatch(addManagerThunk({ details: managerToRegister }));
 
             setRegistrationSuccess(true);
@@ -278,6 +279,7 @@ export const LogonManager = () => {
 
 
     const uploadImage = async () => {
+        debugger
         if (!selectedImage) {
             setSnackbar({
                 open: true,
@@ -301,19 +303,20 @@ export const LogonManager = () => {
             if (!response.ok) {
                 throw new Error(`שגיאת שרת: ${response.status}`);
             }
-
+            debugger
             const data = await response.json();
             console.log("תגובת השרת להעלאת תמונה:", data); // לוג מפורט של התגובה
-            setUploadingImage(false);
+            // setUploadingImage(false);
 
-            setSnackbar({
-                open: true,
-                message: 'התמונה הועלתה בהצלחה',
-                severity: 'success'
-            });
+        
 
             // בדוק אם יש נתיב תמונה בתגובה
             if (data.imageUrl) {
+                // setSnackbar({
+                //     open: true,
+                //     message: 'התמונה הועלתה בהצלחה',
+                //     severity: 'success'
+                // });
                 console.log("נתיב התמונה שהתקבל:", data.imageUrl);
                 return data.imageUrl;
             } else {
