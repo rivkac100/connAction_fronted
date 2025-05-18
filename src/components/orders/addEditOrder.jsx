@@ -100,12 +100,22 @@ export const AddEditOrder = () => {
 
   const saveOrder = () => {
     if (order.activityId && order.customerId) {
+      // יצירת עותק של ההזמנה עם הוספת השניות לשעה
+      const orderToSave = {
+        ...order,
+        activeHour: order.activeHour && !order.activeHour.includes(":00") ? 
+                    order.activeHour + ":00" : 
+                    order.activeHour
+      };
+
       if (edit) {
-        dispatch(updateOrderThunk({ details: order }));
+
+        dispatch(updateOrderThunk({ details: orderToSave }));
         refDialog.current.close();
         navigate('/orders');
       } else {
-        dispatch(addOrderThunk({ details: order }));
+
+        dispatch(addOrderThunk({ details: orderToSave }));
         refDialog.current.close();
         navigate(-1);
       }
@@ -122,9 +132,15 @@ export const AddEditOrder = () => {
   const proceedToPayment = () => {
     if (order.activityId && order.customerId && order.amountOfParticipants > 0) {
       try {
+        // הוספת השניות לשעה
+        const formattedHour = order.activeHour && !order.activeHour.includes(":00") ? 
+                             order.activeHour + ":00" : 
+                             order.activeHour;
+        
         // שמירת פרטי ההזמנה בלוקל סטורג' לשימוש בדף התשלום
         const orderDetails = {
           ...order,
+          activeHour: formattedHour,
           totalPrice,
           activityName
         };
@@ -133,12 +149,13 @@ export const AddEditOrder = () => {
         console.log('Order details saved to localStorage:', orderDetails);
         
         // סגירת הדיאלוג הנוכחי
+        refDialog.current.close();
+        // ניווט לדף התשלום
+        navigate('/payment');
+        
 
-        navigate('payment');
-        
-        
-        // ניווט לדף התשלום עם החלפת הדף הנוכחי (replace: true)
-        
+
+
       } catch (error) {
         console.error('Error navigating to payment page:', error);
         alert(`שגיאה במעבר לדף התשלום: ${error.message}`);
@@ -329,8 +346,15 @@ export const AddEditOrder = () => {
                 fullWidth
                 label="שעה"
                 variant="outlined"
-                value={order?.activeHour || ''}
-                onChange={e => setOrder({ ...order, activeHour: e.target.value })}
+                type="time"
+                InputLabelProps={{ shrink: true }}
+                inputProps={{ step: 60 }}
+                value={order?.activeHour?.substring(0, 5) || ''}
+                onChange={e => {
+                  const timeValue = e.target.value;
+                  const timeWithSeconds = timeValue + ":00";
+                  setOrder({ ...order, activeHour: timeWithSeconds });
+                }}
                 className="form-field"
               />
             </Grid>
