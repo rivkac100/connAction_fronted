@@ -118,6 +118,7 @@ import { Logon } from "./logon/logon";
 import { Navigation } from "./more_components/navigation";
 import { AddEditActivity } from "./activites/newEditActivity";
 import { LogonManager } from "./logon/logonManager";
+import { Payment } from './payment/Payment';
 
 export const Routing = () => {
   return (
@@ -152,7 +153,9 @@ export const Routing = () => {
         <Route path="activities/:mid" element={<Activities />} >
           <Route path="newActivity" element={<AddEditActivity />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="newOrder/:idActivity" element={<AddEditOrder />} />
+          <Route path="newOrder/:idActivity" element={<AddEditOrder />} >
+          <Route path="payment" element={<Payment />} />
+          </Route>
         </Route>
 
         <Route path="upcoming" element={<MyOrders upcoming={true} />} />

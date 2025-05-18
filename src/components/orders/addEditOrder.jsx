@@ -1,17 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import { addOrderThunk } from "../../store/slices/orders/addOrderThunk";
 import { updateOrderThunk } from "../../store/slices/orders/updateOrderThunk";
 import { findOrderThunk } from "../../store/slices/orders/findOrderThunk";
 import { jsPDF } from "jspdf";
-import autoTable from 'jspdf-autotable';
+import html2canvas from 'html2canvas';
 import './addEditOrder.css';
 import { Button, TextField, Paper, Typography, Box, Grid, Container, Divider } from '@mui/material';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PaymentIcon from '@mui/icons-material/Payment';
 import { customersFetchThunk } from "../../store/slices/customers/customersFetch";
 import { activitiesFetch } from "../../store/slices/activites/activitiesFetch";
 
@@ -26,7 +27,7 @@ export const AddEditOrder = () => {
   const customers = useSelector(state => state.customer.customers);
 
   const [order, setOrder] = useState(myOrder? myOrder : {
-    
+
     customerId: params.id? parseInt(params.id) : 0,
     payment: 0,
     amountOfParticipants: 0,
@@ -40,7 +41,12 @@ export const AddEditOrder = () => {
 
   useEffect(() => {
     console.log("AddEditOrder useEffect running with params:", params);
-    
+    if(activities.length === 0) {
+      dispatch(activitiesFetch());
+    }
+    if(customers.length === 0) {
+      dispatch(customersFetchThunk());
+    }
     // Initialize order with default values if not already set
     if (!order) {
       setOrder({
@@ -93,14 +99,23 @@ export const AddEditOrder = () => {
   }, [order.amountOfParticipants, order.activityId]);
 
   const saveOrder = () => {
-    debugger
     if (order.activityId && order.customerId) {
+      // יצירת עותק של ההזמנה עם הוספת השניות לשעה
+      const orderToSave = {
+        ...order,
+        activeHour: order.activeHour && !order.activeHour.includes(":00") ? 
+                    order.activeHour + ":00" : 
+                    order.activeHour
+      };
+
       if (edit) {
-        dispatch(updateOrderThunk({ details: order }));
+
+        dispatch(updateOrderThunk({ details: orderToSave }));
         refDialog.current.close();
         navigate('/orders');
       } else {
-        dispatch(addOrderThunk({ details: order }));
+
+        dispatch(addOrderThunk({ details: orderToSave }));
         refDialog.current.close();
         navigate(-1);
       }
@@ -114,10 +129,45 @@ export const AddEditOrder = () => {
     navigate(-1);
   };
 
+  const proceedToPayment = () => {
+    if (order.activityId && order.customerId && order.amountOfParticipants > 0) {
+      try {
+        // הוספת השניות לשעה
+        const formattedHour = order.activeHour && !order.activeHour.includes(":00") ? 
+                             order.activeHour + ":00" : 
+                             order.activeHour;
+        
+        // שמירת פרטי ההזמנה בלוקל סטורג' לשימוש בדף התשלום
+        const orderDetails = {
+          ...order,
+          activeHour: formattedHour,
+          totalPrice,
+          activityName
+        };
+        
+        localStorage.setItem('pendingOrder', JSON.stringify(orderDetails));
+        console.log('Order details saved to localStorage:', orderDetails);
+        
+        // סגירת הדיאלוג הנוכחי
+        refDialog.current.close();
+        // ניווט לדף התשלום
+        navigate('/payment');
+        
+
+
+
+      } catch (error) {
+        console.error('Error navigating to payment page:', error);
+        alert(`שגיאה במעבר לדף התשלום: ${error.message}`);
+      }
+    } else {
+      alert("לא ניתן לעבור לתשלום - חסרים פרטים חיוניים");
+    }
+  };
+
+  const invoiceRef = useRef(null);
+
   const generateInvoice = () => {
-    // יצירת מסמך PDF חדש
-    const doc = new jsPDF();
-    
     // מציאת פרטי הלקוח והפעילות
     const customer = customers.find(c => c.instituteId === parseInt(params.id));
     const activity = activities.find(a => a.activityId === parseInt(params.idActivity));  
@@ -126,83 +176,98 @@ export const AddEditOrder = () => {
       alert("לא ניתן להפיק חשבונית - חסרים פרטים");
       return;
     }
+
+    // יצירת אלמנט HTML זמני לחשבונית
+    const invoiceElement = document.createElement('div');
+    invoiceElement.style.width = '800px';
+    invoiceElement.style.padding = '40px';
+    invoiceElement.style.fontFamily = 'Arial, sans-serif';
+    invoiceElement.style.direction = 'rtl';
+    invoiceElement.style.position = 'absolute';
+    invoiceElement.style.left = '-9999px';
+    invoiceElement.style.top = '-9999px';
     
-    // הוספת כותרת
-    doc.setFontSize(22);
-    doc.setTextColor(63, 81, 181);
-    doc.text("חשבונית עסקה", 105, 20, { align: "center" });
+    // הוספת תוכן החשבונית
+    invoiceElement.innerHTML = `
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: #b60557; font-size: 28px; margin-bottom: 10px;">חשבונית עסקה</h1>
+        <p style="font-size: 14px; color: #666;">מספר חשבונית: INV-${Date.now().toString().slice(-6)}</p>
+        <p style="font-size: 14px; color: #666;">תאריך: ${new Date().toLocaleDateString('he-IL')}</p>
+      </div>
+      
+      <div style="margin-bottom: 30px;">
+        <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי לקוח</h2>
+        <p style="font-size: 14px; margin: 5px 0;">שם: ${customer.instituteName || 'לא צוין'}</p>
+        <p style="font-size: 14px; margin: 5px 0;">טלפון: ${customer.mobile || 'לא צוין'}</p>
+        <p style="font-size: 14px; margin: 5px 0;">אימייל: ${customer.email || 'לא צוין'}</p>
+        <p style="font-size: 14px; margin: 5px 0;">איש קשר: ${customer.contactName || 'לא צוין'}</p>
+      </div>
+      
+      <div style="margin-bottom: 30px;">
+        <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי הזמנה</h2>
+        <p style="font-size: 14px; margin: 5px 0;">פעילות: ${activityName || activity.name || 'לא צוין'}</p>
+        <p style="font-size: 14px; margin: 5px 0;">תאריך: ${order.date || 'לא צוין'}</p>
+        <p style="font-size: 14px; margin: 5px 0;">שעה: ${order.activeHour || 'לא צוין'}</p>
+        <p style="font-size: 14px; margin: 5px 0;">מספר משתתפים: ${order.amountOfParticipants || 0}</p>
+      </div>
+      
+      <div style="margin-bottom: 30px;">
+        <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי תשלום</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid #ddd;">
+              <th style="text-align: right; padding: 10px; font-size: 14px;">תיאור</th>
+              <th style="text-align: right; padding: 10px; font-size: 14px;">כמות</th>
+              <th style="text-align: right; padding: 10px; font-size: 14px;">מחיר ליחידה</th>
+              <th style="text-align: right; padding: 10px; font-size: 14px;">סה"כ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid #ddd;">
+              <td style="text-align: right; padding: 10px; font-size: 14px;">${activityName || activity.name || 'פעילות'}</td>
+              <td style="text-align: right; padding: 10px; font-size: 14px;">${order.amountOfParticipants || 0}</td>
+              <td style="text-align: right; padding: 10px; font-size: 14px;">₪${activity.price || 0}</td>
+              <td style="text-align: right; padding: 10px; font-size: 14px;">₪${totalPrice}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div style="text-align: left; margin-bottom: 30px;">
+        <h3 style="color: #b60557; font-size: 18px;">סה"כ לתשלום: ₪${totalPrice}</h3>
+      </div>
+      
+      <div style="text-align: center; margin-top: 50px;">
+        <p style="font-size: 14px; color: #666;">תודה שבחרתם בנו!</p>
+      </div>
+    `;
     
-    // פרטי חשבונית
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-    doc.text(`מספר חשבונית: INV-${Date.now().toString().slice(-6)}`, 200, 40, { align: "right" });
-    doc.text(`תאריך: ${new Date().toLocaleDateString('he-IL')}`, 200, 50, { align: "right" });
+    // הוספת האלמנט לדף
+    document.body.appendChild(invoiceElement);
     
-    // פרטי לקוח
-    doc.setFontSize(14);
-    doc.setTextColor(63, 81, 181);
-    doc.text("פרטי לקוח:", 200, 70, { align: "right" });
-    
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-    doc.text(`שם: ${customer.instituteName || 'לא צוין'}`, 200, 80, { align: "right" });
-    doc.text(`טלפון: ${customer.mobile || 'לא צוין'}`, 200, 90, { align: "right" });
-    doc.text(`אימייל: ${customer.email || 'לא צוין'}`, 200, 100, { align: "right" });
-    doc.text(`איש קשר: ${customer.contactName || 'לא צוין'}`, 200, 110, { align: "right" });
-    
-    // פרטי הזמנה
-    doc.setFontSize(14);
-    doc.setTextColor(63, 81, 181);
-    doc.text("פרטי הזמנה:", 200, 130, { align: "right" });
-    
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-    doc.text(`פעילות: ${activityName || activity.name || 'לא צוין'}`, 200, 140, { align: "right" });
-    doc.text(`תאריך: ${order.date || 'לא צוין'}`, 200, 150, { align: "right" });
-    doc.text(`שעה: ${order.activeHour || 'לא צוין'}`, 200, 160, { align: "right" });
-    doc.text(`מספר משתתפים: ${order.amountOfParticipants || 0}`, 200, 170, { align: "right" });
-    
-    // במקום טבלה, נשתמש בטקסט רגיל
-    doc.setFontSize(14);
-    doc.setTextColor(63, 81, 181);
-    doc.text("פרטי תשלום:", 200, 190, { align: "right" });
-    
-    // יצירת קו מפריד
-    doc.setDrawColor(200, 200, 200);
-    doc.line(20, 200, 190, 200);
-    
-    // כותרות עמודות
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-    doc.text("תיאור", 180, 210, { align: "right" });
-    doc.text("כמות", 130, 210, { align: "right" });
-    doc.text("מחיר ליחידה", 80, 210, { align: "right" });
-    doc.text("סה\"כ", 30, 210, { align: "right" });
-    
-    // קו מפריד נוסף
-    doc.line(20, 215, 190, 215);
-    
-    // נתוני השורה
-    doc.text(activityName || activity.name || 'פעילות', 180, 225, { align: "right" });
-    doc.text(`${order.amountOfParticipants || 0}`, 130, 225, { align: "right" });
-    doc.text(`₪${activity.price || 0}`, 80, 225, { align: "right" });
-    doc.text(`₪${totalPrice}`, 30, 225, { align: "right" });
-    
-    // קו מפריד תחתון
-    doc.line(20, 230, 190, 230);
-    
-    // סה"כ לתשלום
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.text(`סה"כ לתשלום: ₪${totalPrice}`, 190, 245, { align: "right" });
-    
-    // כותרת תחתונה
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.text("תודה שבחרתם בנו!", 105, 280, { align: "center" });
-    
-    // שמירת ה-PDF
-    doc.save(`חשבונית-${order.customerId}-${Date.now()}.pdf`);
+    // המרת האלמנט לתמונה באמצעות html2canvas
+    html2canvas(invoiceElement, { scale: 2 }).then(canvas => {
+      // הסרת האלמנט הזמני
+      document.body.removeChild(invoiceElement);
+      
+      // יצירת PDF מהתמונה
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+      
+      // חישוב יחס גובה/רוחב של התמונה
+      const imgWidth = 210; // רוחב דף A4 במ"מ
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      
+      // הוספת התמונה ל-PDF
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+      
+      // שמירת ה-PDF
+      pdf.save(`חשבונית-${order.customerId}-${Date.now()}.pdf`);
+    });
   };
 
   return (
@@ -281,8 +346,15 @@ export const AddEditOrder = () => {
                 fullWidth
                 label="שעה"
                 variant="outlined"
-                value={order?.activeHour || ''}
-                onChange={e => setOrder({ ...order, activeHour: e.target.value })}
+                type="time"
+                InputLabelProps={{ shrink: true }}
+                inputProps={{ step: 60 }}
+                value={order?.activeHour?.substring(0, 5) || ''}
+                onChange={e => {
+                  const timeValue = e.target.value;
+                  const timeWithSeconds = timeValue + ":00";
+                  setOrder({ ...order, activeHour: timeWithSeconds });
+                }}
                 className="form-field"
               />
             </Grid>
@@ -300,35 +372,47 @@ export const AddEditOrder = () => {
         <Box className="order-actions">
           <Button 
             variant="contained" 
-            color="primary" 
             startIcon={<SaveIcon />}
             onClick={saveOrder}
             className="action-button save-button"
+            style={{ backgroundColor: '#b60557', color: 'white' }}
           >
             שמור
           </Button>
           
           <Button 
-            variant="outlined" 
-            color="secondary" 
+            variant="contained" 
+            startIcon={<PaymentIcon />}
+            onClick={proceedToPayment}
+            className="action-button payment-button"
+            style={{ backgroundColor: '#b60557', color: 'white' }}
+          >
+            המשך לתשלום
+          </Button>
+          
+          <Button 
+            variant="contained" 
             startIcon={<ReceiptIcon />}
             onClick={generateInvoice}
             className="action-button invoice-button"
-            // disabled={!order.customerId || !order.activityId || !order.amountOfParticipants}
+            style={{ backgroundColor: '#b60557', color: 'white' }}
           >
             הפק חשבונית
           </Button>
           
           <Button 
-            variant="outlined" 
+            variant="contained" 
             startIcon={<ArrowBackIcon />}
             onClick={cancel}
             className="action-button back-button"
+            style={{ backgroundColor: '#b60557', color: 'white' }}
           >
             חזור
           </Button>
         </Box>
       </Container>
+      <Outlet />
     </dialog>
   );
 };
+
