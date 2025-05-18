@@ -37,6 +37,7 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
 import { editActivityName } from '../../store/slices/orders/orderSlice';
 
 
+
 export const Activities = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -84,7 +85,7 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
     debugger
     console.log("Fetching activities for manager ID:", param.mid);
     if (param.mid && param.id) {
-      if (!manager) {
+      if (!allActivities.length) {
          dispatch(managersFetchThunkById({ id: param.mid }))
         
       }
