@@ -256,6 +256,11 @@ export const Payment = () => {
       message: 'אימייל אישור נשלח ללקוח',
       severity: 'success'
     });
+    // בדף התשלום, אחרי תשלום מוצלח:
+    localStorage.setItem('paymentStatus', 'success');
+
+// אם המשתמש בוחר לשלם באפשרות אחרת:
+     localStorage.setItem('paymentStatus', 'alternative');
   };
   
   // חזרה לדף הקודם

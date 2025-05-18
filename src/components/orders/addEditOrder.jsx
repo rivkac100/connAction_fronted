@@ -151,7 +151,7 @@ export const AddEditOrder = () => {
         // סגירת הדיאלוג הנוכחי
         refDialog.current.close();
         // ניווט לדף התשלום
-        navigate('/payment');
+        navigate('payment');
         
 
 
