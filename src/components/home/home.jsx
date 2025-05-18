@@ -228,7 +228,7 @@ export const Home = () => {
                 variant="contained"
                 className="nav-button activities"
                 fullWidth
-                onClick={() => navigate(`activities`)}
+                onClick={() =>{  setView(false);navigate(`activities`)} }
                 startIcon={<ExploreIcon />}
               >
                 פעילויות וטיולים

@@ -31,7 +31,7 @@
   }
   
   .week-title span {
-    color: #f58f0a;
+    color: #b60557;
   }
   
   .week-nav {
@@ -58,19 +58,19 @@
   
   .week-nav-button:hover {
     background-color: #f5f5f5;
-    border-color: #f58f0a;
+    border-color: #b60557;
   }
   
   .week-nav-button.active {
-    background-color: #653370;
+    background-color: #b60557;
     color: white;
-    border-color: #653370;
+    border-color: #b60557;
   }
   
   .week-nav-button.today {
     background-color: white;
-    color: #f58f0a;
-    border-color: #f58f0a;
+    color: #b60557;
+    border-color: #b60557;
   }
   
   .week-nav-button.today:hover {
@@ -93,8 +93,8 @@
   
   .week-arrow-button:hover {
     background-color: #f5f5f5;
-    border-color: #f58f0a;
-    color: #f58f0a;
+    border-color: #b60557;
+    color: #b60557;
   }
   
   /* Week Table */
@@ -121,9 +121,9 @@
   
   .week-table th.today {
     background-color: rgba(245, 143, 10, 0.08);
-    color: #f58f0a;
+    color: #b60557;
     font-weight: 600;
-    border-bottom: 2px solid #f58f0a;
+    border-bottom: 2px solid #b60557;
   }
   
   .week-table td {
@@ -136,14 +136,14 @@
   
   .week-table td.today {
     background-color: rgba(245, 143, 10, 0.05);
-    border-bottom:#653370 solid 3px !important ;
+    border-bottom:#b60557 solid 3px !important ;
   }
   
   .week-table td.spacer {
     width: 4px;
     padding: 0;
     /* border: none; */
-    border-bottom:#653370 solid 3px !important ;
+    border-bottom:#b60557 solid 3px !important ;
     background-color: #ffffff;
   }
   
@@ -166,7 +166,7 @@
   
   .week-event.today {
     background-color: #f5f5f5;
-    border-left: 3px solid #f58f0a;
+    border-left: 3px solid #b60557;
   }
   
   .week-event .time {
@@ -180,7 +180,7 @@
   }
   
   .week-event.my-order {
-    border-left: 3px solid #653370;
+    border-left: 3px solid #b60557;
   }
   
   /* Context Menu */
@@ -213,7 +213,7 @@
   
   .context-menu-button:hover {
     background-color: #f5f5f5;
-    color: #f58f0a;
+    color: #b60557;
   }
   
   /* Menu Bar */
@@ -236,7 +236,7 @@
   }
   
   .week-menu-title span {
-    color: #f58f0a;
+    color: #b60557;
   }
   
   .week-menu-actions {
@@ -244,10 +244,10 @@
     gap: 16px;
   }
   .notToDay{
-   border-bottom:#653370 solid 3px !important ;
+   border-bottom:#b60557 solid 3px !important ;
   }
   .th-nottoDay{
-    color: #f58f0a !important;
+    color: #b60557 !important;
   }
   .week-menu-button {
     background-color: transparent;
@@ -262,7 +262,7 @@
     transition: all 0.2s ease;
   }
   td:hover{
-    border-bottom:#653370 solid 3px !important ;
+    border-bottom:#b60557 solid 3px !important ;
 
   }
   .week-menu-button:hover {
@@ -270,11 +270,11 @@
   }
   
   .week-menu-button.primary {
-    background-color: #f58f0a;
+    background-color: #b60557;
   }
   
   .week-menu-button.primary:hover {
-    background-color: #e58000;
+    background-color: #b60557;
   }
   
   /* Responsive Adjustments */

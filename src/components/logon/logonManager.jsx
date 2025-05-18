@@ -215,42 +215,103 @@ export const LogonManager = () => {
         setCurrentStep(currentStep - 1);
     };
 
-    const handleRegister = async () => {
+    // const handleRegister = async () => {
        
-        debugger
+    //     debugger
        
-        if (!validateStep4()) return;
+    //     if (!validateStep4()) return;
 
-        setIsLoading(true);
+    //     setIsLoading(true);
 
-        try {
-            // הסרת שדה confirmPassword לפני שליחה לשרת
-            const imageUrl = await uploadImage();
+    //     try {
+    //         // הסרת שדה confirmPassword לפני שליחה לשרת
+    //         const imageUrl = await uploadImage();
             
-            setManager({ ...manager, imgPath: imageUrl });
-            setManager({ ...manager, numOfComp: parseInt(manager.numOfComp) });
-            setManager({ ...manager, accountNum: parseInt(manager.accountNum) });
-            setManager({ ...manager, bankBranch: parseInt(manager.bankBranch) });
+    //         setManager({ ...manager, imgPath: imageUrl });
+    //         setManager({ ...manager, numOfComp: parseInt(manager.numOfComp) });
+    //         setManager({ ...manager, accountNum: parseInt(manager.accountNum) });
+    //         setManager({ ...manager, bankBranch: parseInt(manager.bankBranch) });
 
-            const { confirmPassword, ...managerToRegister } = manager;
-            // const { password, ...customerToSend } = customerToRegister;
+    //         const { confirmPassword, ...managerToRegister } = manager;
+    //         // const { password, ...customerToSend } = customerToRegister;
 
 
-            // Add product with image URL
-            // const activityToAdd = {
-            //   ...newActivity,
-            //   imgPath: imageUrl
-            // };
+    //         // Add product with image URL
+    //         // const activityToAdd = {
+    //         //   ...newActivity,
+    //         //   imgPath: imageUrl
+    //         // };
+    //         console.log("Data being sent to server:", managerToRegister);
+    //         console.log(managerToRegister);
+    //         setSelectedImage(null);
+    //         if (!imageUrl) return;
+    //         await dispatch(addManagerThunk({ details: managerToRegister }));
+
+    //         setRegistrationSuccess(true);
+
+    //         // אנ
+    //         // אנימציה להצלחת הרישום
+    //         setTimeout(() => {
+    //             const animation = dialogRef.current.animate(
+    //                 [
+    //                     { opacity: 1, transform: 'scale(1)' },
+    //                     { opacity: 0, transform: 'scale(1.1)' }
+    //                 ],
+    //                 { duration: 300, easing: 'ease-in-out' }
+    //             );
+
+    //             animation.onfinish = () => {
+    //                 navigate(`login`);
+    //             };
+    //         }, 1500);
+    //     } catch (error) {
+    //         console.error("שגיאה ברישום:", error);
+    //         setErrors({ submit: "אירעה שגיאה בתהליך הרישום. אנא נסה שנית." });
+    //     } finally {
+    //         setIsLoading(false);
+    //     }
+    // };
+    const handleImageSelect = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setSelectedImage(e.target.files[0]);
+        }
+    };
+
+    const handleRegister = async () => {
+        if (!validateStep4()) return;
+        setIsLoading(true);
+    
+        try {
+            // קבל את כתובת התמונה קודם
+            const imageUrl = await uploadImage();
+            if (!imageUrl) {
+                setIsLoading(false);
+                return;
+            }
+    
+            // צור אובייקט מנהל חדש עם כל ההמרות הנדרשות
+            const managerToRegister = {
+                ...manager,
+                imgPath: imageUrl,
+                numOfComp: parseInt(manager.numOfComp),
+                accountNum: parseInt(manager.accountNum),
+                bankBranch: parseInt(manager.bankBranch),
+                mOrP:manager.mOrP===""?0:1
+               
+            };
+    
+            // הסר את confirmPassword מהאובייקט
+            delete managerToRegister.confirmPassword;
+    
             console.log("Data being sent to server:", managerToRegister);
-            console.log(managerToRegister);
-            setSelectedImage(null);
-            if (!imageUrl) return;
+            
+            // שלח את הפעולה עם הנתונים המוכנים
             await dispatch(addManagerThunk({ details: managerToRegister }));
-
+    
+            setSelectedImage(null);
             setRegistrationSuccess(true);
-
-            // אנ
-            // אנימציה להצלחת הרישום
+    
+            // אנימציה להרשמה מוצלחת
             setTimeout(() => {
                 const animation = dialogRef.current.animate(
                     [
@@ -259,7 +320,7 @@ export const LogonManager = () => {
                     ],
                     { duration: 300, easing: 'ease-in-out' }
                 );
-
+    
                 animation.onfinish = () => {
                     navigate(`login`);
                 };
@@ -271,13 +332,7 @@ export const LogonManager = () => {
             setIsLoading(false);
         }
     };
-    const handleImageSelect = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            setSelectedImage(e.target.files[0]);
-        }
-    };
-
-
+    
     const uploadImage = async () => {
         debugger
         if (!selectedImage) {
