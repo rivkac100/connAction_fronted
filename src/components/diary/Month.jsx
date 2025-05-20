@@ -449,7 +449,7 @@ export const Month = () => {
     
     // Action functions
     const newEvent = () => {
-        navigate(`/home/${parms.id}/event`);
+        navigate(`newEvent`);
     };
     
     const openDayWiew = (day) => {
@@ -738,6 +738,10 @@ export const Month = () => {
                             <button className="menu-button primary" onClick={newEvent}>
                                 <AddPhotoAlternateSharpIcon />
                                 אירוע חדש
+                            </button>
+                            <button className="menu-button primary" onClick={()=>navigate("newOrder")}>
+                                <AddPhotoAlternateSharpIcon />
+                                הזמנה חדשה
                             </button>
                             <IconButton 
                                 aria-label="more options"

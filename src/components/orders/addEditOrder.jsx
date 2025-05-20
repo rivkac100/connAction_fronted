@@ -258,7 +258,7 @@ export const AddEditOrder = () => {
                   fullWidth
                   label="קוד לקוח"
                   variant="outlined"
-                  value={order?.customerId || ''}
+                  value={order?.customerId}
                   onChange={e => setOrder({ ...order, customerId: parseInt(e.target.value) })}
                   className="form-field"
                 />
@@ -271,7 +271,7 @@ export const AddEditOrder = () => {
                 label="כמות משתתפים"
                 variant="outlined"
                 type="number"
-                value={order?.amountOfParticipants || ''}
+                value={order?.amountOfParticipants}
                 onChange={e => setOrder({ ...order, amountOfParticipants: parseInt(e.target.value) })}
                 className="form-field"
               />
@@ -284,7 +284,7 @@ export const AddEditOrder = () => {
                 variant="outlined"
                 type="date"
                 InputLabelProps={{ shrink: true }}
-                value={order?.date || ''}
+                value={order?.date}
                 onChange={e => setOrder({ ...order, date: e.target.value })}
                 className="form-field"
               />
@@ -296,7 +296,7 @@ export const AddEditOrder = () => {
                   fullWidth
                   label="קוד פעילות"
                   variant="outlined"
-                  value={order?.activityId || ''}
+                  value={order?.activityId}
                   onChange={e => setOrder({ ...order, activityId: parseInt(e.target.value) })}
                   className="form-field"
                 />

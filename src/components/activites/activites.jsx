@@ -48,8 +48,8 @@ import { editActivityName } from '../../store/slices/orders/orderSlice';
   const manager = useSelector((state) => state.manager.myManager);
   const isLoading = useSelector((state) => state.activity.isLoading);
    
-    const MyUser = useSelector((state) => state.user.myUser); // או כל שם אחר שבו שמרת את סוג המשתמש
-  const isCustomer = MyUser.userType === 'customer'; // בדיקה אם המשתמש הוא לקוח
+  const MyUser = useSelector((state) => state.user.myUser); // או כל שם אחר שבו שמרת את סוג המשתמש
+  const isCustomer = MyUser?.userType === 'customer'?true:false; // בדיקה אם המשתמש הוא לקוח
   // Local state
   const [showSearchOptions, setShowSearchOptions] = useState(false);
   const [searchFields, setSearchFields] = useState({
