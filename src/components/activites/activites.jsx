@@ -36,38 +36,7 @@ import { deleteActivityThunk } from '../../store/slices/activites/deleteActivity
 import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
 import { editActivityName } from '../../store/slices/orders/orderSlice';
 
-  // export const Activities = () => {
-  //   const navigate = useNavigate();
-  //   const dispatch = useDispatch();
-  //   const param = useParams();
-    
-  //   // Redux state
-  //   const activities = useSelector((state) => state.manager.activities);
-  //   const manager = useSelector((state) => state.manager.myManager);
-  //   const isLoading = useSelector((state) => state.activity.isLoading);
-  //   const userType = useSelector((state) => state.auth?.userType); // או כל שם אחר שבו שמרת את סוג המשתמש
-  //   const isCustomer = userType === 'customer'; // בדיקה אם המשתמש הוא לקוח
-    
-  //   // Local state
-  //   const [showSearchOptions, setShowSearchOptions] = useState(false);
-  //   const [searchFields, setSearchFields] = useState({
-  //     activityName: "",
-  //     activityDescription: "",
-  //     lenOfActivity: "",
-  //     location: "",
-  //     price: "",
-  //     nightPrice: ""
-  //   });
-  //   const [selectedActivity, setSelectedActivity] = useState(null);
-  //   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  //   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
-   
-  //   const [snackbar, setSnackbar] = useState({
-  //     open: false,
-  //     message: '',
-  //     severity: 'success'
-    // });
-
+ 
  export const Activities = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -78,11 +47,9 @@ import { editActivityName } from '../../store/slices/orders/orderSlice';
   const allActivities = useSelector((state) => state.activity.activities);
   const manager = useSelector((state) => state.manager.myManager);
   const isLoading = useSelector((state) => state.activity.isLoading);
-    //   const activities = useSelector((state) => state.manager.activities);
-  //   const manager = useSelector((state) => state.manager.myManager);
-  //   const isLoading = useSelector((state) => state.activity.isLoading);
-    const userType = useSelector((state) => state.auth?.userType); // או כל שם אחר שבו שמרת את סוג המשתמש
-  const isCustomer = userType === 'customer'; // בדיקה אם המשתמש הוא לקוח
+   
+    const MyUser = useSelector((state) => state.user.myUser); // או כל שם אחר שבו שמרת את סוג המשתמש
+  const isCustomer = MyUser.userType === 'customer'; // בדיקה אם המשתמש הוא לקוח
   // Local state
   const [showSearchOptions, setShowSearchOptions] = useState(false);
   const [searchFields, setSearchFields] = useState({
@@ -102,46 +69,62 @@ import { editActivityName } from '../../store/slices/orders/orderSlice';
     message: '',
     severity: 'success'
   });
-const [activities, setActivities] = useState(param.mid ? activitiesByMid?activitiesByMid:[] : allActivities?allActivities:[]);
-  // הוספת קוד דיבוג בתחילת הקומפוננטה
+const [activities, setActivities] = useState([]);
+  // הוספת לוגים לדיבוג
   console.log("Component rendering with params:", param);
+  console.log("activitiesByMid:", activitiesByMid);
+  console.log("allActivities:", allActivities);
 
-  // הוספת useEffect לבדיקת הנתונים בכל רנדור
+  // עדכון הפעילויות כאשר הנתונים משתנים
   useEffect(() => {
-    console.log("Current state - Activities:", activities);
-    console.log("Current state - Manager:", manager);
-    console.log("Current state - Loading:", isLoading);
-
-  }, [activities, manager, isLoading]);
-
-  // Fetch activities on component mount
-  useEffect( () => {
-    debugger
-    console.log("Fetching activities for manager ID:", param.mid);
-    if (param.mid && param.id) {
-      if (!allActivities.length) {
-         dispatch(managersFetchThunkById({ id: param.mid }))
-        
-      }
-      if(manager) {
+    console.log("Updating activities state");
+    if (param.mid) {
+      if (activitiesByMid && activitiesByMid.length > 0) {
+        console.log("Setting activities from manager activities:", activitiesByMid);
         setActivities(activitiesByMid);
-        console.log(activitiesByMid);
       }
-      // activities = activitiesByMid;
-    }
-    else {
-      if (allActivities.length === 0) {
-         dispatch(activitiesFetch());
-      }
-      if(allActivities) {
+    } else {
+      if (allActivities && allActivities.length > 0) {
+        console.log("Setting activities from all activities:", allActivities);
         setActivities(allActivities);
-        console.log( allActivities);
       }
-
-      // activities = allActivities;
     }
+  }, [activitiesByMid, allActivities, param.mid]);
 
-  }, []);
+  // טעינת הפעילויות בעת טעינת הקומפוננטה
+  useEffect(() => {
+    console.log("Fetching activities...");
+    
+    if (param.mid) {
+      console.log("Fetching activities for manager ID:", param.mid);
+      dispatch(managersFetchThunkById({ id: param.mid }))
+        .then(response => {
+          console.log("Manager activities fetched successfully:", response);
+        })
+        .catch(error => {
+          console.error("Error fetching manager activities:", error);
+          setSnackbar({
+            open: true,
+            message: 'אירעה שגיאה בטעינת פעילויות המנהל',
+            severity: 'error'
+          });
+        });
+    } else {
+      console.log("Fetching all activities");
+      dispatch(activitiesFetch())
+        .then(response => {
+          console.log("All activities fetched successfully:", response);
+        })
+        .catch(error => {
+          console.error("Error fetching all activities:", error);
+          setSnackbar({
+            open: true,
+            message: 'אירעה שגיאה בטעינת הפעילויות',
+            severity: 'error'
+          });
+        });
+    }
+  }, [dispatch, param.mid]);
 
   // Handle search field changes
   const handleSearchChange = (field, value) => {
@@ -163,36 +146,38 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
     });
   };
 
-  //  activities = param.mid ? (activitiesByMid?activitiesByMid:[] ): (allActivities?allActivities:[]);
-  // Filtered activities
-  const filteredActivities = activities?.filter(activity => {
-    // Check if any search field is filled
-    console.log("Checking activity:", activity);
-    const isSearchActive = Object.values(searchFields).some(value => value !== '');
-
-    // If no search is active, return all activities
-    if (!isSearchActive) return true;
-
-    // Check each field
-    const matchesName = !searchFields.activityName ||
-      (activity.activityName && activity.activityName.toLowerCase().includes(searchFields.activityName.toLowerCase()));
-
-    const matchesDescription = !searchFields.activityDescription ||
-      (activity.activityDescription && activity.activityDescription.toLowerCase().includes(searchFields.activityDescription.toLowerCase()));
-
-    const matchesLocation = !searchFields.location ||
-      (activity.location && activity.location.toLowerCase().includes(searchFields.location.toLowerCase()));
-
-    // חיפוש מחיר עד המחיר שהוזן (ולא בדיוק את המחיר)
-    const matchesPrice = !searchFields.price ||
-      (activity.price && activity.price <= parseFloat(searchFields.price));
-
-    const matchesLength = !searchFields.lenOfActivity ||
-      (activity.lenOfActivity && activity.lenOfActivity.toString().includes(searchFields.lenOfActivity));
-
-    // Return true if all filled fields match
-    return matchesName && matchesDescription && matchesLocation && matchesPrice && matchesLength;
-  });
+  // Filtered activities - עם בדיקות תקינות נוספות
+  const filteredActivities = activities && activities.length > 0 
+    ? activities.filter(activity => {
+        if (!activity) return false;
+        
+        // Check if any search field is filled
+        const isSearchActive = Object.values(searchFields).some(value => value !== '');
+        
+        // If no search is active, return all activities
+        if (!isSearchActive) return true;
+        
+        // Check each field with null/undefined checks
+        const matchesName = !searchFields.activityName || 
+          (activity.activityName && activity.activityName.toLowerCase().includes(searchFields.activityName.toLowerCase()));
+        
+        const matchesDescription = !searchFields.activityDescription || 
+          (activity.activityDescription && activity.activityDescription.toLowerCase().includes(searchFields.activityDescription.toLowerCase()));
+        
+        const matchesLocation = !searchFields.location || 
+          (activity.location && activity.location.toLowerCase().includes(searchFields.location.toLowerCase()));
+        
+        // חיפוש מחיר עד המחיר שהוזן (ולא בדיוק את המחיר)
+        const matchesPrice = !searchFields.price || 
+          (activity.price && activity.price <= parseFloat(searchFields.price));
+        
+        const matchesLength = !searchFields.lenOfActivity || 
+          (activity.lenOfActivity && activity.lenOfActivity.toString().includes(searchFields.lenOfActivity));
+        
+        // Return true if all filled fields match
+        return matchesName && matchesDescription && matchesLocation && matchesPrice && matchesLength;
+      })
+    : [];
 
   // Event handlers
   const handleActivityClick = (activity) => {
@@ -226,6 +211,13 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
           severity: 'success'
         });
         setOpenDeleteDialog(false);
+        
+        // רענון הפעילויות לאחר מחיקה
+        if (param.mid) {
+          dispatch(managersFetchThunkById({ id: param.mid }));
+        } else {
+          dispatch(activitiesFetch());
+        }
       })
       .catch(() => {
         setSnackbar({
@@ -241,22 +233,25 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
   };
 
   const handleRefresh = () => {
-    // .then(() => {
-    console.log("Activities fetched successfully");
-    setSnackbar({
-      open: true,
-      message: 'הנתונים רועננו בהצלחה',
-      severity: 'info'
-    });
-    // })
-    // .catch(error => {
-    //   console.error("Error fetching activities:", error);
-    //   setSnackbar({
-    //     open: true,
-    //     message: 'אירעה שגיאה בטעינת הנתונים',
-    //     severity: 'error'
-    //   });
-    // });
+    if (param.mid) {
+      dispatch(managersFetchThunkById({ id: param.mid }))
+        .then(() => {
+          setSnackbar({
+            open: true,
+            message: 'הנתונים רועננו בהצלחה',
+            severity: 'info'
+          });
+        });
+    } else {
+      dispatch(activitiesFetch())
+        .then(() => {
+          setSnackbar({
+            open: true,
+            message: 'הנתונים רועננו בהצלחה',
+            severity: 'info'
+          });
+        });
+    }
   };
 
   // Toggle search options visibility
@@ -265,6 +260,7 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
   };
 
     const handleAddActivity = () => {
+      debugger
       if (isCustomer) {
         setSnackbar({
           open: true,
@@ -282,11 +278,15 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
   if (isLoading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
-        <CircularProgress sx={{ color: '#b60557' }} />
+        <CircularProgress sx={{ color: '#af2263' }} />
         <Typography variant="h6" sx={{ mt: 2, color: '#333' }}>טוען נתוני פעילויות...</Typography>
       </Box>
     );
   }
+
+  // בדיקה אם יש פעילויות להצגה
+  const hasActivities = activities && activities.length > 0;
+  const hasFilteredActivities = filteredActivities && filteredActivities.length > 0;
 
   return (
     <Box className="activities-page">
@@ -307,7 +307,8 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
               variant="contained"
               startIcon={<AddIcon />}
               className="action-button primary"
-              onClick={() => navigate('newActivity')}
+              onClick={handleAddActivity}
+              sx={{ bgcolor: '#af2263', '&:hover': { bgcolor: '#8e0443' } }}
             >
               הוסף פעילות
             </Button>
