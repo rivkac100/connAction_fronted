@@ -36,39 +36,39 @@ import { deleteActivityThunk } from '../../store/slices/activites/deleteActivity
 import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
 import { editActivityName } from '../../store/slices/orders/orderSlice';
 
-  export const Activities = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const param = useParams();
+  // export const Activities = () => {
+  //   const navigate = useNavigate();
+  //   const dispatch = useDispatch();
+  //   const param = useParams();
     
-    // Redux state
-    const activities = useSelector((state) => state.manager.activities);
-    const manager = useSelector((state) => state.manager.myManager);
-    const isLoading = useSelector((state) => state.activity.isLoading);
-    const userType = useSelector((state) => state.auth?.userType); // או כל שם אחר שבו שמרת את סוג המשתמש
-    const isCustomer = userType === 'customer'; // בדיקה אם המשתמש הוא לקוח
+  //   // Redux state
+  //   const activities = useSelector((state) => state.manager.activities);
+  //   const manager = useSelector((state) => state.manager.myManager);
+  //   const isLoading = useSelector((state) => state.activity.isLoading);
+  //   const userType = useSelector((state) => state.auth?.userType); // או כל שם אחר שבו שמרת את סוג המשתמש
+  //   const isCustomer = userType === 'customer'; // בדיקה אם המשתמש הוא לקוח
     
-    // Local state
-    const [showSearchOptions, setShowSearchOptions] = useState(false);
-    const [searchFields, setSearchFields] = useState({
-      activityName: "",
-      activityDescription: "",
-      lenOfActivity: "",
-      location: "",
-      price: "",
-      nightPrice: ""
-    });
-    const [selectedActivity, setSelectedActivity] = useState(null);
-    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-    const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  //   // Local state
+  //   const [showSearchOptions, setShowSearchOptions] = useState(false);
+  //   const [searchFields, setSearchFields] = useState({
+  //     activityName: "",
+  //     activityDescription: "",
+  //     lenOfActivity: "",
+  //     location: "",
+  //     price: "",
+  //     nightPrice: ""
+  //   });
+  //   const [selectedActivity, setSelectedActivity] = useState(null);
+  //   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  //   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
    
-    const [snackbar, setSnackbar] = useState({
-      open: false,
-      message: '',
-      severity: 'success'
-    });
+  //   const [snackbar, setSnackbar] = useState({
+  //     open: false,
+  //     message: '',
+  //     severity: 'success'
+    // });
 
-export const Activities = () => {
+ export const Activities = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const param = useParams();
@@ -78,7 +78,11 @@ export const Activities = () => {
   const allActivities = useSelector((state) => state.activity.activities);
   const manager = useSelector((state) => state.manager.myManager);
   const isLoading = useSelector((state) => state.activity.isLoading);
-
+    //   const activities = useSelector((state) => state.manager.activities);
+  //   const manager = useSelector((state) => state.manager.myManager);
+  //   const isLoading = useSelector((state) => state.activity.isLoading);
+    const userType = useSelector((state) => state.auth?.userType); // או כל שם אחר שבו שמרת את סוג המשתמש
+  const isCustomer = userType === 'customer'; // בדיקה אם המשתמש הוא לקוח
   // Local state
   const [showSearchOptions, setShowSearchOptions] = useState(false);
   const [searchFields, setSearchFields] = useState({
@@ -783,4 +787,4 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
       <Outlet />
     </Box>
   );
-}};
+};
