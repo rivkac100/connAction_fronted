@@ -574,14 +574,21 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
             ))}
           </Grid>
         ) : (
-          <Paper className="no-results">
+          <Paper className="no-results" sx={{ p: 4, textAlign: 'center', mt: 3 }}>
             <Typography variant="h6" color="text.secondary" gutterBottom>
-              לא נמצאו פעילויות זמינות
+              לא נמצאו פעילויות התואמות את החיפוש
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              נראה שאין עדיין פעילויות או שיש בעיה בטעינת הנתונים. נסה לרענן את הדף.
+              נסה לשנות את פרמטרי החיפוש או לנקות את הסינון.
             </Typography>
-
+            <Button 
+              variant="outlined" 
+              startIcon={<RefreshIcon />} 
+              onClick={clearSearch}
+              sx={{ mt: 2 }}
+            >
+              נקה סינון
+            </Button>
           </Paper>
         )}
 
@@ -601,8 +608,11 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
                   image={`https://localhost:7044/img/${selectedActivity.imgPath}`}
                   alt={selectedActivity.activityDescription || "פעילות"}
                   className="dialog-image"
+                  onError={(e) => {
+                    e.target.src = 'https://via.placeholder.com/800x300?text=תמונה+לא+זמינה';
+                  }}
                 />
-
+                
                 <Box className="dialog-header-content">
                   <Typography variant="h3" className="dialog-title">
                     {selectedActivity.activityName || "פעילות ללא שם"}
@@ -610,12 +620,12 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
                   <Typography variant="subtitle1" className="dialog-description">
                     {selectedActivity.activityDescription}
                   </Typography>
-                  <Chip
+                  <Chip 
                     label={`קוד פעילות: ${selectedActivity.activityId}`}
                     className="dialog-id-chip"
                   />
                 </Box>
-
+                
                 <IconButton
                   onClick={() => setOpenDetailsDialog(false)}
                   className="dialog-close-button"
@@ -623,7 +633,7 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
                   <CloseIcon />
                 </IconButton>
               </Box>
-
+              
               <DialogContent className="dialog-content">
                 <Grid container spacing={4}>
                   <Grid item xs={12} md={6}>
@@ -631,7 +641,7 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
                       <Typography variant="h5" className="section-title">
                         פרטי הפעילות
                       </Typography>
-
+                      
                       <Box className="detail-item">
                         <Box className="detail-icon-container location">
                           <LocationOnIcon />
@@ -645,7 +655,7 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
                           </Typography>
                         </Box>
                       </Box>
-
+                      
                       <Box className="detail-item">
                         <Box className="detail-icon-container time">
                           <AccessTimeIcon />
@@ -659,7 +669,7 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
                           </Typography>
                         </Box>
                       </Box>
-
+                      
                       <Box className="detail-item">
                         <Box className="detail-icon-container manager">
                           <PersonIcon />
@@ -675,13 +685,13 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
                       </Box>
                     </Box>
                   </Grid>
-
+                  
                   <Grid item xs={12} md={6}>
                     <Box className="pricing-section">
                       <Typography variant="h5" className="section-title">
                         פרטי תשלום
                       </Typography>
-
+                      
                       <Box className="price-box regular">
                         <Box className="price-header">
                           <AttachMoneyIcon className="price-icon" />
@@ -693,7 +703,7 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
                           ₪{selectedActivity.price || 0}
                         </Typography>
                       </Box>
-
+                      
                       <Box className="price-box night">
                         <Box className="price-header">
                           <NightlightIcon className="price-icon" />
@@ -709,10 +719,10 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
                   </Grid>
                 </Grid>
               </DialogContent>
-
+              
               <Box className="dialog-actions">
-                <Button
-                  variant="outlined"
+                <Button 
+                  variant="outlined" 
                   startIcon={<EditIcon />}
                   className="dialog-action-button edit"
                   onClick={() => {
@@ -722,19 +732,20 @@ const [activities, setActivities] = useState(param.mid ? activitiesByMid?activit
                 >
                   עריכת פעילות
                 </Button>
-                <Button
-                  variant="contained"
+                <Button 
+                  variant="contained" 
                   startIcon={<ShoppingCartIcon />}
                   className="dialog-action-button order"
                   onClick={() => {
                     setOpenDetailsDialog(false);
-                    navigate(`/orders/new/${selectedActivity.activityId}`);
+                    navigate(`newOrder/${selectedActivity.activityId}`);
                   }}
+                  sx={{ bgcolor: '#af2263', '&:hover': { bgcolor: '#8e0443' } }}
                 >
                   הזמן פעילות
                 </Button>
-                <Button
-                  variant="contained"
+                <Button 
+                  variant="contained" 
                   className="dialog-action-button close"
                   onClick={() => setOpenDetailsDialog(false)}
                 >
