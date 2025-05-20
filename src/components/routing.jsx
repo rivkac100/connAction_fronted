@@ -129,7 +129,7 @@ export const Routing = () => {
       <Route path="/" element={<About />} />
       <Route path="/login" element={<Start />} >
         <Route path="logon" element={<Logon />} />
-        <Route path="logManager" element={<LogonManager />} />
+        <Route path="logonManager" element={<LogonManager />} />
       </Route>
       <Route path="/about" element={<About />} />
 
