@@ -163,6 +163,14 @@ export const Dashboard = () => {
                   >
                     אירוע חדש 
                   </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<AddIcon />}
+                    onClick={() => navigate(`newActivity`)}
+                    className="add-button"
+                  >
+                   פעילות חדשה
+                  </Button>
                 </Box>
                 <Divider />
                 {managerData.recentEvents?.length > 0 ? (

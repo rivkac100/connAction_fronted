@@ -1,7 +1,7 @@
 /* === Variables === */
 :root {
   --primary-color: #791592;
-  --primary-light: #b60557;
+  --primary-light: #af2263;
   --primary-dark: #d60141;
   --secondary-color: #2c3e50;
   --text-color: #333;
@@ -18,7 +18,7 @@
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
-  --primary-gradient: linear-gradient(135deg, #791592 0%, #b60557 50%, #d60141 100%);
+  --primary-gradient: linear-gradient(135deg, #791592 0%, #af2263 50%, #d60141 100%);
 }
 
 /* === General Styles === */

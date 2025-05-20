@@ -1,100 +1,122 @@
-/* .CustomerPage {
-    border: 2px black solid;
-    text-align: center; 
-    font-family: cursive;
-    align-items: center;
-    padding-left: 30%;
-}
-
-th,
-td {
-    border: 2px black solid;
-    text-align: center;
-    font-family: cursive;
-}
-.myCustomers{
-    margin-left: 20%;
-} */
-.OrderPage {
-    padding: 3rem;
-    background: linear-gradient(135deg, #f6f8fc 0%, #e9ecef 100%);
+/* עיצוב עמוד ההזמנות */
+.orders-page {
     min-height: 100vh;
+    position: relative;
+    padding-bottom: 40px;
 }
 
-.myOrders {
+.gradient-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 300px;
+    background: linear-gradient(to bottom, #f5f7fa, #ffffff);
+    z-index: -1;
+}
+
+.orders-header {
+    padding: 40px 0;
     text-align: center;
-    color: #1a237e;
-    margin-bottom: 3rem;
-    font-size: 3.5rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    margin-bottom: 2rem;
+.page-title {
+    font-weight: bold;
+    color: #3b3a3d;
+    margin-bottom: 16px;
+    font-size: 2.5rem;
 }
 
-th {
-    /* background: linear-gradient(135deg, #4834d4 0%, #686de0 100%); */
-    background-color: #3b3a3d;
+.page-subtitle {
+    color: #666;
+    margin-bottom: 24px;
+}
+
+.action-button {
+    margin: 0 8px;
+    border-radius: 8px;
+    padding: 8px 16px;
+    text-transform: none;
+    font-weight: bold;
+}
+
+.action-button.primary {
+    background-color: #bf6d93 !important;
     color: white;
-    padding: 1.5rem;
-    text-align: left;
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
-td {
-    /* padding: 1.2rem 1.5rem; */
-    padding: 5px;
-    margin-top: 5px;
-    border-bottom: 1px solid #e9ecef;
-    font-size: 1.1rem;
-    color: #2d3436;
+.action-button.primary:hover {
+    background-color: #bf6d93 !important;
 }
 
-tr:hover {
-    background: #f8f9fa;
-    transform: scale(1.01);
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.action-button.secondary {
+    border-color: #3b3a3d;
+    color: #3b3a3d;
 }
 
-tr {
-    transition: all 0.3s ease;
+.action-button.search {
+    border-color: #3b3a3d;
+    color: #d57fa7f6 !important;
 }
 
-/* מותאם למסכים קטנים */
-@media (max-width: 768px) {
-    .CustomerPage {
-        padding: 1.5rem;
-    }
-    
-    .myCustomers {
-        font-size: 2.5rem;
-        /* color: #9b9595; */
-    }
-    
-    table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-    
-    th, td {
-        padding: 1rem;
-        font-size: 1rem;
-    }
-} 
+.search-paper {
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
 
+.section-title {
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.snackbar-alert {
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* תצוגה רספונסיבית */
+@media (max-width: 600px) {
+    .page-title {
+      font-size: 2rem;
+    }
+  
+    .action-button {
+      margin: 4px;
+    }
+}
+
+/* הוספת משתנה CSS גלובלי */
+:root {
+  --primary-pink: #d57fa7f6 !important ;
+}
+
+/* שימוש במשתנה בכל מקום */
+.pink-text {
+  color: var(--primary-pink) !important ;
+}
+
+.pink-background {
+  background-color: var(--primary-pink)!important;
+}
+
+/* פתרון קיצוני - שימוש ב-!important */
+.orderPage h1, 
+.orderPage h2, 
+.orderPage h3, 
+.orderPage h4, 
+.orderPage h5, 
+.orderPage h6,
+.orderPage .activity-name,
+.orderPage .section-title {
+  color: #d57fa7f6 !important;
+}
+
+.orderPage .MuiButton-containedPrimary,
+.orderPage .MuiChip-colorPrimary,
+.orderPage .primary-button,
+.orderPage .action-button {
+  background-color: #d57fa7f6 !important;
+  color: white !important;
+}

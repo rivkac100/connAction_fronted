@@ -6,7 +6,7 @@ import { deleteCustomerThunk } from './deleteCustomerThunk';
 import { customersFetchThunkById } from './customerFetchThunkById';
 import { updateCustomerThunk } from './updateCustomerThunk';
 
-const INITIAL_STATE_USER = {
+const INITIAL_STATE_CUSTOMER = {
     InstituteName: -1,
     InstituteId: "",
     customers: [],
@@ -21,7 +21,7 @@ const INITIAL_STATE_USER = {
 export const customersSlice = createSlice({
 
     name: 'customer',
-    initialState: INITIAL_STATE_USER,
+    initialState: INITIAL_STATE_CUSTOMER,
     reducers: {
         editCustomer: (state, action) => {
             state.customers = action.payload;

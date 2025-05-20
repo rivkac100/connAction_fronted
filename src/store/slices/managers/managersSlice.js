@@ -8,7 +8,7 @@ import { updateManagerThunk } from './updateManagerThunk';
 import { ordersByMangerIdThunk } from './ordersByMangerIdThunk';
 import { customersByMangerIdThunk } from './customersByMangerIdThunk';
 
-const INITIAL_STATE_USER = {
+const INITIAL_STATE_MANAGER = {
     managerName: "",
     Id: "",
     managers: [],
@@ -26,7 +26,7 @@ const INITIAL_STATE_USER = {
 export const managersSlice = createSlice({
 
     name: 'manager',
-    initialState: INITIAL_STATE_USER,
+    initialState: INITIAL_STATE_MANAGER,
     reducers: {
         editManager: (state, action) => {
             state.managers = action.payload;

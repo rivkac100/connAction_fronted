@@ -6,7 +6,7 @@ import { deleteActivityThunk } from './deleteActivityThunk';
 import { activitiyFetchThunkById, activityFetchThunkById } from './activityFetchThunkById';
 import { updateActivityThunk } from './updateActivityThunk';
 
-const INITIAL_STATE_USER = {
+const INITIAL_STATE_ACTIVITY = {
     activityName: "",
     Id: "",
     isLoading: false,
@@ -22,7 +22,7 @@ const INITIAL_STATE_USER = {
 export const activitiesSlice = createSlice({
 
     name: 'activity',
-    initialState: INITIAL_STATE_USER,
+    initialState: INITIAL_STATE_ACTIVITY,
     reducers: {
         editActivity: (state, action) => {
             state.activities = action.payload;

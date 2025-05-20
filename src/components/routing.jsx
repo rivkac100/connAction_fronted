@@ -180,16 +180,18 @@ export const Routing = () => {
 
       {/* Dashboard routes */}
       <Route path="/manager/:mid" element={<Dashboard />}>
-        <Route path="activities" element={<Activities />} >
+      <Route path="newActivity" element={<AddEditActivity />} />
+        <Route path="activities" element={<Activities />} > 
+         <Route path="newActivity" element={<AddEditActivity />} /> 
+          <Route path="editActivity:aid" element={<AddEditActivity />} />
+        </Route>
           <Route path="newOrder" element={<AddEditOrder />} />
           <Route path="customers" element={<Customers />} />
           <Route path="myOrders/:oid" element={<MyOrders />} >
             <Route path="newOrder" element={<AddEditOrder />} />
             <Route path="editOrder/:orderId" element={<AddEditOrder />} />
           </Route>
-           {/* <Route path="/newActivity" element={<AddEditActivity />} /> */}
-           {/* <Route path="editActivity:aid" element={<AddEditActivity />} /> */}
-        </Route>
+         
         <Route path="upcoming" element={<MyOrders upcoming={true} />} />
         <Route path="month" element={<Month />} />
         <Route path="week" element={<Week />} />

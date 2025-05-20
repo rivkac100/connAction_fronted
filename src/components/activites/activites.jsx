@@ -45,7 +45,9 @@ import { editActivityName } from '../../store/slices/orders/orderSlice';
     const activities = useSelector((state) => state.manager.activities);
     const manager = useSelector((state) => state.manager.myManager);
     const isLoading = useSelector((state) => state.activity.isLoading);
-
+    const userType = useSelector((state) => state.auth?.userType); // או כל שם אחר שבו שמרת את סוג המשתמש
+    const isCustomer = userType === 'customer'; // בדיקה אם המשתמש הוא לקוח
+    
     // Local state
     const [showSearchOptions, setShowSearchOptions] = useState(false);
     const [searchFields, setSearchFields] = useState({
@@ -239,7 +241,19 @@ import { editActivityName } from '../../store/slices/orders/orderSlice';
       setShowSearchOptions(!showSearchOptions);
     };
 
+    const handleAddActivity = () => {
+      if (isCustomer) {
+        setSnackbar({
+          open: true,
+          message: 'אין לך הרשאות להוספת פעילויות',
+          severity: 'error'
+        });
+        return;
+      }
     
+      // אם המשתמש אינו לקוח, ניווט לדף הוספת פעילות
+      navigate('newActivity');
+    };
 
     if (isLoading) {
       return (
