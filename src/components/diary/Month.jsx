@@ -362,8 +362,8 @@ export const Month = () => {
     const [isAnimating, setIsAnimating] = useState(false);
     
     // Redux selectors
-    const myOrders = useSelector(state => state.customer.MyOrders);
-    const orders = useSelector(state => state.order.orders);
+    const myOrders = useSelector(state => state.manager.MyOrders);
+    // const orders = useSelector(state => state.order.orders);
     const events = useSelector(state => state.events.events);
     
     // Fetch data on component mount
@@ -375,9 +375,9 @@ export const Month = () => {
         if(myOrders?.length == 0) dispatch(customersFetchThunkById({ id: parseInt(parms.id) }));
     }, [myOrders, dispatch, parms.id]);
     
-    useEffect(() => {
-        if(orders?.length == 0) dispatch(ordersFetchThunk());
-    }, [orders, dispatch]);
+    // useEffect(() => {
+    //     // if(orders?.length == 0) dispatch(ordersFetchThunk());
+    // }, [orders, dispatch]);
     
     // Navigation functions
     const goToNextMonth = () => {
@@ -480,7 +480,7 @@ export const Month = () => {
                                 text-align: right;
                             }
                             .day-number { font-weight: bold; }
-                            .today { background-color: rgba(0, 188, 212, 0.1); border: 1px solid #00BCD4; }
+                            .today { background-color: rgba(0, 188, 212, 0.1); border: 1px solid #b60557; }
                             .event-marker { 
                                 display: inline-block;
                                 width: 10px;
@@ -488,7 +488,7 @@ export const Month = () => {
                                 border-radius: 50%;
                                 margin-right: 5px;
                             }
-                            .my-order { background-color: #00BCD4; }
+                            .my-order { background-color: #b60557; }
                             .event { background-color: #757575; }
                             .other-order { background-color: #e0e0e0; }
                             .legend { 
@@ -537,7 +537,7 @@ export const Month = () => {
                     // Check for events and orders
                     const hasMyOrders = myOrders.some(o => o.date === formattedDate);
                     const hasEvents = events.some(ev => ev.date === formattedDate);
-                    const hasOtherOrders = orders.some(o => o.date === formattedDate && o.customerId !== parseInt(parms.id));
+                    // const hasOtherOrders = orders.some(o => o.date === formattedDate && o.customerId !== parseInt(parms.id));
                     
                     calendarHTML += `
                         <div class="calendar-day ${isToday ? 'today' : ''}">
@@ -545,7 +545,7 @@ export const Month = () => {
                             <div>
                                 ${hasMyOrders ? '<span class="event-marker my-order"></span>' : ''}
                                 ${hasEvents ? '<span class="event-marker event"></span>' : ''}
-                                ${hasOtherOrders ? '<span class="event-marker other-order"></span>' : ''}
+                                ${/* hasOtherOrders ? '<span class="event-marker other-order"></span>' : '' */''}
                             </div>
                         </div>
                     `;
@@ -627,7 +627,7 @@ export const Month = () => {
                     const formattedDate = splitToDate(date.toLocaleDateString());
                     const eventsToday = events.filter(ev => ev.date === formattedDate);
                     const ordersToday = myOrders.filter(o => o.date === formattedDate);
-                    const otherOrdersToday = orders.filter(o => o.date === formattedDate && o.customerId !== parseInt(parms.id));
+                    // const otherOrdersToday = orders?.filter(o => o.date === formattedDate && o.customerId !== parseInt(parms.id));
                     
                     calendarCells.push(
                         <div 
@@ -645,7 +645,7 @@ export const Month = () => {
                                     {ordersToday.length > 0 && (
                                         <StarsIcon style={{ 
                                             fontSize: '0.9rem', 
-                                            color: '#00BCD4',
+                                            color: '#b60557',
                                             marginLeft: '2px'
                                         }} />
                                     )}
@@ -666,9 +666,9 @@ export const Month = () => {
                                 {eventsToday.length > 0 && (
                                     <div className="event-indicator event"></div>
                                 )}
-                                {otherOrdersToday.length > 0 && (
+                                {/* {otherOrdersToday.length > 0 && (
                                     <div className="event-indicator other-order"></div>
-                                )}
+                                )} */}
                             </div>
                         </div>
                     );

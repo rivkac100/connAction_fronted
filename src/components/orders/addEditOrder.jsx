@@ -129,44 +129,6 @@ export const AddEditOrder = () => {
     navigate(-1);
   };
 
-  const proceedToPayment = () => {
-    if (order.activityId && order.customerId && order.amountOfParticipants > 0) {
-      try {
-        // הוספת השניות לשעה
-        const formattedHour = order.activeHour && !order.activeHour.includes(":00") ? 
-                             order.activeHour + ":00" : 
-                             order.activeHour;
-        
-        // שמירת פרטי ההזמנה בלוקל סטורג' לשימוש בדף התשלום
-        const orderDetails = {
-          ...order,
-          activeHour: formattedHour,
-          totalPrice,
-          activityName
-        };
-        
-        localStorage.setItem('pendingOrder', JSON.stringify(orderDetails));
-        console.log('Order details saved to localStorage:', orderDetails);
-        
-        // סגירת הדיאלוג הנוכחי
-        refDialog.current.close();
-        // ניווט לדף התשלום
-        navigate('payment');
-        
-
-
-
-      } catch (error) {
-        console.error('Error navigating to payment page:', error);
-        alert(`שגיאה במעבר לדף התשלום: ${error.message}`);
-      }
-    } else {
-      alert("לא ניתן לעבור לתשלום - חסרים פרטים חיוניים");
-    }
-  };
-
-  const invoiceRef = useRef(null);
-
   const generateInvoice = () => {
     // מציאת פרטי הלקוח והפעילות
     const customer = customers.find(c => c.instituteId === parseInt(params.id));

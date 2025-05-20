@@ -239,39 +239,7 @@ export const NewEditCustomer = () => {
         if (!validateForm()) {
             return;
         }
-        debugger
-        // if (isEditMode) {
-        //     if (!validateForm()) {
-        //         return;
-        //     }
-
-        //     dispatch(updateCustomerThunk({ details: customer }))
-        //     refDialog.current.close();
-
-        //     navigate('/customers')
-        // }
-        // else {
-        //     if (!validateForm()) {
-        //         return;
-        //     }
-        //     setIsSubmitting(true);
-        //     dispatch(addCustomerThunk({ details: customer }));
-        //     // console.log(token);
-        //     refDialog.current.close();
-
-        //     navigate('/customers')
-
-        // }
-
-        // if (token === 0) {
-        //     // navigate(`/home/${}`);
-        //     console.log("aabb");
-        // }
-        // dispatch(setCurrentUser({ username: user.username, password: user.password, token: -1 }))
-        // navigate("/calender");
-
-
-
+ 
         setIsSubmitting(true);
 
         try {
@@ -300,7 +268,7 @@ export const NewEditCustomer = () => {
             // Navigate after a short delay to show the success message
             setTimeout(() => {
                 refDialog.current.close();
-                navigate('/customers');
+                navigate(-1);
             }, 1500);
         } catch (error) {
             setSnackbar({
@@ -614,7 +582,7 @@ export const NewEditCustomer = () => {
                     <Button
                         variant="outlined"
                         startIcon={<ArrowBackIcon />}
-                        onClick={() => { refDialog.current.close(); navigate('/customers') }}
+                        onClick={() => { refDialog.current.close(); navigate(-1); }}
                         className="cancel-button"
                     >
                         ביטול

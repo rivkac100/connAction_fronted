@@ -31,7 +31,7 @@
   }
   
   .calendar-title span {
-    color: #f58f0a;
+    color: #b60557;
   }
   
   /* Navigation Bar */
@@ -58,19 +58,19 @@
   
   .nav-button:hover {
     background-color: #f5f5f5;
-    border-color: #653370;
+    border-color: #b60557;
   }
   
   .nav-button.active {
-    background-color: #653370;
+    background-color: #b60557;
     color: white;
-    border-color: #653370;
+    border-color: #b60557;
   }
   
   .nav-button.today {
     background-color: white;
-    color: #653370;
-    border-color: #653370;
+    color: #b60557;
+    border-color: #b60557;
   }
   
   .nav-button.today:hover {
@@ -93,8 +93,8 @@
   
   .arrow-button:hover {
     background-color: #f5f5f5;
-    border-color: #653370;
-    color: #653370;
+    border-color: #b60557;
+    color: #b60557;
   }
   
   /* Calendar Grid */
@@ -135,7 +135,7 @@
   
   .calendar-day.today {
     background-color: rgba(129, 100, 148, 0.08);
-    border: 2px solid #653370;
+    border: 2px solid #b60557;
   }
   
   .calendar-day.empty {
@@ -144,7 +144,8 @@
   }
   
   .day-number {
-    font-weight: 500;
+    font-weight: 50 !important;
+    font-size: 1.2rem;
     margin-bottom: 4px;
     display: flex;
     justify-content: space-between;
@@ -152,8 +153,8 @@
   }
   
   .today .day-number {
-    color: #4b1458;
-    font-weight: 600;
+    color: #b60557;
+    font-weight: 10;
   }
   
   .day-content {
@@ -171,7 +172,7 @@
   }
   
   .event-indicator.my-order {
-    background-color: #f58f0a;
+    background-color: #b60557;
   }
   
   .event-indicator.event {
@@ -206,7 +207,7 @@
   }
   
   .legend-color.my-order {
-    background-color: #f58f0a;
+    background-color: #b60557;
   }
   
   .legend-color.event {
@@ -237,7 +238,7 @@
   }
   
   .menu-title span {
-    color: #f58f0a;
+    color: #b60557;
   }
   
   .menu-actions {
@@ -263,11 +264,11 @@
   }
   
   .menu-button.primary {
-    background-color: #f58f0a;
+    background-color: #b60557;
   }
   
   .menu-button.primary:hover {
-    background-color: #f58f0a;
+    background-color: #b60557;
   }
   
   /* Animation Classes */
