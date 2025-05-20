@@ -345,7 +345,7 @@ export const AddEditOrder = () => {
           <Button 
             variant="contained" 
             startIcon={<PaymentIcon />}
-            onClick={proceedToPayment}
+            // onClick={proceedToPayment}
             className="action-button payment-button"
             style={{ backgroundColor: '#b60557', color: 'white' }}
           >
