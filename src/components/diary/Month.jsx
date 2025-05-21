@@ -331,7 +331,31 @@ import { ordersFetchThunk } from "../../store/slices/orders/ordersFetch";
 import { DayView } from "../DayView/dayView";
 import { Week } from "./Week";
 
-// Icons
+
+
+// MUI Components
+import { 
+  Button, 
+  IconButton, 
+  Paper, 
+  Typography, 
+  Tooltip, 
+  Box,
+  Divider,
+  Container,
+  Grid,
+  Badge,
+  Card,
+  CardContent,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+  Fab,
+  Zoom,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import AddPhotoAlternateSharpIcon from '@mui/icons-material/AddPhotoAlternateSharp';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -342,7 +366,12 @@ import PlaylistAddCheckCircleIcon from '@mui/icons-material/PlaylistAddCheckCirc
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Button } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import SettingsIcon from '@mui/icons-material/Settings';
+import PersonIcon from '@mui/icons-material/Person';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 
 import './calendar.css';
@@ -360,7 +389,7 @@ export const Month = () => {
     const [dayDate, setDayDate] = useState(new Date(2025, 2, 24));
     const [monthName, setMonthName] = useState("");
     const [isAnimating, setIsAnimating] = useState(false);
-    
+    const [menuAnchorEl, setMenuAnchorEl] = useState(null);
     // Redux selectors
     const myOrders = useSelector(state => state.manager.MyOrders);
     // const orders = useSelector(state => state.order.orders);
@@ -380,6 +409,13 @@ export const Month = () => {
     // }, [orders, dispatch]);
     
     // Navigation functions
+    const handleMenuOpen = (event) => {
+        setMenuAnchorEl(event.currentTarget);
+    };
+    
+    const handleMenuClose = () => {
+        setMenuAnchorEl(null);
+    };
     const goToNextMonth = () => {
         setIsAnimating(true);
         setTimeout(() => {
@@ -413,7 +449,7 @@ export const Month = () => {
     
     // Action functions
     const newEvent = () => {
-        navigate(`/home/${parms.id}/event`);
+        navigate(`newEvent`);
     };
     
     const openDayWiew = (day) => {
@@ -703,6 +739,56 @@ export const Month = () => {
                                 <AddPhotoAlternateSharpIcon />
                                 אירוע חדש
                             </button>
+                            <button className="menu-button primary" onClick={()=>navigate("newOrder")}>
+                                <AddPhotoAlternateSharpIcon />
+                                הזמנה חדשה
+                            </button>
+                            <IconButton 
+                                aria-label="more options"
+                                onClick={handleMenuOpen}
+                                sx={{ 
+                                    border: '1px solid #ddd',
+                                    borderRadius: '4px',
+                                    color: 'white'
+
+                                }}
+                            >
+                                <MoreVertIcon  />
+                            </IconButton>
+                            
+                            <Menu
+                                anchorEl={menuAnchorEl}
+                                open={Boolean(menuAnchorEl)}
+                                onClose={handleMenuClose}
+                                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                            >
+                                <MenuItem onClick={() => { handleMenuClose(); navigate(`/profile/${parms.id}`); }}>
+                                    <ListItemIcon>
+                                        <PersonIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="פרופיל" />
+                                </MenuItem>
+                                <MenuItem onClick={() => { handleMenuClose(); navigate(`/settings/${parms.id}`); }}>
+                                    <ListItemIcon>
+                                        <SettingsIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="הגדרות" />
+                                </MenuItem>
+                                <MenuItem onClick={() => { handleMenuClose(); navigate(`/help`); }}>
+                                    <ListItemIcon>
+                                        <HelpOutlineIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="עזרה" />
+                                </MenuItem>
+                                <Divider />
+                                <MenuItem onClick={() => { handleMenuClose(); exportToPDF(); }}>
+                                    <ListItemIcon>
+                                        <FileDownloadIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    <ListItemText primary="ייצוא PDF" />
+                                </MenuItem>
+                            </Menu>
                         </div>
                     </div>
                     
@@ -729,7 +815,7 @@ export const Month = () => {
                             {/* Calendar Navigation */}
                             <div className="calendar-nav">
                                 <button className="arrow-button" onClick={goToPrevMonth}>
-                                    <ArrowForwardIosIcon style={{ fontSize: '1rem' }} />
+                                    <ArrowBackIosIcon style={{ fontSize: '1rem' }} />
                                 </button>
                                 
                                 <button className="nav-button today" onClick={toDay}>
@@ -738,7 +824,7 @@ export const Month = () => {
                                 </button>
                                 
                                 <button className="arrow-button" onClick={goToNextMonth}>
-                                    <ArrowBackIosIcon style={{ fontSize: '1rem' }} />
+                                    <ArrowForwardIosIcon style={{ fontSize: '1rem' }} />
                                 </button>
                             </div>
                             
@@ -760,7 +846,7 @@ export const Month = () => {
                                     <span>הזמנות אחרות</span>
                                 </div>
                             </div>
-                    <Button  variant='contained' className='button' onClick={() => navigate(-1)}>back</Button>
+                    <Button  variant='contained' className='nav-button' onClick={() => navigate(-1)}>back</Button>
 
                         </div>
                     )}

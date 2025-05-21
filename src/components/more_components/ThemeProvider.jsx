@@ -16,14 +16,14 @@ const theme = createTheme({
   direction: 'rtl',
   palette: {
     primary: {
-      main: '#FF7043',
-      dark: '#E64A19',
-      light: '#FFAB91',
+      main: '#b60557',
+      dark: '#940446',
+      light: '#e975ab',
     },
     secondary: {
       main: '#8D6E63',
       dark: '#6D4C41',
-      light: '#BCAAA4',
+      light: '#6D4C41',
     },
     background: {
       default: '#F5F5F5',
@@ -78,7 +78,7 @@ const theme = createTheme({
         root: {
           '& .MuiOutlinedInput-root': {
             '&:hover fieldset': {
-              borderColor: '#FF7043',
+              borderColor: '#b60557',
             },
           },
         },

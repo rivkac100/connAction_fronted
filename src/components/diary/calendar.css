@@ -45,32 +45,35 @@
   
   .nav-button {
     background-color: white;
-    color: #424242;
-    border: 1px solid #e0e0e0;
+    color: #424242 !important;
+    border: 3px solid #e0e0e0;
     border-radius: 4px;
     padding: 8px 16px;
     cursor: pointer;
     display: flex;
     align-items: center;
+    width: 100px ;
+    margin-top: 10px !important;
     gap: 8px;
     transition: all 0.2s ease;
   }
   
   .nav-button:hover {
     background-color: #f5f5f5;
-    border-color: #b60557;
+    color: #b60557 !important;
+    border-color: #b60557 !important;
   }
   
   .nav-button.active {
     background-color: #b60557;
-    color: white;
+    color: white !important;
     border-color: #b60557;
   }
   
   .nav-button.today {
     background-color: white;
-    color: #b60557;
-    border-color: #b60557;
+    color: #b60557 !important;
+    border: #b60557 solid 4px;
   }
   
   .nav-button.today:hover {
@@ -86,7 +89,7 @@
     align-items: center;
     background-color: white;
     color: #424242;
-    border: 1px solid #e0e0e0;
+    border: 3px solid #e0e0e0;
     cursor: pointer;
     transition: all 0.2s ease;
   }
@@ -147,6 +150,7 @@
     font-weight: 50 !important;
     font-size: 1.2rem;
     margin-bottom: 4px;
+    color: #b60557;
     display: flex;
     justify-content: space-between;
     align-items: center;

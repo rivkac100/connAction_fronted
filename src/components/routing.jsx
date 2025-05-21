@@ -184,11 +184,15 @@ export const Routing = () => {
             <Route path="newOrder" element={<AddEditOrder />} />
             <Route path="editOrder/:orderId" element={<AddEditOrder />} />
           </Route>
-          {/* <Route path="/newActivity" element={<AddEditActivity />} /> */}
+          <Route path="newActivity" element={<AddEditActivity />} />
           {/* <Route path="editActivity:aid" element={<AddEditActivity />} /> */}
         </Route>
+        <Route path="newActivity" element={<AddEditActivity />} />
         <Route path="upcoming" element={<MyOrders upcoming={true} />} />
-        <Route path="month" element={<Month />} />
+        <Route path="month" element={<Month />}>
+         <Route path="newOrder" element={<AddEditOrder />} />
+         <Route path="newEvent" element={<Event />} />
+        </Route>
         <Route path="week" element={<Week />} />
         <Route path="day/:day/:month/:year" element={<DayView />} />
         <Route path="event/:month/:day/:year" element={<Event />} />

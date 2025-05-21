@@ -26,7 +26,7 @@ import { useDispatch } from 'react-redux';
 
 export const About = () => {
   const navigate = useNavigate();
-  const customers = useSelector(state => state.customer.customers);
+ 
   const dispatch = useDispatch();
   useEffect(() => {
     AOS.init({
@@ -34,9 +34,7 @@ export const About = () => {
       once: true,
     });
   }, []);
-  useEffect(() => {
-    if(customers?.length === 0) dispatch(customersFetchThunk());
-  }, [customers]);
+
 
   const features = [
     {
