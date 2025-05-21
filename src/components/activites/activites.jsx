@@ -36,8 +36,8 @@ import { deleteActivityThunk } from '../../store/slices/activites/deleteActivity
 import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
 import { editActivityName } from '../../store/slices/orders/orderSlice';
 
- 
- export const Activities = () => {
+
+export const Activities = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const param = useParams();
@@ -47,9 +47,9 @@ import { editActivityName } from '../../store/slices/orders/orderSlice';
   const allActivities = useSelector((state) => state.activity.activities);
   const manager = useSelector((state) => state.manager.myManager);
   const isLoading = useSelector((state) => state.activity.isLoading);
-   
+
   const MyUser = useSelector((state) => state.user.myUser); // או כל שם אחר שבו שמרת את סוג המשתמש
-  const isCustomer = MyUser?.userType === 'customer'?true:false; // בדיקה אם המשתמש הוא לקוח
+  const isCustomer = MyUser?.userType === 'customer' ? true : false; // בדיקה אם המשתמש הוא לקוח
   // Local state
   const [showSearchOptions, setShowSearchOptions] = useState(false);
   const [searchFields, setSearchFields] = useState({
@@ -69,7 +69,7 @@ import { editActivityName } from '../../store/slices/orders/orderSlice';
     message: '',
     severity: 'success'
   });
-const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useState([]);
   // הוספת לוגים לדיבוג
   console.log("Component rendering with params:", param);
   console.log("activitiesByMid:", activitiesByMid);
@@ -94,7 +94,7 @@ const [activities, setActivities] = useState([]);
   // טעינת הפעילויות בעת טעינת הקומפוננטה
   useEffect(() => {
     console.log("Fetching activities...");
-    
+
     if (param.mid) {
       console.log("Fetching activities for manager ID:", param.mid);
       dispatch(managersFetchThunkById({ id: param.mid }))
@@ -147,36 +147,36 @@ const [activities, setActivities] = useState([]);
   };
 
   // Filtered activities - עם בדיקות תקינות נוספות
-  const filteredActivities = activities && activities.length > 0 
+  const filteredActivities = activities && activities.length > 0
     ? activities.filter(activity => {
-        if (!activity) return false;
-        
-        // Check if any search field is filled
-        const isSearchActive = Object.values(searchFields).some(value => value !== '');
-        
-        // If no search is active, return all activities
-        if (!isSearchActive) return true;
-        
-        // Check each field with null/undefined checks
-        const matchesName = !searchFields.activityName || 
-          (activity.activityName && activity.activityName.toLowerCase().includes(searchFields.activityName.toLowerCase()));
-        
-        const matchesDescription = !searchFields.activityDescription || 
-          (activity.activityDescription && activity.activityDescription.toLowerCase().includes(searchFields.activityDescription.toLowerCase()));
-        
-        const matchesLocation = !searchFields.location || 
-          (activity.location && activity.location.toLowerCase().includes(searchFields.location.toLowerCase()));
-        
-        // חיפוש מחיר עד המחיר שהוזן (ולא בדיוק את המחיר)
-        const matchesPrice = !searchFields.price || 
-          (activity.price && activity.price <= parseFloat(searchFields.price));
-        
-        const matchesLength = !searchFields.lenOfActivity || 
-          (activity.lenOfActivity && activity.lenOfActivity.toString().includes(searchFields.lenOfActivity));
-        
-        // Return true if all filled fields match
-        return matchesName && matchesDescription && matchesLocation && matchesPrice && matchesLength;
-      })
+      if (!activity) return false;
+
+      // Check if any search field is filled
+      const isSearchActive = Object.values(searchFields).some(value => value !== '');
+
+      // If no search is active, return all activities
+      if (!isSearchActive) return true;
+
+      // Check each field with null/undefined checks
+      const matchesName = !searchFields.activityName ||
+        (activity.activityName && activity.activityName.toLowerCase().includes(searchFields.activityName.toLowerCase()));
+
+      const matchesDescription = !searchFields.activityDescription ||
+        (activity.activityDescription && activity.activityDescription.toLowerCase().includes(searchFields.activityDescription.toLowerCase()));
+
+      const matchesLocation = !searchFields.location ||
+        (activity.location && activity.location.toLowerCase().includes(searchFields.location.toLowerCase()));
+
+      // חיפוש מחיר עד המחיר שהוזן (ולא בדיוק את המחיר)
+      const matchesPrice = !searchFields.price ||
+        (activity.price && activity.price <= parseFloat(searchFields.price));
+
+      const matchesLength = !searchFields.lenOfActivity ||
+        (activity.lenOfActivity && activity.lenOfActivity.toString().includes(searchFields.lenOfActivity));
+
+      // Return true if all filled fields match
+      return matchesName && matchesDescription && matchesLocation && matchesPrice && matchesLength;
+    })
     : [];
 
   // Event handlers
@@ -211,7 +211,7 @@ const [activities, setActivities] = useState([]);
           severity: 'success'
         });
         setOpenDeleteDialog(false);
-        
+
         // רענון הפעילויות לאחר מחיקה
         if (param.mid) {
           dispatch(managersFetchThunkById({ id: param.mid }));
@@ -259,20 +259,20 @@ const [activities, setActivities] = useState([]);
     setShowSearchOptions(!showSearchOptions);
   };
 
-    const handleAddActivity = () => {
-      debugger
-      if (isCustomer) {
-        setSnackbar({
-          open: true,
-          message: 'אין לך הרשאות להוספת פעילויות',
-          severity: 'error'
-        });
-        return;
-      }
-    
-      // אם המשתמש אינו לקוח, ניווט לדף הוספת פעילות
-      navigate('newActivity');
-    };
+  const handleAddActivity = () => {
+    debugger
+    if (isCustomer) {
+      setSnackbar({
+        open: true,
+        message: 'אין לך הרשאות להוספת פעילויות',
+        severity: 'error'
+      });
+      return;
+    }
+
+    // אם המשתמש אינו לקוח, ניווט לדף הוספת פעילות
+    navigate('newActivity');
+  };
 
 
   if (isLoading) {
@@ -303,15 +303,17 @@ const [activities, setActivities] = useState([]);
           </Typography>
 
           <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              className="action-button primary"
-              onClick={handleAddActivity}
-              sx={{ bgcolor: '#af2263', '&:hover': { bgcolor: '#8e0443' } }}
-            >
-              הוסף פעילות
-            </Button>
+            {(param.id === param.mid || !param.id ) &&
+              <Button
+                variant="contained"
+                startIcon={<AddIcon />}
+                className="action-button primary"
+                onClick={handleAddActivity}
+                sx={{ bgcolor: '#af2263', '&:hover': { bgcolor: '#8e0443' } }}
+              >
+                הוסף פעילות
+              </Button>}
+
 
             <Button
               variant="outlined"
@@ -549,24 +551,26 @@ const [activities, setActivities] = useState([]);
                             <ShoppingCartIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="עריכה">
-                          <IconButton
-                            size="small"
-                            className="action-button edit"
-                            onClick={(e) => handleEditClick(e, activity)}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="מחיקה">
-                          <IconButton
-                            size="small"
-                            className="action-button delete"
-                            onClick={(e) => handleDeleteClick(e, activity)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
+                        {(param.id === param.mid || !param.id ) &&
+                          <Tooltip title="עריכה">
+                            <IconButton
+                              size="small"
+                              className="action-button edit"
+                              onClick={(e) => handleEditClick(e, activity)}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </Tooltip>}
+                        {(param.id === param.mid || !param.id ) &&
+                          <Tooltip title="מחיקה">
+                            <IconButton
+                              size="small"
+                              className="action-button delete"
+                              onClick={(e) => handleDeleteClick(e, activity)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>}
                       </Box>
                     </CardActions>
                   </CardContent>
@@ -582,9 +586,9 @@ const [activities, setActivities] = useState([]);
             <Typography variant="body1" color="text.secondary">
               נסה לשנות את פרמטרי החיפוש או לנקות את הסינון.
             </Typography>
-            <Button 
-              variant="outlined" 
-              startIcon={<RefreshIcon />} 
+            <Button
+              variant="outlined"
+              startIcon={<RefreshIcon />}
               onClick={clearSearch}
               sx={{ mt: 2 }}
             >
@@ -613,7 +617,7 @@ const [activities, setActivities] = useState([]);
                     e.target.src = 'https://via.placeholder.com/800x300?text=תמונה+לא+זמינה';
                   }}
                 />
-                
+
                 <Box className="dialog-header-content">
                   <Typography variant="h3" className="dialog-title">
                     {selectedActivity.activityName || "פעילות ללא שם"}
@@ -621,12 +625,12 @@ const [activities, setActivities] = useState([]);
                   <Typography variant="subtitle1" className="dialog-description">
                     {selectedActivity.activityDescription}
                   </Typography>
-                  <Chip 
+                  <Chip
                     label={`קוד פעילות: ${selectedActivity.activityId}`}
                     className="dialog-id-chip"
                   />
                 </Box>
-                
+
                 <IconButton
                   onClick={() => setOpenDetailsDialog(false)}
                   className="dialog-close-button"
@@ -634,7 +638,7 @@ const [activities, setActivities] = useState([]);
                   <CloseIcon />
                 </IconButton>
               </Box>
-              
+
               <DialogContent className="dialog-content">
                 <Grid container spacing={4}>
                   <Grid item xs={12} md={6}>
@@ -642,7 +646,7 @@ const [activities, setActivities] = useState([]);
                       <Typography variant="h5" className="section-title">
                         פרטי הפעילות
                       </Typography>
-                      
+
                       <Box className="detail-item">
                         <Box className="detail-icon-container location">
                           <LocationOnIcon />
@@ -656,7 +660,7 @@ const [activities, setActivities] = useState([]);
                           </Typography>
                         </Box>
                       </Box>
-                      
+
                       <Box className="detail-item">
                         <Box className="detail-icon-container time">
                           <AccessTimeIcon />
@@ -670,7 +674,7 @@ const [activities, setActivities] = useState([]);
                           </Typography>
                         </Box>
                       </Box>
-                      
+
                       <Box className="detail-item">
                         <Box className="detail-icon-container manager">
                           <PersonIcon />
@@ -686,13 +690,13 @@ const [activities, setActivities] = useState([]);
                       </Box>
                     </Box>
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <Box className="pricing-section">
                       <Typography variant="h5" className="section-title">
                         פרטי תשלום
                       </Typography>
-                      
+
                       <Box className="price-box regular">
                         <Box className="price-header">
                           <AttachMoneyIcon className="price-icon" />
@@ -704,7 +708,7 @@ const [activities, setActivities] = useState([]);
                           ₪{selectedActivity.price || 0}
                         </Typography>
                       </Box>
-                      
+
                       <Box className="price-box night">
                         <Box className="price-header">
                           <NightlightIcon className="price-icon" />
@@ -720,10 +724,12 @@ const [activities, setActivities] = useState([]);
                   </Grid>
                 </Grid>
               </DialogContent>
-              
+
               <Box className="dialog-actions">
-                <Button 
-                  variant="outlined" 
+                {(param.id === param.mid || !param.id ) &&
+               
+                <Button
+                  variant="outlined"
                   startIcon={<EditIcon />}
                   className="dialog-action-button edit"
                   onClick={() => {
@@ -732,9 +738,9 @@ const [activities, setActivities] = useState([]);
                   }}
                 >
                   עריכת פעילות
-                </Button>
-                <Button 
-                  variant="contained" 
+                </Button>}
+                <Button
+                  variant="contained"
                   startIcon={<ShoppingCartIcon />}
                   className="dialog-action-button order"
                   onClick={() => {
@@ -745,8 +751,8 @@ const [activities, setActivities] = useState([]);
                 >
                   הזמן פעילות
                 </Button>
-                <Button 
-                  variant="contained" 
+                <Button
+                  variant="contained"
                   className="dialog-action-button close"
                   onClick={() => setOpenDetailsDialog(false)}
                 >
