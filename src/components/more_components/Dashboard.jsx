@@ -212,14 +212,7 @@ export const Dashboard = () => {
                 </Typography>
                 <Divider />
                 <Box className="quick-actions-list">
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    className="quick-action-button"
-                    onClick={() => navigate(`newOrder`)}
-                  >
-                    הוספת אירוע חדש
-                  </Button>
+            
                   <Button
                     variant="contained"
                     fullWidth
