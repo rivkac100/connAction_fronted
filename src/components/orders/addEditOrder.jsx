@@ -15,6 +15,9 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PaymentIcon from '@mui/icons-material/Payment';
 import { customersFetchThunk } from "../../store/slices/customers/customersFetch";
 import { activitiesFetch } from "../../store/slices/activites/activitiesFetch";
+import { customersFetchThunkById } from "../../store/slices/customers/customerFetchThunkById";
+import { timeIsAvailableThunk } from "../../store/slices/managers/timeIsAvailableThunk";
+import { activityFetchThunkById } from "../../store/slices/activites/activityFetchThunkById";
 
 export const AddEditOrder = () => {
   const params = useParams();
@@ -23,17 +26,17 @@ export const AddEditOrder = () => {
   const myOrder = useSelector(state => state.order.order);
   const isM = useSelector(state => state.manager.isM);
   const activityName = useSelector(state => state.order.activityName);
-  const activities = useSelector(state => state.activity.activities);
-  const customers = useSelector(state => state.customer.customers);
+  const activity = useSelector(state => state.activity.activity);
+  const customer = useSelector(state => state.user.MyUser);
+  const isAvailable = useSelector(state => state.manager.isAvailable);
+  const [order, setOrder] = useState(myOrder ? myOrder : {
 
-  const [order, setOrder] = useState(myOrder? myOrder : {
-
-    customerId: params.id? parseInt(params.id) : 0,
+    customerId: params.id ? parseInt(params.id) : 0,
     payment: 0,
     amountOfParticipants: 0,
     date: "",
     activeHour: "",
-    activityId: params.idActivity? parseInt(params.idActivity) : 0
+    activityId: params.idActivity ? parseInt(params.idActivity) : 0
   });
   const [edit, setEdit] = useState(false);
   const refDialog = useRef();
@@ -41,11 +44,11 @@ export const AddEditOrder = () => {
 
   useEffect(() => {
     console.log("AddEditOrder useEffect running with params:", params);
-    if(activities.length === 0) {
-      dispatch(activitiesFetch());
+    if (!activity) {
+      dispatch(activityFetchThunkById({ id: parseInt(params.idActivity) }));
     }
-    if(customers.length === 0) {
-      dispatch(customersFetchThunk());
+    if (!customer) {
+      dispatch(customersFetchThunkById({ id: parseInt(params.id) }));
     }
     // Initialize order with default values if not already set
     if (!order) {
@@ -57,19 +60,19 @@ export const AddEditOrder = () => {
         activityId: params.idActivity ? parseInt(params.idActivity) : 0
       });
     }
-    
+
     if (params.id) {
       setOrder(prev => ({ ...prev, customerId: parseInt(params.id) }));
     }
-    
+
     if (params.idActivity) {
       setOrder(prev => ({ ...prev, activityId: parseInt(params.idActivity) }));
       console.log("Setting activity ID:", params.idActivity);
-      
+
       // Find activity price
-      const activity = activities?.find(a => a.activityId === parseInt(params.idActivity));
+     // const activity = activities?.find(a => a.activityId === parseInt(params.idActivity));
       console.log("Found activity:", activity);
-      
+
       if (activity && order?.amountOfParticipants) {
         setTotalPrice(activity.price * order.amountOfParticipants);
       }
@@ -78,7 +81,7 @@ export const AddEditOrder = () => {
       dispatch(findOrderThunk({ id: params.orderId }));
       setEdit(true);
     }
-    
+
     // Make sure the dialog exists before trying to open it
     if (refDialog.current) {
       console.log("Opening dialog");
@@ -86,12 +89,12 @@ export const AddEditOrder = () => {
     } else {
       console.error("Dialog reference is not available");
     }
-  }, [params, activities]); // Add dependencies
+  }, [params]); // Add dependencies
 
   // Recalculate price when amount changes
   useEffect(() => {
     if (order.activityId && order.amountOfParticipants) {
-      const activity = activities.find(a => a.activityId === parseInt(params.idActivity));
+     // const activity = activities.find(a => a.activityId === parseInt(params.idActivity));
       if (activity) {
         setTotalPrice(activity.price * order.amountOfParticipants);
       }
@@ -103,9 +106,9 @@ export const AddEditOrder = () => {
       // יצירת עותק של ההזמנה עם הוספת השניות לשעה
       const orderToSave = {
         ...order,
-        activeHour: order.activeHour && !order.activeHour.includes(":00") ? 
-                    order.activeHour + ":00" : 
-                    order.activeHour
+        activeHour: order.activeHour && !order.activeHour.includes(":00") ?
+          order.activeHour + ":00" :
+          order.activeHour
       };
 
       if (edit) {
@@ -123,7 +126,9 @@ export const AddEditOrder = () => {
       alert("לא ניתן להוסיף/לערוך - חסרים פרטים חיוניים");
     }
   };
-
+  const chack = () => {
+    dispatch(timeIsAvailableThunk({ id: order.managerId, date: order.date, time: order.activeHour, len: activity.lenOfActivity }));
+  }
   const cancel = () => {
     refDialog.current.close();
     navigate(-1);
@@ -131,9 +136,9 @@ export const AddEditOrder = () => {
 
   const generateInvoice = () => {
     // מציאת פרטי הלקוח והפעילות
-    const customer = customers.find(c => c.instituteId === parseInt(params.id));
-    const activity = activities.find(a => a.activityId === parseInt(params.idActivity));  
-    
+    // const customer = customers.find(c => c.instituteId === parseInt(params.id));
+    // const activity = activities.find(a => a.activityId === parseInt(params.idActivity));  
+
     if (!customer || !activity) {
       alert("לא ניתן להפיק חשבונית - חסרים פרטים");
       return;
@@ -148,7 +153,7 @@ export const AddEditOrder = () => {
     invoiceElement.style.position = 'absolute';
     invoiceElement.style.left = '-9999px';
     invoiceElement.style.top = '-9999px';
-    
+
     // הוספת תוכן החשבונית
     invoiceElement.innerHTML = `
       <div style="text-align: center; margin-bottom: 30px;">
@@ -203,15 +208,15 @@ export const AddEditOrder = () => {
         <p style="font-size: 14px; color: #666;">תודה שבחרתם בנו!</p>
       </div>
     `;
-    
+
     // הוספת האלמנט לדף
     document.body.appendChild(invoiceElement);
-    
+
     // המרת האלמנט לתמונה באמצעות html2canvas
     html2canvas(invoiceElement, { scale: 2 }).then(canvas => {
       // הסרת האלמנט הזמני
       document.body.removeChild(invoiceElement);
-      
+
       // יצירת PDF מהתמונה
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
@@ -219,14 +224,14 @@ export const AddEditOrder = () => {
         unit: 'mm',
         format: 'a4'
       });
-      
+
       // חישוב יחס גובה/רוחב של התמונה
       const imgWidth = 210; // רוחב דף A4 במ"מ
       const imgHeight = canvas.height * imgWidth / canvas.width;
-      
+
       // הוספת התמונה ל-PDF
       pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      
+
       // שמירת ה-PDF
       pdf.save(`חשבונית-${order.customerId}-${Date.now()}.pdf`);
     });
@@ -247,9 +252,9 @@ export const AddEditOrder = () => {
             </Typography>
           )}
         </Box>
-        
+
         <Divider className="divider" />
-        
+
         <Box className="order-form">
           <Grid container spacing={3}>
             {!params.id && (
@@ -264,7 +269,7 @@ export const AddEditOrder = () => {
                 />
               </Grid>
             )}
-            
+
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
@@ -276,7 +281,7 @@ export const AddEditOrder = () => {
                 className="form-field"
               />
             </Grid>
-            
+
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
@@ -289,7 +294,7 @@ export const AddEditOrder = () => {
                 className="form-field"
               />
             </Grid>
-            
+
             {!params.idActivity && (
               <Grid item xs={12} md={6}>
                 <TextField
@@ -302,7 +307,7 @@ export const AddEditOrder = () => {
                 />
               </Grid>
             )}
-            
+
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
@@ -320,7 +325,7 @@ export const AddEditOrder = () => {
                 className="form-field"
               />
             </Grid>
-            
+
             <Grid item xs={12}>
               <Box className="price-display">
                 <Typography variant="h5">
@@ -330,30 +335,43 @@ export const AddEditOrder = () => {
             </Grid>
           </Grid>
         </Box>
-        
+
         <Box className="order-actions">
-          <Button 
-            variant="contained" 
+          {!isAvailable &&
+            <Button
+              variant="contained"
+              startIcon={<SaveIcon />}
+              onClick={chack}
+
+              className="action-button save-button"
+              style={{ backgroundColor: '#b60557', color: 'white' }}
+            >
+              בדיקה האם הזמן זמין
+            </Button>}
+          {isAvailable && <Button
+            variant="contained"
             startIcon={<SaveIcon />}
             onClick={saveOrder}
+            disabled={!isAvailable}
             className="action-button save-button"
             style={{ backgroundColor: '#b60557', color: 'white' }}
           >
             שמור
-          </Button>
-          
-          <Button 
-            variant="contained" 
+          </Button>}
+
+          <Button
+            variant="contained"
             startIcon={<PaymentIcon />}
             // onClick={proceedToPayment}
             className="action-button payment-button"
             style={{ backgroundColor: '#b60557', color: 'white' }}
+
           >
             המשך לתשלום
           </Button>
-          
-          <Button 
-            variant="contained" 
+
+          <Button
+            variant="contained"
             startIcon={<ReceiptIcon />}
             onClick={generateInvoice}
             className="action-button invoice-button"
@@ -361,9 +379,9 @@ export const AddEditOrder = () => {
           >
             הפק חשבונית
           </Button>
-          
-          <Button 
-            variant="contained" 
+
+          <Button
+            variant="contained"
             startIcon={<ArrowBackIcon />}
             onClick={cancel}
             className="action-button back-button"

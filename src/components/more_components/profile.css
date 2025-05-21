@@ -26,9 +26,9 @@
   .edit-button, .save-button, .cancel-button {
     color: #757575;
   }
-  div{
+  /* div{
     color:;
-  }
+  } */
   .edit-button:hover {
     color:  #b60557;
     background-color: rgba(255, 112, 67, 0.1);

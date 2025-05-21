@@ -7,6 +7,7 @@ import { managersFetchThunkById } from './managerFetchThunkById';
 import { updateManagerThunk } from './updateManagerThunk';
 import { ordersByMangerIdThunk } from './ordersByMangerIdThunk';
 import { customersByMangerIdThunk } from './customersByMangerIdThunk';
+import { timeIsAvailableThunk } from './timeIsAvailableThunk';
 
 const INITIAL_STATE_MANAGER = {
     managerName: "",
@@ -19,7 +20,7 @@ const INITIAL_STATE_MANAGER = {
     failed: false,
     MyCustomers:[],
     MyOrders:[],
-
+    isEmpty: false,
     isM:-1
 }
 
@@ -135,7 +136,22 @@ export const managersSlice = createSlice({
             state.myManager=action.payload;
             state.activities=action.payload.activities;
         });
-
+        builder.addCase(timeIsAvailableThunk.pending, (state, action) => {
+        });
+        //הוספת מקרה שהט'נק הסתיים בהצלחה
+        builder.addCase(timeIsAvailableThunk.fulfilled, (state, action) => {
+            console.log(action.payload);
+            debugger
+            state.isEmpty = action.payload;
+            console.log(state.isEmpty);
+             state.sucsses = true;
+        });
+        //הוספת מקרה שהט'נק נכשל
+        builder.addCase(timeIsAvailableThunk.rejected, (state, action) => {
+            console.log(action.payload);
+            state.isEmpty=action.payload;
+            state.failed = true;
+        });
 
 
     }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Await, Outlet, useNavigate, useParams } from 'react-router-dom';
 import './activites.css';
 
 // Material UI
@@ -35,6 +35,7 @@ import { deleteActivityThunk } from '../../store/slices/activites/deleteActivity
 //import { activitiesByMangerIdThunk } from '../../store/slices/managers/ordersByMangerIdThunk';
 import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
 import { editActivityName } from '../../store/slices/orders/orderSlice';
+import { findUserById } from '../../store/slices/users/findUserById';
 
 
 export const Activities = () => {
@@ -90,7 +91,13 @@ export const Activities = () => {
       }
     }
   }, [activitiesByMid, allActivities, param.mid]);
-
+  useEffect(async() => {
+    if(!MyUser){
+      await dispatch(findUserById({userType:"customer" ,id: param.id }))
+      if(!MyUser){
+       await dispatch(findUserById({userType:"manager" ,id: param.id }));
+      }}
+  }, [ param.id]);
   // טעינת הפעילויות בעת טעינת הקומפוננטה
   useEffect(() => {
     console.log("Fetching activities...");
@@ -542,7 +549,8 @@ export const Activities = () => {
                     </Box>
                     <CardActions className="card-actions">
                       <Box className="action-buttons">
-                        <Tooltip title="הזמן פעילות">
+                        {(isCustomer || param.id === param.mid) &&
+                         <Tooltip title="הזמן פעילות">
                           <IconButton
                             size="small"
                             className="action-button order"
@@ -550,7 +558,7 @@ export const Activities = () => {
                           >
                             <ShoppingCartIcon />
                           </IconButton>
-                        </Tooltip>
+                        </Tooltip>}
                         {(param.id === param.mid || !param.id ) &&
                           <Tooltip title="עריכה">
                             <IconButton
@@ -739,6 +747,7 @@ export const Activities = () => {
                 >
                   עריכת פעילות
                 </Button>}
+                {(isCustomer || param.id === param.mid)&&
                 <Button
                   variant="contained"
                   startIcon={<ShoppingCartIcon />}
@@ -750,7 +759,7 @@ export const Activities = () => {
                   sx={{ bgcolor: '#af2263', '&:hover': { bgcolor: '#8e0443' } }}
                 >
                   הזמן פעילות
-                </Button>
+                </Button>}
                 <Button
                   variant="contained"
                   className="dialog-action-button close"

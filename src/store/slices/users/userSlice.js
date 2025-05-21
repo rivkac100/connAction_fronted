@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { findUserByPassId } from './findUserByPassId';
+import { findUserById } from './findUserById';
 
 
 const INITIAL_STATE_USER = {
@@ -37,6 +38,22 @@ export const userSlice = createSlice({
         });
         //הוספת מקרה שהט'נק נכשל
         builder.addCase(findUserByPassId.rejected, (state, action) => {
+            console.log(action.payload);
+            state.myUser=action.payload;
+            state.failed = true;
+        });
+        builder.addCase(findUserById.pending, (state, action) => {
+        });
+        //הוספת מקרה שהט'נק הסתיים בהצלחה
+        builder.addCase(findUserById.fulfilled, (state, action) => {
+            console.log(action.payload);
+            debugger
+            state.myUser = action.payload;
+            console.log(state.myUser);
+             state.sucsses = true;
+        });
+        //הוספת מקרה שהט'נק נכשל
+        builder.addCase(findUserById.rejected, (state, action) => {
             console.log(action.payload);
             state.myUser=action.payload;
             state.failed = true;
