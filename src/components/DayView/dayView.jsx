@@ -87,7 +87,7 @@
 //         </section>
 //         <header className='day'>
 //             {hours && hours.map(h => {
-               
+
 //                     var coll = aqToday.find(q => q.queue.hour === h.hour)
 //                     var col = coll != null ? 'salmon' : 'white'
 //                     debugger
@@ -97,7 +97,7 @@
 //                 //         col = 'yellow'
 
 //                 // }
-                
+
 //                 return <section className='rowHour'
 //                     style={{ backgroundColor: col }}>
 //                     {
@@ -109,9 +109,9 @@
 //                             </> : ""}
 //                     {fixedQ?.id !== undefined ?
 //                         <>
-  
+
 //                             {/* <p>{allPatients.find(p => p.id == fixedQ.idPatient)?.firstName} {allPatients.find(p => p.id == fixedQ.idPatient)?.lastName} {fixedQ.description}</p> */}
-                            
+
 //                         </>
 //                         : ""}
 
@@ -126,7 +126,7 @@
 // }
 // בס"ד
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 // Icons
@@ -138,34 +138,47 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
 import './dayView.css';
+import { findManagerThunk } from '../../store/slices/managers/findManagerThunk';
+import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
 
 export const DayView = () => {
     const daysAtHebrew = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'שבת'];
     const parms = useParams();
-    const [date, setDate] = useState(new Date(parms.year, parms.month-1, parms.day));
+    const [date, setDate] = useState(new Date(parms.year, parms.month - 1, parms.day));
     const dispatch = useDispatch();
-    const [aqToday, setAqToday] = useState([]);
-    const [fqToday, setFqToday] = useState([]);
+    const [eventToday, setEventToday] = useState([]);
+    //const [orderToDay, setOrderToday] = useState([]);
     const navi = useNavigate();
     const refDialog = useRef();
-    
+    const manager = useSelector((state) => state.manager.myManager);
+    const events = useSelector((state) => state.manager.MyEvents);
     const monthNames = [
         'ינואר', 'פבואר', 'מרץ', 'אפריל', 'מאי', 'יוני',
         'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'
     ];
-    
+
     let qType = 'o';
-    
+
     useEffect(() => {
+        debugger
+        if (!manager.id) {
+            dispatch(managersFetchThunkById({ id: parms.mid }));
+
+            console.log(manager);
+            console.log(events);
+            setEventToday(events.find(e => e.date.getFullYear() === date.getFullYear() && e.date.getMonth() === date.getMonth() && e.date.getDate() === date.getDate()));
+            console.log(eventToday);
+        }
         refDialog.current.showModal();
+
         // dispatch(getAllStartAQueuesThunk())
     }, []);
-    
+
     const back = () => {
         refDialog.current.close();
-        navi(`/home/${parms.id}/month`);
+        navi(-1);
     };
-    
+
     const hours = [
         { hour: 0, hourString: "00:00" },
         { hour: 1, hourString: "01:00" },
@@ -192,35 +205,35 @@ export const DayView = () => {
         { hour: 22, hourString: "22:00" },
         { hour: 23, hourString: "23:00" }
     ];
-    
+
     const add = (q) => {
-        console.log(qType, "ttttttttyyyyyppppppeeee");
-        let q1 = JSON.stringify(q);
-        navi('/addQueue/' + q1 + "/" + qType);
+        console.log("ttttttttyyyyyppppppeeee");
+        // let q1 = JSON.stringify(q);
+        // navi('/addQueue/' + q1 + "/" + qType);
     };
-    
+
     // Get current hour for time indicator
     const getCurrentHourPosition = () => {
         const now = new Date();
         const currentHour = now.getHours();
         const currentMinute = now.getMinutes();
-        
+
         // Calculate position percentage based on current time
         const hourIndex = hours.findIndex(h => h.hour === currentHour);
         if (hourIndex === -1) return null;
-        
+
         const positionPercentage = (hourIndex * 60 + currentMinute) / (24 * 60) * 100;
         return positionPercentage;
     };
-    
+
     // Check if the date is today
     const isToday = () => {
         const today = new Date();
-        return date.getDate() === today.getDate() && 
-               date.getMonth() === today.getMonth() && 
-               date.getFullYear() === today.getFullYear();
+        return date.getDate() === today.getDate() &&
+            date.getMonth() === today.getMonth() &&
+            date.getFullYear() === today.getFullYear();
     };
-    
+
     // Format current time for display
     const getCurrentTimeString = () => {
         const now = new Date();
@@ -228,7 +241,7 @@ export const DayView = () => {
         const minutes = now.getMinutes().toString().padStart(2, '0');
         return `${hours}:${minutes}`;
     };
-    
+
     return (
         <dialog className="day-view-dialog" ref={refDialog}>
             {/* Header Section */}
@@ -240,47 +253,49 @@ export const DayView = () => {
                     <div className="day-name">יום {daysAtHebrew[(date.getDay())]}</div>
                 </div>
             </div>
-            
+
             {/* Hours Container */}
             <div className="hours-container">
                 {/* Current time indicator (only shown if the date is today) */}
                 {isToday() && (
-                    <div 
-                        className="current-time-indicator" 
+                    <div
+                        className="current-time-indicator"
                         style={{ top: `${getCurrentHourPosition()}%` }}
                     >
                         <span className="current-time-label">{getCurrentTimeString()}</span>
                     </div>
                 )}
-                
+
                 {hours.map(h => {
                     // Find available queue for this hour
-                    const aq = aqToday.find(q => q.queue.hour === h.hour);
+                    // const eventNow=eventToday.find(e => e.hour === h.hour);
+                    // const aq = eventToday.find(q => q.queue.hour === h.hour);
                     // Find fixed queue for this hour
-                    const fixedQ = fqToday.find(fq => fq.startHour === h.hour);
-                    
+                    //const fixedQ = fqToday.find(fq => fq.startHour === h.hour);
+                    const evnt = eventToday?.findIndex(e => e.hour >= h.hour && e.hour < h.hour + 1);
+
                     // Determine row class based on availability
-                    let rowClass = "hour-row";
-                    if (aq) rowClass += " available";
-                    if (fixedQ) rowClass += " booked";
-                    
+                    // let rowClass = "hour-row";
+                    // if (aq) rowClass += " available";
+                    // if (evnt) rowClass += " booked";
+
                     return (
-                        <div className={rowClass} key={h.hour}>
+                        <div key={h.hour}>
                             <div className="hour-time">{h.hourString}</div>
-                            
+
                             <div className="hour-content">
                                 {/* Show patient info if there's a fixed queue */}
-                                {fixedQ?.id !== undefined && (
+                                {eventToday[evnt]?.title !== undefined && (
                                     <div className="patient-info">
                                         {/* Patient name would go here */}
-                                        {fixedQ.description || "פגישה מתוכננת"}
+                                        {eventToday[evnt]?.description || "פגישה מתוכננת"}
                                     </div>
                                 )}
-                                
+
                                 {/* Show action buttons if there's an available queue */}
-                                {aq?.queue !== undefined && (
+                                {/* {aq?.queue !== undefined && (
                                     <>
-                                        {/* Add queue button */}
+                                        
                                         <button 
                                             className="action-button" 
                                             onClick={() => add(aq.queue)}
@@ -289,7 +304,7 @@ export const DayView = () => {
                                             <AddCircleOutlineIcon fontSize="small" />
                                         </button>
                                         
-                                        {/* Woman queue button */}
+                                        Woman queue button
                                         {aq?.flagWoman === true && (
                                             <button 
                                                 className="action-button woman" 
@@ -300,7 +315,7 @@ export const DayView = () => {
                                             </button>
                                         )}
                                         
-                                        {/* Double queue button */}
+                                        Double queue button
                                         {aq?.flagDouble === true && (
                                             <button 
                                                 className="action-button double" 
@@ -311,12 +326,12 @@ export const DayView = () => {
                                             </button>
                                         )}
                                     </>
-                                )}
+                                )} */}
                             </div>
                         </div>
                     );
                 })}
-                
+
                 {/* Empty state if no hours available */}
                 {hours.length === 0 && (
                     <div className="empty-state">
@@ -325,10 +340,10 @@ export const DayView = () => {
                     </div>
                 )}
             </div>
-            
+
             {/* Footer with close button */}
-            <div className="day-view-footer">
-                <button className="close-button" onClick={back}>
+            <div className="day-view-footer"  >
+                <button className="close-button" onClick={back} style={{ backgroundColor: 'pink', color: 'white', border: 'none' }}>
                     <CloseIcon fontSize="small" />
                     סגור
                 </button>

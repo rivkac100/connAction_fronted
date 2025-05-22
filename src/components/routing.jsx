@@ -191,6 +191,7 @@ export const Routing = () => {
         <Route path="upcoming" element={<MyOrders upcoming={true} />} />
         <Route path="month" element={<Month />}>
          <Route path="newOrder" element={<AddEditOrder />} />
+         <Route path="day/:day/:month/:year" element={<DayView />} />
          <Route path="newEvent" element={<Event />} />
         </Route>
         <Route path="week" element={<Week />} />

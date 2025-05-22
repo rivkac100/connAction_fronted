@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 export const addEventThunk = createAsyncThunk(
     'addEventThunk',
     async ({ details}) => {
-
+        debugger
         const response = await fetch(`https://localhost:7044/api/Event/Add`,
             {
                 method: 'POST',

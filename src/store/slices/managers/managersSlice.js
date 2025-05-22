@@ -20,6 +20,7 @@ const INITIAL_STATE_MANAGER = {
     failed: false,
     MyCustomers:[],
     MyOrders:[],
+    MyEvents:[],
     isEmpty: false,
     isM:-1
 }
@@ -135,6 +136,7 @@ export const managersSlice = createSlice({
             // state.MyOrders = action.payload.orders;
             state.myManager=action.payload;
             state.activities=action.payload.activities;
+            state.MyEvents=action.payload.events;
         });
         builder.addCase(timeIsAvailableThunk.pending, (state, action) => {
         });

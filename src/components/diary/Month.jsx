@@ -453,7 +453,7 @@ export const Month = () => {
     };
     
     const openDayWiew = (day) => {
-        navigate(`/home/${parms.id}/day/${day.getDate()}/${day.getMonth() + 1}/${day.getFullYear()}`);
+        navigate(`day/${day.getDate()}/${day.getMonth() + 1}/${day.getFullYear()}`);
     };
     
     // Helper functions

@@ -165,6 +165,7 @@ import './event.css';
 
 export const Event = () => {
     const navigate = useNavigate();
+    const param=useParams();
     const evnt = useSelector(state => state.events.evnt);
     const dispatch = useDispatch();
     const { id, month, day, year, eventId } = useParams();
@@ -178,6 +179,8 @@ export const Event = () => {
     const refDialog = useRef();
 
     useEffect(() => {
+        setThisEvent({...thisEvent, managerId: parseInt(param.mid)});
+        console.log(thisEvent);
         refDialog.current.showModal();
     }, []);
 
@@ -204,8 +207,12 @@ export const Event = () => {
     };
 
     const saveEvent = async () => {
+        debugger
+
+        debugger
         if(thisEvent.date && thisEvent.title) {
             if(eventId) {
+               
                 dispatch(editEventThunk({details: thisEvent}));
             } else {
                 dispatch(addEventThunk({details: thisEvent}));
@@ -223,7 +230,8 @@ export const Event = () => {
                 time: time, 
                 description: description, 
                 id: eventId,
-                lenOfEvent: lenOfEvent 
+                lenOfEvent: lenOfEvent ,
+                managerId:param.mid
             }
         }));
         refDialog.current.close();
