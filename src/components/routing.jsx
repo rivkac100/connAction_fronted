@@ -157,14 +157,16 @@ export const Routing = () => {
           <Route path="payment" element={<Payment />} />
           </Route>
         </Route>
-
+        <Route path="newOrder" element={<AddEditOrder />} />
         <Route path="upcoming" element={<MyOrders upcoming={true} />} />
         <Route path="myOrders" element={<MyOrders />}>
           <Route path="newOrder" element={<AddEditOrder />} />
           <Route path="editOrder/:orderId" element={<AddEditOrder />} />
         </Route>
         <Route path="profile/:mid" element={<Profile />} />
-        <Route path="activities" element={<Activities />} />
+        <Route path="activities" element={<Activities />} >
+          <Route path="newOrder/:idActivity" element={<AddEditOrder />} />
+         </Route>
       </Route>
 
       {/* Order routes */}

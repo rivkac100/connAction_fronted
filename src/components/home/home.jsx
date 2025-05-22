@@ -521,7 +521,7 @@ export const Home = () => {
         </Typography>
      
         {/* Navigation Buttons - Only show if not viewing managers */}
-        {view && (
+        
           <Box 
             className="navigation-section"
             sx={{
@@ -553,7 +553,7 @@ export const Home = () => {
                 <NavButton 
                   icon={<WorkHistoryIcon />} 
                   label="היסטוריית הזמנות" 
-                  onClick={() => navigate(`myOrders`)}
+                  onClick={() => {setView(false);navigate(`myOrders`)}}
                 />
               </Box>
               
@@ -578,7 +578,7 @@ export const Home = () => {
               )}
               
               <Box>
-                <NavButton 
+                <NavButton  
                   icon={<ExploreIcon />} 
                   label="פעילויות וטיולים" 
                   onClick={() => { setView(false); navigate(`activities`); }}
@@ -586,11 +586,12 @@ export const Home = () => {
               </Box>
             </Box>
           </Box>
-        )}
+        
       </Box>
-
+     
       {/* Managers Grid */}
       <Container maxWidth="xl">
+ 
         <Box className="content-area">
           {view && (
             <Box className="managers-section">
@@ -680,8 +681,10 @@ export const Home = () => {
             </Box>
           )}
           <Outlet />
-        </Box>
+        </Box> 
+       
       </Container>
+     
       
       {/* CSS גלובלי לאנימציות */}
       <style jsx global>{`

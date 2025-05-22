@@ -166,44 +166,63 @@ export const DayView = () => {
 
             console.log(manager);
             console.log(events);
-            setEventToday(events.find(e => e.date.getFullYear() === date.getFullYear() && e.date.getMonth() === date.getMonth() && e.date.getDate() === date.getDate()));
+            const formattedDate = splitToDate(date.toLocaleDateString());
+            setEventToday(events.filter(ev => ev.date === formattedDate));
             console.log(eventToday);
         }
         refDialog.current.showModal();
 
         // dispatch(getAllStartAQueuesThunk())
     }, []);
-
+    const splitToDate = (d) => {
+        const s = d.split("/");
+        if (parseInt(s[0]) < 10)
+            s[0] = "0" + s[0];
+        if (parseInt(s[1]) < 10)
+            s[1] = "0" + s[1];
+        d = s[2] + "-" + s[0] + "-" + s[1];
+        return d;
+    };
+   const splitToHour=(d)=>{
+    const s = d.split(":");
+        if (parseInt(s[0]) < 10)
+            s[0] = "0" + s[0];
+        if (parseInt(s[1]) < 10)
+            s[1] = "0" + s[1];
+        d = s[0] + ":" + s[1] + ":00";
+        
+        return parseInt(s[0]);
+   }
     const back = () => {
         refDialog.current.close();
         navi(-1);
     };
 
     const hours = [
-        { hour: 0, hourString: "00:00" },
-        { hour: 1, hourString: "01:00" },
-        { hour: 2, hourString: "02:00" },
-        { hour: 3, hourString: "03:00" },
-        { hour: 4, hourString: "04:00" },
-        { hour: 5, hourString: "05:00" },
-        { hour: 6, hourString: "06:00" },
-        { hour: 7, hourString: "07:00" },
-        { hour: 8, hourString: "08:00" },
-        { hour: 9, hourString: "09:00" },
-        { hour: 10, hourString: "10:00" },
-        { hour: 11, hourString: "11:00" },
-        { hour: 12, hourString: "12:00" },
-        { hour: 13, hourString: "13:00" },
-        { hour: 14, hourString: "14:00" },
-        { hour: 15, hourString: "15:00" },
-        { hour: 16, hourString: "16:00" },
-        { hour: 17, hourString: "17:00" },
-        { hour: 18, hourString: "18:00" },
-        { hour: 19, hourString: "19:00" },
-        { hour: 20, hourString: "20:00" },
-        { hour: 21, hourString: "21:00" },
-        { hour: 22, hourString: "22:00" },
-        { hour: 23, hourString: "23:00" }
+        { hour: 0, hourString: "00:00:00" },
+        { hour: 1, hourString: "01:00:00" },
+        { hour: 2, hourString: "02:00:00" },
+        { hour: 3, hourString: "03:00:00" },
+        { hour: 4, hourString: "04:00:00" },
+        { hour: 5, hourString: "05:00:00" },
+        { hour: 6, hourString: "06:00:00" },
+        { hour: 7, hourString: "07:00:00" },
+        { hour: 8, hourString: "08:00:00" },
+        { hour: 9, hourString: "09:00:00" },
+        { hour: 10, hourString: "10:00:00" },
+        { hour: 11, hourString: "11:00:00" },
+        { hour: 12, hourString: "12:00:00" },
+        { hour: 13, hourString: "13:00:00" },
+        { hour: 14, hourString: "14:00:00" },
+        { hour: 15, hourString: "15:00:00" },
+        { hour: 16, hourString: "16:00:00" },
+        { hour: 17, hourString: "17:00:00" },
+        { hour: 18, hourString: "18:00:00" },
+        { hour: 19, hourString: "19:00:00" },
+        { hour: 20, hourString: "20:00:00" },
+        { hour: 21, hourString: "21:00:00" },
+        { hour: 22, hourString: "22:00:00" },
+        { hour: 23, hourString: "23:00:00" }
     ];
 
     const add = (q) => {
@@ -215,6 +234,10 @@ export const DayView = () => {
     // Get current hour for time indicator
     const getCurrentHourPosition = () => {
         const now = new Date();
+        
+        //new time
+       //הקצאת שעה חדש
+       
         const currentHour = now.getHours();
         const currentMinute = now.getMinutes();
 
@@ -272,23 +295,24 @@ export const DayView = () => {
                     // const aq = eventToday.find(q => q.queue.hour === h.hour);
                     // Find fixed queue for this hour
                     //const fixedQ = fqToday.find(fq => fq.startHour === h.hour);
-                    const evnt = eventToday?.findIndex(e => e.hour >= h.hour && e.hour < h.hour + 1);
 
+                    const evnt = eventToday?.find(e =>  splitToHour(e.time) >= h.hour && splitToHour(e.time) < h.hour + 1);
+                    console.log(evnt);
                     // Determine row class based on availability
                     // let rowClass = "hour-row";
                     // if (aq) rowClass += " available";
                     // if (evnt) rowClass += " booked";
 
                     return (
-                        <div key={h.hour}>
+                        <div key={h.hour}  style={{backgroundColor: (evnt?.title !== undefined) ? "lightgreen" : "white"}} className="hour-row">
                             <div className="hour-time">{h.hourString}</div>
 
                             <div className="hour-content">
                                 {/* Show patient info if there's a fixed queue */}
-                                {eventToday[evnt]?.title !== undefined && (
+                                {evnt?.title !== undefined && (
                                     <div className="patient-info">
                                         {/* Patient name would go here */}
-                                        {eventToday[evnt]?.description || "פגישה מתוכננת"}
+                                        {evnt?.description || "פגישה מתוכננת"}
                                     </div>
                                 )}
 

@@ -60,14 +60,6 @@ export const Start = () => {
   }, [])
 
 
-  // useEffect(() => {
-  //   if (tabValue === 1) {
-  //     if (customers?.length === 0) dispatch(customersFetchThunk());
-  //   }
-  //   else if (tabValue === 0) {
-  //     if (managers?.length === 0) dispatch(managersFetchThunk());
-  //   }
-  // }, [tabValue]);
 
   // Handle tab change
   const handleTabChange = (event, newValue) => {
@@ -86,9 +78,7 @@ export const Start = () => {
     setTimeout(async () => {
       debugger
       await dispatch(findUserByPassId({ pass: formData.password }));
-      // const c= JSON.parse( sessionStorage.getItem('customers'));
-      // const customer = c?.find(customer => customer.email === formData.email);
-      // const manager = managers.find(manager => manager.id ===parseInt(formData.password));
+      
       debugger
       console.log(user);
 

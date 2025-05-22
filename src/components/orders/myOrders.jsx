@@ -910,7 +910,7 @@ export const MyOrders = () => {
                    <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
                         <Chip
 
-                          label="הושלם"
+                          label={order.isPayment===1?"הושלם": "לא הושלם"}
                           color="default"
 
 
@@ -996,7 +996,7 @@ export const MyOrders = () => {
 
                       <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
                         <Chip
-                          label="הושלם"
+                          label={order.isPayment===1?"הושלם": "לא הושלם"}
                           color="default"
                           icon={<CheckCircleIcon />}
                           variant="outlined"
@@ -1053,7 +1053,7 @@ export const MyOrders = () => {
                         <TableCell align="center">₪{order.payment}</TableCell>
                         <TableCell align="center">
                           <Chip
-                            label="הושלם"
+                            label={order.isPayment===1?"הושלם": "לא הושלם"}
                             color="default"
                             size="small"
                             icon={<CheckCircleIcon />}
@@ -1087,7 +1087,7 @@ export const MyOrders = () => {
                         <TableCell align="center">₪{order.payment}</TableCell>
                         <TableCell align="center">
                           <Chip
-                            label="הושלם"
+                            label={order.isPayment===1?"הושלם": "לא הושלם"}
                             color="default"
                             size="small"
                             icon={<CheckCircleIcon />}

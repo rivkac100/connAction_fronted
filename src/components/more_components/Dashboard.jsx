@@ -43,11 +43,12 @@ export const Dashboard = () => {
 
   //const events = useSelector(state => state.events.events);
   const manager = useSelector(state => state.manager.myManager);
+  const orders = useSelector(state => state.manager.MyOrders);
   useEffect(() => {
     setView(true);
     if(!manager)
     dispatch(managersFetchThunkById({ id: id }));
-   
+    if()
 
   }, [])
   // const handleRefresh = () => {

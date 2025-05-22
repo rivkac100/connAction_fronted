@@ -91,18 +91,18 @@ export const Activities = () => {
       }
     }
   }, [activitiesByMid, allActivities, param.mid]);
-  useEffect(async() => {
+  useEffect(() => {
     if(!MyUser){
-      await dispatch(findUserById({userType:"customer" ,id: param.id }))
+       dispatch(findUserById({userType:"customer" ,id: param.id }))
       if(!MyUser){
-       await dispatch(findUserById({userType:"manager" ,id: param.id }));
+        dispatch(findUserById({userType:"manager" ,id: param.id }));
       }}
   }, [ param.id]);
   // טעינת הפעילויות בעת טעינת הקומפוננטה
   useEffect(() => {
     console.log("Fetching activities...");
 
-    if (param.mid) {
+    if (param.mid && !manager.id) {
       console.log("Fetching activities for manager ID:", param.mid);
       dispatch(managersFetchThunkById({ id: param.mid }))
         .then(response => {
@@ -310,7 +310,7 @@ export const Activities = () => {
           </Typography>
 
           <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
-            {(param.id === param.mid || !param.id ) &&
+            {((param.id === param.mid || !param.id) && param.id  ) &&
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
@@ -549,7 +549,7 @@ export const Activities = () => {
                     </Box>
                     <CardActions className="card-actions">
                       <Box className="action-buttons">
-                        {(isCustomer || param.id === param.mid) &&
+                     
                          <Tooltip title="הזמן פעילות">
                           <IconButton
                             size="small"
@@ -558,8 +558,8 @@ export const Activities = () => {
                           >
                             <ShoppingCartIcon />
                           </IconButton>
-                        </Tooltip>}
-                        {(param.id === param.mid || !param.id ) &&
+                        </Tooltip>
+                        {((param.id === param.mid || !param.id) && param.id  ) &&
                           <Tooltip title="עריכה">
                             <IconButton
                               size="small"
@@ -569,7 +569,7 @@ export const Activities = () => {
                               <EditIcon />
                             </IconButton>
                           </Tooltip>}
-                        {(param.id === param.mid || !param.id ) &&
+                        {((param.id === param.mid || !param.id) && param.id  ) &&
                           <Tooltip title="מחיקה">
                             <IconButton
                               size="small"
@@ -734,7 +734,7 @@ export const Activities = () => {
               </DialogContent>
 
               <Box className="dialog-actions">
-                {(param.id === param.mid || !param.id ) &&
+                {((param.id === param.mid || !param.id) && param.id  ) &&
                
                 <Button
                   variant="outlined"
@@ -747,7 +747,7 @@ export const Activities = () => {
                 >
                   עריכת פעילות
                 </Button>}
-                {(isCustomer || param.id === param.mid)&&
+                
                 <Button
                   variant="contained"
                   startIcon={<ShoppingCartIcon />}
@@ -759,7 +759,7 @@ export const Activities = () => {
                   sx={{ bgcolor: '#af2263', '&:hover': { bgcolor: '#8e0443' } }}
                 >
                   הזמן פעילות
-                </Button>}
+                </Button>
                 <Button
                   variant="contained"
                   className="dialog-action-button close"

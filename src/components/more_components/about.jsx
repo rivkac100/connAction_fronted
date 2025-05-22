@@ -27,7 +27,7 @@ import { useDispatch } from 'react-redux';
 export const About = () => {
   const navigate = useNavigate();
  
-  const dispatch = useDispatch();
+
   useEffect(() => {
     AOS.init({
       duration: 1000,
