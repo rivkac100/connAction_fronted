@@ -46,10 +46,10 @@ export const Dashboard = () => {
   const orders = useSelector(state => state.manager.MyOrders);
   useEffect(() => {
     setView(true);
-    if(!manager)
+    if(!manager){
     dispatch(managersFetchThunkById({ id: id }));
-    if()
-
+    
+  }
   }, [])
   // const handleRefresh = () => {
   //    dispatch(managersFetchThunkById({id:id}));

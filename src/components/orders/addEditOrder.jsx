@@ -28,7 +28,7 @@ export const AddEditOrder = () => {
   const activityName = useSelector(state => state.order.activityName);
   const activity = useSelector(state => state.activity.activity);
   const customer = useSelector(state => state.user.MyUser);
-  const isAvailable = useSelector(state => state.manager.isAvailable);
+  const isAvailable = useSelector(state => state.manager.isEmpty);
   const [order, setOrder] = useState(myOrder ? myOrder : {
 
     customerId: params.id ? parseInt(params.id) : 0,
@@ -44,12 +44,10 @@ export const AddEditOrder = () => {
 
   useEffect(() => {
     console.log("AddEditOrder useEffect running with params:", params);
-    if (!activity) {
+    if (!activity && params.idActivity) {
       dispatch(activityFetchThunkById({ id: parseInt(params.idActivity) }));
     }
-    if (!customer) {
-      dispatch(customersFetchThunkById({ id: parseInt(params.id) }));
-    }
+   
     // Initialize order with default values if not already set
     if (!order) {
       setOrder({
@@ -73,7 +71,7 @@ export const AddEditOrder = () => {
      // const activity = activities?.find(a => a.activityId === parseInt(params.idActivity));
       console.log("Found activity:", activity);
 
-      if (activity && order?.amountOfParticipants) {
+      if (activity && order?.amountOfParticipants && activity.price) {
         setTotalPrice(activity.price * order.amountOfParticipants);
       }
     }
@@ -90,12 +88,23 @@ export const AddEditOrder = () => {
       console.error("Dialog reference is not available");
     }
   }, [params]); // Add dependencies
+  
+  useEffect(() => {
+    if (!customer) {
+      // Fetch activities
+    
+    dispatch(customersFetchThunkById({ id: parseInt(params.id) }));
 
+      // dispatch(activitiesFetch());
+    }
+  }, [customer]);
   // Recalculate price when amount changes
   useEffect(() => {
     if (order.activityId && order.amountOfParticipants) {
      // const activity = activities.find(a => a.activityId === parseInt(params.idActivity));
-      if (activity) {
+      dispatch( activityFetchThunkById({ id: order.activityId }));
+
+      if (activity.price) {
         setTotalPrice(activity.price * order.amountOfParticipants);
       }
     }
@@ -126,9 +135,17 @@ export const AddEditOrder = () => {
       alert("לא ניתן להוסיף/לערוך - חסרים פרטים חיוניים");
     }
   };
-  const chack = () => {
-    dispatch(timeIsAvailableThunk({ id: order.managerId, date: order.date, time: order.activeHour, len: activity.lenOfActivity }));
-  }
+  const check = async() => {
+   
+      //  await dispatch( activityFetchThunkById({ id: order.activityId }));
+       if(activity.lenOfActivity && order.date && order.activeHour && order.amountOfParticipants && order.activityId && order.customerId) {
+        dispatch(timeIsAvailableThunk({ id: params.mid, date: order.date, time: order.activeHour, len: activity.lenOfActivity }));
+        }
+       
+    else {
+      alert("לא ניתן לבדוק - חסרים פרטים חיוניים");
+    }
+ }
   const cancel = () => {
     refDialog.current.close();
     navigate(-1);
@@ -341,7 +358,7 @@ export const AddEditOrder = () => {
             <Button
               variant="contained"
               startIcon={<SaveIcon />}
-              onClick={chack}
+              onClick={check}
 
               className="action-button save-button"
               style={{ backgroundColor: '#b60557', color: 'white' }}
