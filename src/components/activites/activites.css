@@ -39,7 +39,27 @@
   font-weight: 600;
   text-transform: none;
 }
-
+.aaa{
+  background-color: #5d374a;
+  /* primary: {
+    main: '#b60557', // SaddleBrown
+    light: 'rgb(244, 20, 80)', // Sienna
+    dark: '#630296', // Darker brown
+  },
+  secondary: {
+    main: '#e00975', // IndianRed
+    light: '#f55ca9', // LightCoral
+    dark: '#94024b', // Brown
+  },
+  background: {
+    default: '#FFF8F0', // Light cream
+    paper: '#FFF8F0',
+  },
+  text: {
+    primary: '#3e232a', // Dark brown
+    secondary: '#5d374a', // Medium brown
+  }, */
+}
 .action-button.primary {
   background-color: #b60557;
   color: white;

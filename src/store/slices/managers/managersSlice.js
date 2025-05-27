@@ -33,7 +33,7 @@ export const managersSlice = createSlice({
     initialState: INITIAL_STATE_MANAGER,
     reducers: {
         editManager: (state, action) => {
-            state.managers = action.payload;
+            state.myManager = action.payload;
         },
         editAddOrUpdate: (state, action) => {
             state.addOrUpdate = true;

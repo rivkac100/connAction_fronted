@@ -20,8 +20,8 @@ import {
 } from '@mui/icons-material';
 
 import "./auto.css";
-import { editIsC } from "../../store/slices/customers/customersSlice";
-import { editIsM } from "../../store/slices/managers/managersSlice";
+import { editCustomer, editIsC } from "../../store/slices/customers/customersSlice";
+import { editIsM, editManager } from "../../store/slices/managers/managersSlice";
 import { findUserByPassId } from "../../store/slices/users/findUserByPassId";
 // import { managersFetchThunkById } from "../../store/slices/managers/managerFetchThunkById";
 // import { t } from "framer-motion/dist/types.d-DSjX-LJB";
@@ -59,8 +59,10 @@ export const Start = () => {
   useEffect(() => {
     if (user) {
       if (user.userType === "manager") {
+        dispatch(editManager(user));
         navigate(`/manager/${user.id}`);
       } else if (user.userType === "customer") {
+        dispatch(editCustomer(user));
         navigate(`/home/${user.instituteId}`);
       }
     }

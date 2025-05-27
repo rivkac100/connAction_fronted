@@ -36,6 +36,7 @@ import { deleteActivityThunk } from '../../store/slices/activites/deleteActivity
 import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
 import { editActivityName } from '../../store/slices/orders/orderSlice';
 import { findUserById } from '../../store/slices/users/findUserById';
+import { editActivity } from '../../store/slices/activites/activitySlice';
 
 
 export const Activities = () => {
@@ -97,13 +98,15 @@ export const Activities = () => {
       if(!MyUser){
         dispatch(findUserById({userType:"manager" ,id: param.id }));
       }}
-  }, [ param.id]);
+  }, [param.id]);
   // טעינת הפעילויות בעת טעינת הקומפוננטה
   useEffect(() => {
+    debugger
     console.log("Fetching activities...");
 
-    if (param.mid && !manager.id) {
+    if (param.mid  ) {
       console.log("Fetching activities for manager ID:", param.mid);
+     if(!manager.id){
       dispatch(managersFetchThunkById({ id: param.mid }))
         .then(response => {
           console.log("Manager activities fetched successfully:", response);
@@ -115,7 +118,10 @@ export const Activities = () => {
             message: 'אירעה שגיאה בטעינת פעילויות המנהל',
             severity: 'error'
           });
-        });
+        });}
+        else{
+          setActivities(manager.activities);
+        }
     } else {
       console.log("Fetching all activities");
       dispatch(activitiesFetch())
@@ -205,7 +211,7 @@ export const Activities = () => {
 
   const handleOrderClick = (event, activity) => {
     event.stopPropagation(); // Prevent opening the details dialog
-    dispatch(editActivityName(activity.activityName));
+    dispatch(editActivity(activity));
     navigate(`newOrder/${activity.activityId}`);
   };
 
@@ -559,7 +565,7 @@ export const Activities = () => {
                             <ShoppingCartIcon />
                           </IconButton>
                         </Tooltip>
-                        {((param.id === param.mid || !param.id) && param.id  ) &&
+                        {!param.id  &&
                           <Tooltip title="עריכה">
                             <IconButton
                               size="small"
@@ -569,7 +575,7 @@ export const Activities = () => {
                               <EditIcon />
                             </IconButton>
                           </Tooltip>}
-                        {((param.id === param.mid || !param.id) && param.id  ) &&
+                        {!param.id  &&
                           <Tooltip title="מחיקה">
                             <IconButton
                               size="small"
@@ -734,7 +740,7 @@ export const Activities = () => {
               </DialogContent>
 
               <Box className="dialog-actions">
-                {((param.id === param.mid || !param.id) && param.id  ) &&
+                {!param.id &&
                
                 <Button
                   variant="outlined"
@@ -754,6 +760,7 @@ export const Activities = () => {
                   className="dialog-action-button order"
                   onClick={() => {
                     setOpenDetailsDialog(false);
+                    dispatch(editActivity(selectedActivity));
                     navigate(`newOrder/${selectedActivity.activityId}`);
                   }}
                   sx={{ bgcolor: '#af2263', '&:hover': { bgcolor: '#8e0443' } }}

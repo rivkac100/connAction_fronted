@@ -731,10 +731,10 @@ export const Month = () => {
                             <span>לוח שנה</span> | מערכת הזמנת תוכניות והפקות
                         </div>
                         <div className="menu-actions">
-                            <button className="menu-button" onClick={() => navigate(`/home/${parms.id}`)}>
+                            {/* <button className="menu-button" onClick={() => navigate(`/home/${parms.id}`)}>
                                 <MenuIcon />
                                 תפריט ראשי
-                            </button>
+                            </button> */}
                             <button className="menu-button primary" onClick={newEvent}>
                                 <AddPhotoAlternateSharpIcon />
                                 אירוע חדש

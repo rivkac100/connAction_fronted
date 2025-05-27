@@ -117,6 +117,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { managersFetchThunk } from '../../store/slices/managers/managersFetch';
 import './home.css';
+import { editManager } from '../../store/slices/managers/managersSlice';
 
 // קומפוננטת לוגו מודרנית עם אנימציה
 const ModernLogo = ({ size = 'medium' }) => {
@@ -652,6 +653,7 @@ export const Home = () => {
                     manager={manager}
                     onClick={() => {
                       setView(false);
+                      dispatch(editManager(manager));
                       navigate(`activities/${manager.id}`);
                     }}
                   />

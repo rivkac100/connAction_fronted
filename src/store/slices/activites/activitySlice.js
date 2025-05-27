@@ -27,7 +27,7 @@ export const activitiesSlice = createSlice({
     initialState: INITIAL_STATE_ACTIVITY,
     reducers: {
         editActivity: (state, action) => {
-            state.activities = action.payload;
+            state.activity = action.payload;
         },
         // editUserName: (state, action) => {
         //     state.InstituteName = action.payload;

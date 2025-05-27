@@ -18,7 +18,7 @@
   
   /* Header Section */
   .event-header {
-    background: linear-gradient(135deg, #653370 0%, #4a2652 100%);
+    background:  linear-gradient(135deg, #791592 0%, #b60557 50%, #d60141 100%);
     color: white;
     padding: 20px 24px;
     position: relative;
@@ -85,7 +85,7 @@
   }
   
   .event-input:focus {
-    border-color: #f58f0a;
+    border-color: #b60557;
     background-color: #fff;
     box-shadow: 0 0 0 3px rgba(245, 143, 10, 0.1);
     outline: none;
@@ -133,12 +133,12 @@
   }
   
   .event-button-save {
-    background-color: #f58f0a;
+    background-color: #b60557;
     color: white;
   }
   
   .event-button-save:hover {
-    background-color: #e07c00;
+    background-color: #b60557;
     box-shadow: 0 2px 8px rgba(245, 143, 10, 0.3);
   }
   
@@ -185,7 +185,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background-color: #f58f0a;
+    background-color: #b60557;
     transition: width 0.3s ease;
   }
   
@@ -231,7 +231,7 @@
     left: 0;
     width: 4px;
     height: 100%;
-    background-color: #653370;
+    background-color: #333;
     border-radius: 4px 0 0 4px;
   }
   

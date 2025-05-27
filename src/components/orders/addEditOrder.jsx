@@ -46,15 +46,15 @@ export const AddEditOrder = () => {
   const isAvailable = useSelector(state => state.manager.isEmpty);
   const [order, setOrder] = useState(myOrder ? myOrder : {
 
-    // customerId: params.id ? parseInt(params.id) : 0,
-    // payment: 0,
-    // amountOfParticipants: 0,
-    // date: "",
-    // activeHour: "",
-    // activityId: params.idActivity ? parseInt(params.idActivity) : 0,
-    // managerId: params.mid ? parseInt(params.mid) : 0,
-    // isOk:0,
-    // isPayment:0,
+    customerId: params.id ? parseInt(params.id) : 0,
+    payment: 0,
+    amountOfParticipants: 0,
+    date: "",
+    activeHour: "",
+    activityId: params.idActivity ? parseInt(params.idActivity) : 0,
+    managerId: params.mid ? parseInt(params.mid) : 0,
+    isOk:0,
+    isPayment:0,
   });
   const [edit, setEdit] = useState(false);
   const refDialog = useRef();
@@ -89,6 +89,7 @@ export const AddEditOrder = () => {
         isOk:0,
         isPayment:0
       });
+      dispatch(editfindOrder());
     }
 
     if (params.id) {
@@ -98,6 +99,7 @@ export const AddEditOrder = () => {
     if (params.idActivity) {
       if (!activity && params.idActivity && actDispatch) {
         dispatch(activityFetchThunkById({ id: parseInt(params.idActivity) }));
+        console.log(activity);
       }
       else if (activity) {
         dispatch(editCust());
@@ -157,10 +159,10 @@ export const AddEditOrder = () => {
         dispatch(editIsManager());
       }
     }
-  }, [customer, params.id]);
+  }, [customer, params.id,custDispatch]);
   useEffect(() => {
     if (params.mid) {
-
+      setOrder({...order, managerId: parseInt(params.mid) });
 
       if (!manager && mangDispatch) {
         // Fetch activities
@@ -173,7 +175,7 @@ export const AddEditOrder = () => {
         dispatch(editCan());
       }
     }
-  }, [customer, params.id]);
+  }, [manager, params.mid,mangDispatch]);
   // Recalculate price when amount changes
   useEffect(() => {
     if (order.activityId > 1000 && order.amountOfParticipants && !activity.activityId && actDispatch) {
@@ -195,7 +197,7 @@ export const AddEditOrder = () => {
     else if (customer && custDispatch) {
       dispatch(editIsManager());
     }
-  }, [order.customerId])
+  }, [order.customerId,custDispatch])
   useEffect(() => {
     
 
@@ -206,7 +208,7 @@ export const AddEditOrder = () => {
       dispatch(editCan());
     }
 
-  }, [order.managerId])
+  }, [order.managerId,mangDispatch])
   useEffect(() => {
     
 
@@ -290,10 +292,11 @@ export const AddEditOrder = () => {
     console.log(customer);
     console.log(manager);
     console.log(activity);
+    setOrder({ ...order, managerId: params.mid?params.mid:order.managerId });
     console.log(order);
     console.log(timeDispatch);
     //  await dispatch( activityFetchThunkById({ id: order.activityId }));
-    if ( activity.lenOfActivity && order.date && order.activeHour && order.amountOfParticipants && order.activityId && order.customerId) {
+    if ( activity.lenOfActivity && order.date && order.activeHour && order.amountOfParticipants && order.activityId && order.customerId && order.managerId) {
       dispatch(timeIsAvailableThunk({ id: order.managerId, date: order.date, time: order.activeHour, len: activity.lenOfActivity }));
     }
 

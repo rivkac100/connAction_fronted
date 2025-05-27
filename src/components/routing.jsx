@@ -119,6 +119,7 @@ import { Navigation } from "./more_components/navigation";
 import { AddEditActivity } from "./activites/newEditActivity";
 import { LogonManager } from "./logon/logonManager";
 import { Payment } from './payment/Payment';
+import { Report } from "./Report/Report";
 
 export const Routing = () => {
   return (
@@ -183,7 +184,8 @@ export const Routing = () => {
         <Route path="editOrder/:orderId" element={<AddEditOrder />} />
       </Route> */}
       <Route path="/newActivity" element={<AddEditActivity />} />
-
+      <Route path="/tp" element={<Report />} />
+     
       {/* Dashboard routes */}
       <Route path="/manager/:mid" element={<Dashboard />}>
         <Route path="activities" element={<Activities />} >

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { 
   AppBar, 
   Toolbar, 
@@ -23,12 +23,12 @@ import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import ExploreIcon from '@mui/icons-material/Explore';
 
 import './navigation.css';
-import '../home/home.css';
+
 
 const ModernLogo = ({ size = 'medium' }) => {
   const sizeMap = {
@@ -131,13 +131,14 @@ export const Navigation = ({ managerId, managerName }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const theme = useTheme();
+  const param= useParams();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const menuItems = [
-    { text: 'להזמנה', icon: <ListAltIcon />, path: `/home/${managerId}/newOrder` },
-    { text: 'הסטורית הזמנות', icon: <WorkHistoryIcon />, path: `/home/${managerId}/myOrders` },
-    { text: 'יומן', icon: <EditCalendarIcon />, path: `/home/${managerId}/month` },
-    { text: 'הזמנות קרובות', icon: <HourglassBottomIcon />, path: `/home/${managerId}/upcoming` },
+    { text: 'להזמנה', icon: <ListAltIcon />, path: `/manager/${param.mid}/newOrder` },
+    { text: 'הסטורית הזמנות', icon: <WorkHistoryIcon />, path: `/manager/${param.mid}/myOrders` },
+    { text: 'יומן', icon: <EditCalendarIcon />, path: `/manager/${param.mid}/month` },
+    { text: ' לקוחות', icon: <HourglassBottomIcon />, path: `/manager/${param.id}/myCustomers` },
     { text: 'עלינו', icon: <HowToRegIcon />, path: `/about` },
   ];
   

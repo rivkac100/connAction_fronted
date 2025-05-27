@@ -32,24 +32,24 @@ import { useNavigate, useParams } from 'react-router-dom';
 // Custom theme with brown and red tones
 const theme = createTheme({
   palette: {
-    primary: {
-      main: '#8B4513', // SaddleBrown
-      light: '#A0522D', // Sienna
-      dark: '#5D2E0C', // Darker brown
-    },
-    secondary: {
-      main: '#CD5C5C', // IndianRed
-      light: '#F08080', // LightCoral
-      dark: '#A52A2A', // Brown
-    },
-    background: {
-      default: '#FFF8F0', // Light cream
-      paper: '#FFF8F0',
-    },
-    text: {
-      primary: '#3E2723', // Dark brown
-      secondary: '#5D4037', // Medium brown
-    },
+       primary: {
+    main: '#b60557', // SaddleBrown
+    light: '#b60557', // Sienna
+    dark: '#630296', // Darker brown
+  },
+  secondary: {
+    main: '#b60557', // IndianRed
+    light: '#b60557', // LightCoral
+    dark: '#94024b', // Brown
+  },
+  background: {
+    default: '#FFF8F0', // Light cream
+    paper: '#FFF8F0',
+  },
+  text: {
+    primary: '#b60557', // Dark brown
+    secondary: '#b60557', // Medium brown
+  }, 
   },
   typography: {
     fontFamily: [
@@ -59,11 +59,11 @@ const theme = createTheme({
     ].join(','),
     h4: {
       fontWeight: 600,
-      color: '#5D4037',
+      color: '#b60557',
     },
     h5: {
       fontWeight: 500,
-      color: '#8B4513',
+      color: '#b60557',
     },
   },
   components: {
@@ -102,63 +102,31 @@ const theme = createTheme({
 });
 
 // Styled components
-const ProductCard = styled(Card)(({ theme }) => ({
-  height: '320px',
-  display: 'flex',
-  flexDirection: 'column',
-  backgroundColor: '#FFFAF5',
-  boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-  position: 'relative',
-}));
+
 
 // const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
 //   paddingTop: '56.25%', // 4:3 aspect ratio
 //   backgroundSize: 'contain',backgroundPosition: 'center',height: 140,
 //   backgroundColor: '#FFF',
 // }));
-const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
-  height: 180,
-  objectFit: 'cover',
-  objectPosition: 'center',
-}));
-const PageHeader = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: theme.spacing(4),
-  [theme.breakpoints.down('sm')]: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: theme.spacing(2),
-  },
-}));
 
-const SearchBar = styled(TextField)(({ theme }) => ({
-  backgroundColor: '#FFF',
-  borderRadius: 8,
-  '& .MuiOutlinedInput-root': {
-    '&.Mui-focused fieldset': {
-      borderColor: theme.palette.primary.main,
-    },
-  },
-}));
+
+
 
 export const AddEditActivity = () => {
   const dispatch = useDispatch();
   // const activities = useSelector(state => state.Products?.productsList || []);
 
   // State for UI
-  const [searchTerm, setSearchTerm] = useState('');
+
   const [sortBy, setSortBy] = useState('name');
   const [sortDirection, setSortDirection] = useState('asc');
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(12);
+
+
   // const [filterCategory, setFilterCategory] = useState('all');
 
   // State for product operations
-  const [editingProduct, setEditingProduct] = useState(null);
-  const [quantityDialogOpen, setQuantityDialogOpen] = useState(false);
-  const [newQuantity, setNewQuantity] = useState(0);
+
   const [addProductDialogOpen, setAddProductDialogOpen] = useState(false);
   const params=useParams();
   const [newActivity, setNewActivity] = useState({
@@ -188,24 +156,12 @@ export const AddEditActivity = () => {
     setAddProductDialogOpen(true);
   }, []);
   // Handle quantity update dialog
-  const openQuantityDialog = (product) => {
-    setEditingProduct(product);
-    setNewQuantity(product.psum);
-    setQuantityDialogOpen(true);
-  };
 
-  const closeQuantityDialog = () => {
-    setQuantityDialogOpen(false);
-    setEditingProduct(null);
-    setNewQuantity(0);
-  };
 
 
 
   // Handle add product dialog
-  const openAddProductDialog = () => {
-    setAddProductDialogOpen(true);
-  };
+
 
   const closeAddProductDialog = () => {
     setAddProductDialogOpen(false);
@@ -326,29 +282,13 @@ export const AddEditActivity = () => {
   };
 
   // Handle search, sort, and filter
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    setPage(0); // Reset to first page when searching
-  };
-
-  const handleSortChange = (field) => {
-    if (sortBy === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(field);
-      setSortDirection('asc');
-    }
-  };
 
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+
+  
+
+
 
 
   return (
@@ -393,6 +333,7 @@ export const AddEditActivity = () => {
                   fullWidth
                   variant="outlined"
                   type='text'
+                  border='3px solid #b60557 !important'
                   value={newActivity.activityName}
                   onChange={handleNewActivityChange}
                   multiline

@@ -119,7 +119,7 @@
   .header-section {
     background-color: #333 !important;
     text-align: center;
-    height: 20vh;
+    height: 20vh !important;
     margin-bottom: 3rem;
     /* padding: 1.5rem; */
     position: relative;
