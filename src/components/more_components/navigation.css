@@ -28,6 +28,9 @@
 
   .menu-button {
     margin-right: 16px;
+    color: #d60141 !important;
+    size: large;
+    margin-top: 10px !important;
   }
   
   .app-bar-logo {
@@ -116,9 +119,9 @@
   .header-section {
     background-color: #333 !important;
     text-align: center;
-    height: 45vh;
+    height: 20vh;
     margin-bottom: 3rem;
-    padding: 1.5rem;
+    /* padding: 1.5rem; */
     position: relative;
     z-index: 1;
   }

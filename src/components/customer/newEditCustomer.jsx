@@ -117,7 +117,7 @@ import {
     CircularProgress, Snackbar, Alert, MenuItem, InputAdornment,
     Divider, FormHelperText, FormControl, Select, InputLabel, FormControlLabel, Checkbox,Autocomplete
 } from '@mui/material';
-
+import PasswordIcon from '@mui/icons-material/Password';
 import {
     Save as SaveIcon,
     ArrowBack as ArrowBackIcon,
@@ -154,15 +154,16 @@ export const NewEditCustomer = () => {
     // Local state
     const [customer, setCustomer] = useState({
         instituteName: "",
+        fax: "",
         mobile: "",
         email: "",
-        fax: "",
         contactName: "",
         contactPhone: "",
         city: "",
         community: "",
-        amount: 0,
-        due: ""
+        pass: "",
+        userType: "customer"
+        // confirmPassword: ""
     });
     const refDialog = useRef();
     const [errors, setErrors] = useState({});
@@ -236,6 +237,7 @@ export const NewEditCustomer = () => {
 
     // Handle form submission
     const handleSubmit = async () => {
+        debugger
         if (!validateForm()) {
             return;
         }
@@ -250,14 +252,16 @@ export const NewEditCustomer = () => {
             };
 
             if (isEditMode) {
-                dispatch(updateCustomerThunk({ details: customerData })).unwrap();
+                debugger
+                dispatch(updateCustomerThunk({ details: customerData }));
                 setSnackbar({
                     open: true,
                     message: 'הלקוח עודכן בהצלחה',
                     severity: 'success'
                 });
-            } else {
-                dispatch(addCustomerThunk({ details: customerData })).unwrap();
+            } 
+            else {
+                dispatch(addCustomerThunk({ details: customerData }));
                 setSnackbar({
                     open: true,
                     message: 'הלקוח נוסף בהצלחה',
@@ -412,25 +416,25 @@ export const NewEditCustomer = () => {
 
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            name="amount"
-                            label="סכום"
-                            type="number"
-                            value={customer.amount || ''}
+                            name="pass"
+                            label="סיסמא"
+                            type="text"
+                            value={customer.pass || ''}
                             onChange={handleChange}
                             fullWidth
-                            error={Boolean(errors.amount)}
-                            helperText={errors.amount}
+                            // error={Boolean(errors.amount)}
+                            // helperText={errors.amount}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <AttachMoneyIcon />
+                                      <PasswordIcon/>
                                     </InputAdornment>
                                 ),
                             }}
                         />
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    {/* <Grid item xs={12} sm={6}>
                         <TextField
                             name="due"
                             label="תאריך תשלום"
@@ -449,7 +453,7 @@ export const NewEditCustomer = () => {
                                 ),
                             }}
                         />
-                    </Grid>
+                    </Grid> */}
 
                     {/* Contact Information */}
                     <Grid item xs={12} sx={{ mt: 2 }}>

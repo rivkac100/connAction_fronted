@@ -26,6 +26,7 @@ import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import { deleteOrderThunk } from '../../store/slices/orders/deleteOrderThunk';
 import { ordersByMangerIdThunk } from '../../store/slices/managers/ordersByMangerIdThunk';
 import './order.css';
+import { editOrder } from '../../store/slices/orders/orderSlice';
 
 export const MyOrders = () => {
   const navigate = useNavigate();
@@ -519,7 +520,14 @@ export const MyOrders = () => {
                             </IconButton>
                           </Tooltip>
                         </Box>
-
+                        <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
+                        <Chip
+                          label={order.isPayment===1?"שולם": "לא שולם"}
+                          color="default"
+                          icon={order.isPayment===1?<CheckCircleIcon />: <CancelIcon />}
+                          variant="outlined"
+                        />
+                      </Box>
                         {/* כפתור עריכה להזמנות עתידיות */}
                         <Button
                           variant="contained"
@@ -647,19 +655,26 @@ export const MyOrders = () => {
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="עריכת הזמנה">
-                            <IconButton onClick={() => navigate(`editOrder/${order.orderId}`)} color="primary">
+                            <IconButton onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}} color="primary">
                               <EditNoteOutlinedIcon />
                             </IconButton>
                           </Tooltip>
                         </Box>
-
+                        <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
+                        <Chip
+                          label={order.isPayment===1?"שולם": "לא שולם"}
+                          color="default"
+                          icon={order.isPayment===1?<CheckCircleIcon />: <CancelIcon />}
+                          variant="outlined"
+                        />
+                      </Box>
                         {/* כפתור עריכה להזמנות עתידיות */}
                         <Button
                           variant="contained"
                           color="primary"
                           size="small"
                           startIcon={<EditNoteOutlinedIcon />}
-                          onClick={() => navigate(`editOrder/${order.orderId}`)}
+                          onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}}
                           sx={{
                             borderRadius: 2,
                             bgcolor: '#d57fa7f6',
@@ -698,7 +713,8 @@ export const MyOrders = () => {
                   <TableCell align="center" sx={{ fontWeight: 'bold', color: "white" }}>שעה</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold', color: "white" }}>משתתפים</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold', color: "white" }}>תשלום</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold' }}>פעולות</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', color: "white" }}>פעולות</TableCell>
+                  <TableCell align="center" sx={{ fontWeight: 'bold', color: "white" }}>סטטוס</TableCell>              
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -728,12 +744,20 @@ export const MyOrders = () => {
                             <IconButton
                               size="small"
                               color="primary"
-                              onClick={() => navigate(`editOrder/${order.orderId}`)}
+                              onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}}
                               sx={{ color: '#af2263' }}
                             >
                               <EditNoteOutlinedIcon />
                             </IconButton>
                           </Box>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Chip
+                           label={order.isPayment===1?"שולם": "לא שולם"}
+                            color="default"
+                            size="small"
+                            icon={order.isPayment?<CheckCircleIcon />: <CancelIcon />}
+                          />
                         </TableCell>
                       </TableRow>
                     ))
@@ -773,12 +797,20 @@ export const MyOrders = () => {
                             <IconButton
                               size="small"
                               color="primary"
-                              onClick={() => navigate(`editOrder/${order.orderId}`)}
+                              onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}}
                               sx={{ color: '#af2263' }}
                             >
                               <EditNoteOutlinedIcon />
                             </IconButton>
                           </Box>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Chip
+                           label={order.isPayment===1?"שולם": "לא שולם"}
+                            color="default"
+                            size="small"
+                            icon={order.isPayment?<CheckCircleIcon />: <CancelIcon />}
+                          />
                         </TableCell>
                       </TableRow>
                     ))
@@ -880,9 +912,9 @@ export const MyOrders = () => {
 
                   <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
                     <Chip
-                      label={order.isPayment===1?"הושלם": "לא הושלם"}
+                      label={order.isPayment===1?"שולם": "לא שולם"}
                       color="default"
-                      icon={<CheckCircleIcon />}
+                      icon={order.isPayment?<CheckCircleIcon />:<CancelIcon />}
                       variant="outlined"
                     />
                   </Box>
@@ -994,7 +1026,7 @@ export const MyOrders = () => {
               //      <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
               //           <Chip
 
-              //             label={order.isPayment===1?"הושלם": "לא הושלם"}
+              //             label={order.isPayment===1?"שולם": "לא שולם"}
               //             color="default"
 
 
@@ -1080,9 +1112,9 @@ export const MyOrders = () => {
 
                       <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
                         <Chip
-                          label={order.isPayment===1?"הושלם": "לא הושלם"}
+                          label={order.isPayment===1?"שולם": "לא שולם"}
                           color="default"
-                          icon={<CheckCircleIcon />}
+                          icon={order.isPayment===1?<CheckCircleIcon />: <CancelIcon />}
                           variant="outlined"
                         />
                       </Box>
@@ -1137,10 +1169,10 @@ export const MyOrders = () => {
                         <TableCell align="center">₪{order.payment}</TableCell>
                         <TableCell align="center">
                           <Chip
-                           label={order.isPayment===1?"הושלם": "לא הושלם"}
+                           label={order.isPayment===1?"שולם": "לא שולם"}
                             color="default"
                             size="small"
-                            icon={<CheckCircleIcon />}
+                            icon={order.isPayment?<CheckCircleIcon />: <CancelIcon />}
                           />
                         </TableCell>
                       </TableRow>
@@ -1171,10 +1203,10 @@ export const MyOrders = () => {
                         <TableCell align="center">₪{order.payment}</TableCell>
                         <TableCell align="center">
                           <Chip
-                  label={order.isPayment===1?"הושלם": "לא הושלם"}
+                  label={order.isPayment===1?"שולם": "לא שולם"}
                             color="default"
                             size="small"
-                            icon={<CheckCircleIcon />}
+                            icon={order.isPayment?<CheckCircleIcon />: <CancelIcon />}
                           />
                         </TableCell>
                       </TableRow>

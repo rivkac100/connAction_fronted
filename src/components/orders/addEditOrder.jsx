@@ -18,25 +18,43 @@ import { activitiesFetch } from "../../store/slices/activites/activitiesFetch";
 import { customersFetchThunkById } from "../../store/slices/customers/customerFetchThunkById";
 import { timeIsAvailableThunk } from "../../store/slices/managers/timeIsAvailableThunk";
 import { activityFetchThunkById } from "../../store/slices/activites/activityFetchThunkById";
+import { editOrder, editfindOrder, editorder } from "../../store/slices/orders/orderSlice";
+
+import { editCust } from "../../store/slices/activites/activitySlice";
+import { managersFetchThunkById } from "../../store/slices/managers/managerFetchThunkById";
+import { editCan } from "../../store/slices/managers/managersSlice";
+import { editIsManager } from "../../store/slices/customers/customersSlice";
+
 
 export const AddEditOrder = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const myOrder = useSelector(state => state.order.order);
+  const manager = useSelector(state => state.manager.myManager);
   const isM = useSelector(state => state.manager.isM);
+  const actDispatch = useSelector(state => state.order.activity);
+  const custDispatch = useSelector(state => state.activity.customer);
+  const mangDispatch = useSelector(state => state.customer.manager);
+  const timeDispatch = useSelector(state => state.manager.isEmpty);
+  const addDispatch = useSelector(state => state.order.add);
+  const updateDispatch = useSelector(state => state.order.update);
+  const saveDispatch = useSelector(state => state.manager.addOrUpdate);
   const activityName = useSelector(state => state.order.activityName);
   const activity = useSelector(state => state.activity.activity);
   const customer = useSelector(state => state.user.MyUser);
   const isAvailable = useSelector(state => state.manager.isEmpty);
   const [order, setOrder] = useState(myOrder ? myOrder : {
 
-    customerId: params.id ? parseInt(params.id) : 0,
-    payment: 0,
-    amountOfParticipants: 0,
-    date: "",
-    activeHour: "",
-    activityId: params.idActivity ? parseInt(params.idActivity) : 0
+    // customerId: params.id ? parseInt(params.id) : 0,
+    // payment: 0,
+    // amountOfParticipants: 0,
+    // date: "",
+    // activeHour: "",
+    // activityId: params.idActivity ? parseInt(params.idActivity) : 0,
+    // managerId: params.mid ? parseInt(params.mid) : 0,
+    // isOk:0,
+    // isPayment:0,
   });
   const [edit, setEdit] = useState(false);
   const refDialog = useRef();
@@ -44,10 +62,21 @@ export const AddEditOrder = () => {
 
   useEffect(() => {
     console.log("AddEditOrder useEffect running with params:", params);
-    if (!activity && params.idActivity) {
-      dispatch(activityFetchThunkById({ id: parseInt(params.idActivity) }));
+    // if (params.orderId) {
+    //   dispatch(editOrder(null));
+    //   console.log("myOrder", myOrder);
+    // }
+    console.log(myOrder);
+
+    if(parseInt(params.orderId)===myOrder.orderId) {
+         refDialog.current.showModal();
     }
-   
+    if (!params.orderId) {
+      dispatch(editfindOrder());
+      console.log(order);
+      refDialog.current.showModal();
+
+    }
     // Initialize order with default values if not already set
     if (!order) {
       setOrder({
@@ -55,7 +84,10 @@ export const AddEditOrder = () => {
         amountOfParticipants: 0,
         date: "",
         activeHour: "",
-        activityId: params.idActivity ? parseInt(params.idActivity) : 0
+        activityId: params.idActivity ? parseInt(params.idActivity) : 0,
+        managerId: params.mid ? parseInt(params.mid) : 0,
+        isOk:0,
+        isPayment:0
       });
     }
 
@@ -64,53 +96,133 @@ export const AddEditOrder = () => {
     }
 
     if (params.idActivity) {
+      if (!activity && params.idActivity && actDispatch) {
+        dispatch(activityFetchThunkById({ id: parseInt(params.idActivity) }));
+      }
+      else if (activity) {
+        dispatch(editCust());
+      }
       setOrder(prev => ({ ...prev, activityId: parseInt(params.idActivity) }));
       console.log("Setting activity ID:", params.idActivity);
 
       // Find activity price
-     // const activity = activities?.find(a => a.activityId === parseInt(params.idActivity));
+      // const activity = activities?.find(a => a.activityId === parseInt(params.idActivity));
       console.log("Found activity:", activity);
 
       if (activity && order?.amountOfParticipants && activity.price) {
         setTotalPrice(activity.price * order.amountOfParticipants);
       }
     }
-    else if (params.orderId) {
-      dispatch(findOrderThunk({ id: params.orderId }));
-      setEdit(true);
-    }
+
+
 
     // Make sure the dialog exists before trying to open it
-    if (refDialog.current) {
-      console.log("Opening dialog");
-      refDialog.current.showModal();
-    } else {
-      console.error("Dialog reference is not available");
-    }
+    // if ( refDialog.current) {
+    //   console.log("Opening dialog");
+    //   refDialog.current.showModal();
+    // } else {
+    //   console.error("Dialog reference is not available");
+    // }
   }, [params]); // Add dependencies
-  
-  useEffect(() => {
-    if (!customer) {
-      // Fetch activities
-    
-    dispatch(customersFetchThunkById({ id: parseInt(params.id) }));
-
-      // dispatch(activitiesFetch());
+  useEffect(()=>{
+    if(params.orderId){
+      // if (!myOrder || (myOrder.orderId !== parseInt(params.orderId))) {
+      //   dispatch(findOrderThunk({ id: params.orderId }));
+   
+      // }
+    //   dispatch(findOrderThunk({ id: params.orderId }));
+      setOrder({...order, customerId: myOrder.customerId ,managerId: myOrder.managerId, activityId: myOrder.activityId, date: myOrder.date, activeHour: myOrder.activeHour, payment: myOrder.payment, amountOfParticipants: myOrder.amountOfParticipants, isOk: myOrder.isOk, isPayment: myOrder.isPayment });
+      console.log(myOrder);
+      console.log(order);
+      if(myOrder.orderId === parseInt(params.orderId)){ 
+   
+      setEdit(true);
+      }
+     
+      refDialog.current.showModal();
     }
-  }, [customer]);
+  },[params.orderId]);
+  useEffect(() => {
+    if (params.id) {
+
+
+      if (!customer && custDispatch) {
+        // Fetch activities
+
+        dispatch(customersFetchThunkById({ id: parseInt(params.id) }));
+
+        // dispatch(activitiesFetch());
+      }
+      else if (customer && custDispatch) {
+        dispatch(editIsManager());
+      }
+    }
+  }, [customer, params.id]);
+  useEffect(() => {
+    if (params.mid) {
+
+
+      if (!manager && mangDispatch) {
+        // Fetch activities
+
+        dispatch(managersFetchThunkById({ id: parseInt(params.mid) }));
+
+        // dispatch(activitiesFetch());
+      }
+      else if (manager && mangDispatch) {
+        dispatch(editCan());
+      }
+    }
+  }, [customer, params.id]);
   // Recalculate price when amount changes
   useEffect(() => {
-    if (order.activityId && order.amountOfParticipants) {
-     // const activity = activities.find(a => a.activityId === parseInt(params.idActivity));
-      dispatch( activityFetchThunkById({ id: order.activityId }));
+    if (order.activityId > 1000 && order.amountOfParticipants && !activity.activityId && actDispatch) {
+      // const activity = activities.find(a => a.activityId === parseInt(params.idActivity));
+      dispatch(activityFetchThunkById({ id: order.activityId }));
 
       if (activity.price) {
         setTotalPrice(activity.price * order.amountOfParticipants);
       }
     }
+    else if (activity) {
+      dispatch(editCust());
+    }
   }, [order.amountOfParticipants, order.activityId]);
+  useEffect(() => {
+    if (order.customerId > 10000 && !customer && custDispatch) {
+      dispatch(customersFetchThunkById({ id: order.customerId }));
+    }
+    else if (customer && custDispatch) {
+      dispatch(editIsManager());
+    }
+  }, [order.customerId])
+  useEffect(() => {
+    
 
+     if (order.managerId > 1 && !manager && mangDispatch) {
+      dispatch(managersFetchThunkById({ id: order.managerId }));
+    }
+    else if (manager && mangDispatch) {
+      dispatch(editCan());
+    }
+
+  }, [order.managerId])
+  useEffect(() => {
+    
+
+    if ( !manager && mangDispatch) {
+     dispatch(managersFetchThunkById({ id:params.mid }));
+   }
+   else if (manager && mangDispatch) {
+     dispatch(editCan());
+   }
+
+ }, [params.mid]);
   const saveOrder = () => {
+    console.log(customer);
+    console.log(manager);
+    console.log(activity);
+    console.log(order);
     if (order.activityId && order.customerId) {
       // יצירת עותק של ההזמנה עם הוספת השניות לשעה
       const orderToSave = {
@@ -120,12 +232,12 @@ export const AddEditOrder = () => {
           order.activeHour
       };
 
-      if (edit) {
+      if (edit && updateDispatch && saveDispatch) {
 
         dispatch(updateOrderThunk({ details: orderToSave }));
         refDialog.current.close();
         navigate('/orders');
-      } else {
+      } else if (addDispatch && saveDispatch) {
 
         dispatch(addOrderThunk({ details: orderToSave }));
         refDialog.current.close();
@@ -135,17 +247,60 @@ export const AddEditOrder = () => {
       alert("לא ניתן להוסיף/לערוך - חסרים פרטים חיוניים");
     }
   };
-  const check = async() => {
-   
-      //  await dispatch( activityFetchThunkById({ id: order.activityId }));
-       if(activity.lenOfActivity && order.date && order.activeHour && order.amountOfParticipants && order.activityId && order.customerId) {
-        dispatch(timeIsAvailableThunk({ id: params.mid, date: order.date, time: order.activeHour, len: activity.lenOfActivity }));
-        }
-       
+  const proceedToPayment = () => {
+    console.log(customer);
+    console.log(manager);
+    console.log(activity);
+    console.log(order);
+    if (order.activityId && order.customerId && order.amountOfParticipants > 0) {
+      try {
+        // הוספת השניות לשעה
+        const formattedHour = order.activeHour && !order.activeHour.includes(":00") ?
+          order.activeHour + ":00" :
+          order.activeHour;
+
+        // שמירת פרטי ההזמנה בלוקל סטורג' לשימוש בדף התשלום
+        const orderDetails = {
+          ...order,
+          activeHour: formattedHour,
+          totalPrice,
+          activityName
+        };
+
+        localStorage.setItem('pendingOrder', JSON.stringify(orderDetails));
+        console.log('Order details saved to localStorage:', orderDetails);
+
+        // סגירת הדיאלוג הנוכחי
+        refDialog.current.close();
+        // ניווט לדף התשלום
+        navigate('payment');
+
+
+
+
+      } catch (error) {
+        console.error('Error navigating to payment page:', error);
+        alert(`שגיאה במעבר לדף התשלום: ${error.message}`);
+      }
+    } else {
+      alert("לא ניתן לעבור לתשלום - חסרים פרטים חיוניים");
+    }
+  };
+  const check = async () => {
+    console.log(customer);
+    console.log(manager);
+    console.log(activity);
+    console.log(order);
+    console.log(timeDispatch);
+    //  await dispatch( activityFetchThunkById({ id: order.activityId }));
+    if ( activity.lenOfActivity && order.date && order.activeHour && order.amountOfParticipants && order.activityId && order.customerId) {
+      dispatch(timeIsAvailableThunk({ id: order.managerId, date: order.date, time: order.activeHour, len: activity.lenOfActivity }));
+    }
+
     else {
       alert("לא ניתן לבדוק - חסרים פרטים חיוניים");
     }
- }
+  }
   const cancel = () => {
     refDialog.current.close();
     navigate(-1);
@@ -155,8 +310,11 @@ export const AddEditOrder = () => {
     // מציאת פרטי הלקוח והפעילות
     // const customer = customers.find(c => c.instituteId === parseInt(params.id));
     // const activity = activities.find(a => a.activityId === parseInt(params.idActivity));  
-
-    if (!customer || !activity) {
+     if(!customer && order.customerId) {
+      dispatch(customersFetchThunkById({ id: order.customerId }));
+      console.log(customer);
+    }
+    if (!order.customerId || !order.activityId) {
       alert("לא ניתן להפיק חשבונית - חסרים פרטים");
       return;
     }
@@ -170,7 +328,8 @@ export const AddEditOrder = () => {
     invoiceElement.style.position = 'absolute';
     invoiceElement.style.left = '-9999px';
     invoiceElement.style.top = '-9999px';
-
+    console.log(customer);
+    console.log(customer.instituteName);
     // הוספת תוכן החשבונית
     invoiceElement.innerHTML = `
       <div style="text-align: center; margin-bottom: 30px;">
@@ -181,7 +340,7 @@ export const AddEditOrder = () => {
       
       <div style="margin-bottom: 30px;">
         <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי לקוח</h2>
-        <p style="font-size: 14px; margin: 5px 0;">שם: ${customer.instituteName || 'לא צוין'}</p>
+        <p style="font-size: 14px; margin: 5px 0;">שם: ${customer.instituteName  || 'לא צוין'}</p>
         <p style="font-size: 14px; margin: 5px 0;">טלפון: ${customer.mobile || 'לא צוין'}</p>
         <p style="font-size: 14px; margin: 5px 0;">אימייל: ${customer.email || 'לא צוין'}</p>
         <p style="font-size: 14px; margin: 5px 0;">איש קשר: ${customer.contactName || 'לא צוין'}</p>
@@ -324,6 +483,19 @@ export const AddEditOrder = () => {
                 />
               </Grid>
             )}
+            {!params.mid && (
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="קןד מנהל "
+                  variant="outlined"
+                  type="number"
+                  value={order?.managerId}
+                  onChange={e => setOrder({ ...order, managerId: parseInt(e.target.value) })}
+                  className="form-field"
+                />
+              </Grid>
+            )}
 
             <Grid item xs={12} md={6}>
               <TextField
@@ -365,7 +537,7 @@ export const AddEditOrder = () => {
             >
               בדיקה האם הזמן זמין
             </Button>}
-          {isAvailable && <Button
+          {(isAvailable || edit) && <Button
             variant="contained"
             startIcon={<SaveIcon />}
             onClick={saveOrder}
@@ -379,7 +551,7 @@ export const AddEditOrder = () => {
           <Button
             variant="contained"
             startIcon={<PaymentIcon />}
-            // onClick={proceedToPayment}
+            onClick={proceedToPayment}
             className="action-button payment-button"
             style={{ backgroundColor: '#b60557', color: 'white' }}
 
@@ -407,8 +579,9 @@ export const AddEditOrder = () => {
             חזור
           </Button>
         </Box>
+        <Outlet />
       </Container>
-      <Outlet />
+     
     </dialog>
   );
 };

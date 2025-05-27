@@ -160,6 +160,7 @@ import { jsPDF } from 'jspdf';
 import 'jspdf-autotable' 
 import html2canvas from 'html2canvas';
 import { customersByMangerIdThunk } from '../../store/slices/managers/customersByMangerIdThunk';
+import { editCustomer } from '../../store/slices/customers/customersSlice';
 
 export const Customers = () => {
  const refPdf=useRef(null);
@@ -378,6 +379,7 @@ export const Customers = () => {
   };
 
   const handleEditClick = () => {
+    dispatch(editCustomer(selectedCustomer));
     navigate(`editCustomer/${selectedCustomer.instituteId}`);
     handleMenuClose();
   };
@@ -1231,7 +1233,7 @@ export const Customers = () => {
                            <Tooltip title="עריכה">
                              <IconButton
                                size="small"
-                               onClick={() => navigate(`editCustomer/${customer.instituteId}`)}
+                               onClick={() =>{dispatch(editCustomer(customer));navigate(`editCustomer/${customer.instituteId}`)}}
                              >
                                <EditIcon />
                              </IconButton>
@@ -1459,7 +1461,7 @@ export const Customers = () => {
          )}
        </DialogContent>
        <DialogActions>
-         <Button onClick={() => navigate(`editCustomer/${selectedCustomer.instituteId}`)} color="primary">
+         <Button onClick={() => {dispatch(editCustomer(selectedCustomer));navigate(`editCustomer/${selectedCustomer.instituteId}`)}} color="primary">
            עריכה
          </Button>
          <Button onClick={() => setOpenDetailsDialog(false)} color="primary">

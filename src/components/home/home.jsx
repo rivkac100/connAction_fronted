@@ -545,7 +545,7 @@ export const Home = () => {
                 <NavButton 
                   icon={<ListAltIcon />} 
                   label="הזמנה חדשה" 
-                  onClick={() => navigate(`newOrder`)}
+                  onClick={() =>{setView(false);navigate(`newOrder`)}}
                 />
               </Box>
               
@@ -680,7 +680,8 @@ export const Home = () => {
               )}
             </Box>
           )}
-          <Outlet />
+          {!view &&
+          <Outlet />}
         </Box> 
        
       </Container>

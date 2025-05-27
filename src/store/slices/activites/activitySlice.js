@@ -5,6 +5,7 @@ import { activitiesFetch, activitiesFetchThunk } from './activitiesFetch';
 import { deleteActivityThunk } from './deleteActivityThunk';
 import { activitiyFetchThunkById, activityFetchThunkById } from './activityFetchThunkById';
 import { updateActivityThunk } from './updateActivityThunk';
+import { editCustomer } from '../customers/customersSlice';
 
 const INITIAL_STATE_ACTIVITY = {
     activityName: "",
@@ -12,6 +13,7 @@ const INITIAL_STATE_ACTIVITY = {
     isLoading: false,
     activities: [],
     activity: {},
+    customer:false,
     token: null,
     sucsses: false,
     failed: false,
@@ -35,6 +37,9 @@ export const activitiesSlice = createSlice({
         // },
         editToken: (state, action) => {
             state.token = action.payload;
+        },
+        editCust: (state, action) => {
+            state.customer = true;
         }
     },
 
@@ -104,6 +109,7 @@ export const activitiesSlice = createSlice({
         builder.addCase(activityFetchThunkById.fulfilled, (state, action) => {
             console.log(action.payload);
             state.MyOrders = action.payload.orders;
+            state.customer=true;
             state.activity=action.payload;
         });
 
@@ -111,4 +117,4 @@ export const activitiesSlice = createSlice({
 
     }
 })
-export const { editActivity, editToken,editIsM } = activitiesSlice.actions;
+export const { editActivity, editToken,editIsM,editCust } = activitiesSlice.actions;

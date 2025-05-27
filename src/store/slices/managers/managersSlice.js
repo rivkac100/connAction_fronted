@@ -18,9 +18,11 @@ const INITIAL_STATE_MANAGER = {
     token: null,
     sucsses: false,
     failed: false,
+    addOrUpdate: false,
     MyCustomers:[],
     MyOrders:[],
     MyEvents:[],
+    isCan:false,
     isEmpty: false,
     isM:-1
 }
@@ -32,6 +34,12 @@ export const managersSlice = createSlice({
     reducers: {
         editManager: (state, action) => {
             state.managers = action.payload;
+        },
+        editAddOrUpdate: (state, action) => {
+            state.addOrUpdate = true;
+        },
+        editCan: (state, action) => {
+            state.isCan = true;
         },
         // editUserName: (state, action) => {
         //     state.InstituteName = action.payload;
@@ -134,6 +142,7 @@ export const managersSlice = createSlice({
         builder.addCase(managersFetchThunkById.fulfilled, (state, action) => {
             console.log(action.payload);
             // state.MyOrders = action.payload.orders;
+            state.isCan = true;
             state.myManager=action.payload;
             state.activities=action.payload.activities;
             state.MyEvents=action.payload.events;
@@ -145,6 +154,9 @@ export const managersSlice = createSlice({
             console.log(action.payload);
             debugger
             state.isEmpty = action.payload;
+            if(action.payload==true){
+                state.addOrUpdate=true;
+            }
             console.log(state.isEmpty);
              state.sucsses = true;
         });
@@ -158,4 +170,4 @@ export const managersSlice = createSlice({
 
     }
 })
-export const { editManager, editToken,editIsM } = managersSlice.actions;
+export const { editManager, editToken,editIsM,editAddOrUpdate,editCan } = managersSlice.actions;

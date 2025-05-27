@@ -13,7 +13,10 @@ const INITIAL_STATE_ORDER = {
     Myorders:[],
     orders: [],
     order:{},
-    
+    update: false,
+    add: false,
+    findOrder:true,
+    activity:false,
     token: null,
     sucsses: false,
     failed: false
@@ -25,7 +28,7 @@ export const ordersSlice = createSlice({
     initialState: INITIAL_STATE_ORDER,
     reducers: {
         editOrder: (state, action) => {
-            state.orders = action.payload;
+            state.order = action.payload;
         },
         // editUserName: (state, action) => {
         //     state.InstituteName = action.payload;
@@ -36,6 +39,13 @@ export const ordersSlice = createSlice({
         editToken: (state, action) => {
             state.token = action.payload;
         },
+        editfindOrder: (state, action) => {
+            state.findOrder = false;
+            state.update = false;
+            state.add = true;
+            state.activity=true;
+        },
+
         editActivityName: (state, action) => {
             state.activityName = action.payload;
         }
@@ -71,6 +81,20 @@ export const ordersSlice = createSlice({
             state.failed = true;
         });
 
+        builder.addCase(findOrderThunk.pending, (state, action) => {
+        });
+        //הוספת מקרה שהט'נק הסתיים בהצלחה
+        builder.addCase(findOrderThunk.fulfilled, (state, action) => {
+             state.order = action.payload;
+             state.update = true;
+             state.add = false;
+             state.findOrder = false;
+             state.activity=true;
+        });
+        //הוספת מקרה שהט'נק נכשל
+        builder.addCase(findOrderThunk.rejected, (state, action) => {
+            state.failed = true;
+        });
         //delete
 
         // הוספת מקרה שהט'נק הסתיים בהצלחה
@@ -114,13 +138,9 @@ export const ordersSlice = createSlice({
         }); 
         //getById
 
-        builder.addCase(findOrderThunk.fulfilled, (state, action) => {
-            console.log(action.payload);
-            state.order = action.payload;
-        });
-
+        
 
 
     }
 })
-export const { editorder, editToken ,editActivityName} = ordersSlice.actions;
+export const { editOrder, editToken ,editActivityName,editfindOrder} = ordersSlice.actions;

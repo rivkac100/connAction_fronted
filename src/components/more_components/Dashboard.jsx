@@ -9,7 +9,7 @@ import {
   Button,
   CircularProgress
 } from '@mui/material';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { eventFetchThunk } from '../../store/slices/events/eventFetchThunk';
 import { DashboardCard } from './DashboardCard';
@@ -27,11 +27,12 @@ import { managersFetchThunkById } from '../../store/slices/managers/managerFetch
 export const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location=useLocation();
   const params = useParams();
   const id = params.mid;
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState(true);
-
+  
   const [managerData, setManagerData] = useState({
     name: 'משתמש',
     upcomingEvents: 0,
@@ -45,12 +46,23 @@ export const Dashboard = () => {
   const manager = useSelector(state => state.manager.myManager);
   const orders = useSelector(state => state.manager.MyOrders);
   useEffect(() => {
-    setView(true);
+    if(location.pathname.split("/").pop()===params.mid){
+      setView(true);
+    }
+    else setView(false);
     if(!manager){
     dispatch(managersFetchThunkById({ id: id }));
     
   }
   }, [])
+  useEffect(() => {
+    console.log(parseInt(location.pathname.split("/").pop()));
+    if(parseInt(location.pathname.split("/").pop())===params.mid){
+      setView(true);
+      console.log(view);
+    }
+ 
+  }, [location]);
   // const handleRefresh = () => {
   //    dispatch(managersFetchThunkById({id:id}));
 
@@ -151,7 +163,7 @@ export const Dashboard = () => {
                   <Button
                     variant="outlined"
                     startIcon={<AddIcon />}
-                    onClick={() => navigate(`newOrder`)}
+                    onClick={() =>{setView(false); navigate(`newOrder`)}}
                     className="add-button"
                   >
                     הזמנה חדשה
@@ -159,7 +171,7 @@ export const Dashboard = () => {
                   <Button
                     variant="outlined"
                     startIcon={<AddIcon />}
-                    onClick={() => navigate(`newEvent`)}
+                    onClick={() =>{setView(false); navigate(`newEvent`)}}
                     className="add-button"
                   >
                     אירוע חדש 
@@ -167,7 +179,7 @@ export const Dashboard = () => {
                   <Button
                     variant="outlined"
                     startIcon={<AddIcon />}
-                    onClick={() => navigate(`newActivity`)}
+                    onClick={() =>{setView(false); navigate(`newActivity`)}}
                     className="add-button"
                   >
                    פעילות חדשה
@@ -259,7 +271,8 @@ export const Dashboard = () => {
             </Grid>
           </Grid>
         </Container>}
-      <Outlet />
+        {!view &&
+      <Outlet />}
     </>
   );
 };

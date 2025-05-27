@@ -154,7 +154,7 @@ export const About = () => {
                     <span className="check-icon">✓</span> אבטחת מידע ברמה הגבוהה ביותר
                   </Typography>
                   <Typography variant="body1" className="why-us-point">
-                    <span className="check-icon">✓</span> תמיכה טכנית זמינה 24/7
+                    <span className="check-icon">✓</span> תמיכה טכנית זמינה 24/6
                   </Typography>
                 </Box>
               </Box>

@@ -210,7 +210,8 @@ export const Navigation = ({ managerId, managerName }) => {
         <Toolbar>
           <IconButton
             edge="start"
-            color="inherit"
+            color="white"
+            size='large'
             aria-label="menu"
             onClick={toggleDrawer(true)}
             className="menu-button"

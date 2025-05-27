@@ -36,9 +36,7 @@ export const Start = () => {
 
   // State for form inputs
   const [formData, setFormData] = useState({
-
     password: "",
-
   });
 
 
@@ -58,14 +56,20 @@ export const Start = () => {
     dispatch(editIsC(-1))
     dispatch(editIsM(-1))
   }, [])
-
+  useEffect(() => {
+    if (user) {
+      if (user.userType === "manager") {
+        navigate(`/manager/${user.id}`);
+      } else if (user.userType === "customer") {
+        navigate(`/home/${user.instituteId}`);
+      }
+    }
+  }, [user]);
 
 
   // Handle tab change
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
-
-
     setError("");
   };
 
@@ -75,9 +79,9 @@ export const Start = () => {
     setIsLoading(true);
 
 
-    setTimeout(async () => {
+    setTimeout( () => {
       debugger
-      await dispatch(findUserByPassId({ pass: formData.password }));
+       dispatch(findUserByPassId({ pass: formData.password }));
       
       debugger
       console.log(user);
@@ -90,7 +94,7 @@ export const Start = () => {
           navigate(`/home/${user.instituteId}`);
         }
       }
-      else {
+      else if(!user) {
         setError("המשתמש אינו קיים");
         setIsLoading(false);
         setNewUser(true)
@@ -262,8 +266,7 @@ export const Start = () => {
                     מנהל חדש
                   </button>
                 </div>
-              }
-              <button
+              } <button
                 type="submit"
                 className="auth-button"
                 disabled={isLoading}
@@ -273,7 +276,8 @@ export const Start = () => {
                 ) : (
                   "התחברות"
                 )}
-              </button>
+              </button> 
+              
             </form>
 
             <div className="auth-links">

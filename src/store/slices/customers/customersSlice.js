@@ -11,6 +11,7 @@ const INITIAL_STATE_CUSTOMER = {
     InstituteId: "",
     customers: [],
     customer: {},
+    manager: false,
     token: null,
     sucsses: false,
     failed: false,
@@ -24,7 +25,7 @@ export const customersSlice = createSlice({
     initialState: INITIAL_STATE_CUSTOMER,
     reducers: {
         editCustomer: (state, action) => {
-            state.customers = action.payload;
+            state.customer = action.payload;
         },
         // editUserName: (state, action) => {
         //     state.InstituteName = action.payload;
@@ -34,6 +35,9 @@ export const customersSlice = createSlice({
         },
         editToken: (state, action) => {
             state.token = action.payload;
+        },
+        editIsManager: (state, action) => {
+            state.manager = true;
         }
     },
 
@@ -104,6 +108,7 @@ export const customersSlice = createSlice({
         builder.addCase(customersFetchThunkById.fulfilled, (state, action) => {
             console.log(action.payload);
             state.MyOrders = action.payload.orders;
+            state.manager=true;
             state.customer=action.payload;
         });
 
@@ -111,4 +116,4 @@ export const customersSlice = createSlice({
 
     }
 })
-export const { editCustomer, editToken,editIsC } = customersSlice.actions;
+export const { editCustomer, editToken,editIsC,editIsManager } = customersSlice.actions;
