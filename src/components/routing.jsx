@@ -156,24 +156,33 @@ export const Routing = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="newOrder/:idActivity" element={<AddEditOrder />} >
             <Route path="payment" element={<Payment />} />
+            <Route path="report" element={<Report />} />
           </Route>
         </Route>
         <Route path="newOrder" element={<AddEditOrder />} >
         <Route path="payment" element={<Payment />} />
-          </Route>
+        <Route path="report" element={<Report />} />
+
+        </Route>
         <Route path="upcoming" element={<MyOrders upcoming={true} />} />
         <Route path="myOrders" element={<MyOrders />}>
           <Route path="newOrder" element={<AddEditOrder />} >
             <Route path="payment" element={<Payment />} />
+            <Route path="report" element={<Report />} />
+
           </Route>
           <Route path="editOrder/:orderId" element={<AddEditOrder />} >
             <Route path="payment" element={<Payment />} />
+            <Route path="report" element={<Report />} />
+
           </Route>
         </Route>
         <Route path="profile/:mid" element={<Profile />} />
         <Route path="activities" element={<Activities />} >
           <Route path="newOrder/:idActivity" element={<AddEditOrder />} >
             <Route path="payment" element={<Payment />} />
+            <Route path="report" element={<Report />} />
+
           </Route>
         </Route>
       </Route>
@@ -192,14 +201,20 @@ export const Routing = () => {
           <Route path="newActivity" element={<AddEditActivity />} />
           <Route path="newOrder" element={<AddEditOrder />} >
             <Route path="payment" element={<Payment />} />
+            <Route path="report" element={<Report />} />
+
           </Route>
           <Route path="customers" element={<Customers />} />
           <Route path="myOrders/:oid" element={<MyOrders />} >
             <Route path="newOrder" element={<AddEditOrder />} >
               <Route path="payment" element={<Payment />} />
+              <Route path="report" element={<Report />} />
+
             </Route>
             <Route path="editOrder/:orderId" element={<AddEditOrder />} >
               <Route path="payment" element={<Payment />} />
+             <Route path="report" element={<Report />} />
+
             </Route>
           </Route>
           <Route path="newActivity" element={<AddEditActivity />} />
@@ -208,7 +223,11 @@ export const Routing = () => {
         <Route path="newActivity" element={<AddEditActivity />} />
         <Route path="upcoming" element={<MyOrders upcoming={true} />} />
         <Route path="month" element={<Month />}>
-          <Route path="newOrder" element={<AddEditOrder />} />
+        <Route path="newOrder" element={<AddEditOrder />} >
+              {/* <Route path="payment" element={<Payment />} /> */}
+              <Route path="report" element={<Report />} />
+
+            </Route>
           <Route path="day/:day/:month/:year" element={<DayView />} />
           <Route path="newEvent" element={<Event />} />
         </Route>
@@ -216,12 +235,24 @@ export const Routing = () => {
         <Route path="day/:day/:month/:year" element={<DayView />} />
         <Route path="event/:month/:day/:year" element={<Event />} />
         <Route path="newEvent" element={<Event />} />
-        <Route path="newOrder" element={<AddEditOrder />} />
+        <Route path="newOrder" element={<AddEditOrder />} >
+              {/* <Route path="payment" element={<Payment />} /> */}
+              <Route path="report" element={<Report />} />
+
+       </Route>
 
         {/* <Route path="newActivity" element={<AddEditActivity />} />*/}
         <Route path="orders" element={<MyOrders />}>
-          <Route path="newOrder" element={<AddEditOrder />} />
-          <Route path="editOrder/:orderId" element={<AddEditOrder />} />
+        <Route path="newOrder" element={<AddEditOrder />} >
+              {/* <Route path="payment" element={<Payment />} /> */}
+              <Route path="report" element={<Report />} />
+
+            </Route>
+            <Route path="editOrder/:orderId" element={<AddEditOrder />} >
+              {/* <Route path="payment" element={<Payment />} /> */}
+             <Route path="report" element={<Report />} />
+
+            </Route>
         </Route>
         <Route path="customers" element={<Customers />}>
           <Route path="newCustomer" element={<NewEditCustomer />} />

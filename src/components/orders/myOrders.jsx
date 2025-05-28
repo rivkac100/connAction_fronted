@@ -406,18 +406,7 @@ export const MyOrders = () => {
             {params.id ? (
               futureOrdersC && futureOrdersC.length > 0 ? (
                 futureOrdersC.map(order => (
-                  <Box
-                    key={order.orderId}
-                    sx={{
-                      width: {
-                        xs: 'calc(100% - 16px)',
-                        sm: 'calc(50% - 16px)',
-                        md: 'calc(33.333% - 16px)',
-                        lg: 'calc(20% - 16px)'
-                      },
-                      margin: '8px',
-                    }}
-                  >
+                  <Grid item xs={12} sm={6} md={4} key={order.orderId}>
                     <Card
                       elevation={3}
                       sx={{
@@ -437,7 +426,7 @@ export const MyOrders = () => {
                           position: 'absolute',
                           top: -10,
                           right: 20,
-                          bgcolor: '#b60557 !important',
+                          bgcolor: '#b60557',
                           color: 'white',
                           borderRadius: '20px',
                           px: 2,
@@ -447,9 +436,7 @@ export const MyOrders = () => {
                           boxShadow: '0 3px 5px rgba(0,0,0,0.2)',
                           zIndex: 1
                         }}
-                        style={{
-                         backgroundColor: '#b60557 !important',
-                        }}
+                
                       >
                         פעיל
                       </Box>
@@ -486,7 +473,7 @@ export const MyOrders = () => {
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
                           <PersonIcon color="action" sx={{ mr: 1.5 }} />
                           <Typography variant="body1">
-                            {order.brokerName || "לא צוין"}
+                            {order.customerName || "לא צוין"}
                           </Typography>
                         </Box>
 
@@ -515,7 +502,7 @@ export const MyOrders = () => {
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="עריכת הזמנה">
-                            <IconButton onClick={() => navigate(`editOrder/${order.orderId}`)} color="primary">
+                            <IconButton onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}} color="primary">
                               <EditNoteOutlinedIcon />
                             </IconButton>
                           </Tooltip>
@@ -534,7 +521,7 @@ export const MyOrders = () => {
                           color="primary"
                           size="small"
                           startIcon={<EditNoteOutlinedIcon />}
-                          onClick={() => navigate(`editOrder/${order.orderId}`)}
+                          onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}}
                           sx={{
                             borderRadius: 2,
                             bgcolor: '#d57fa7f6',
@@ -545,7 +532,147 @@ export const MyOrders = () => {
                         </Button>
                       </Box>
                     </Card>
-                  </Box>
+                  </Grid>
+                  // <Box
+                  //   key={order.orderId}
+                  //   sx={{
+                  //     width: {
+                  //       xs: 'calc(100% - 16px)',
+                  //       sm: 'calc(50% - 16px)',
+                  //       md: 'calc(33.333% - 16px)',
+                  //       lg: 'calc(20% - 16px)'
+                  //     },
+                  //     margin: '8px',
+                  //   }}
+                  // >
+                  //   <Card
+                  //     elevation={3}
+                  //     sx={{
+                  //       height: '100%',
+                  //       borderRadius: 2,
+                  //       transition: 'transform 0.2s, box-shadow 0.2s',
+                  //       '&:hover': {
+                  //         transform: 'translateY(-5px)',
+                  //         boxShadow: '0 8px 16px rgba(0,0,0,0.2)'
+                  //       },
+                  //       position: 'relative',
+                  //       overflow: 'visible'
+                  //     }}
+                  //   >
+                  //     <Box
+                  //       sx={{
+                  //         position: 'absolute',
+                  //         top: -10,
+                  //         right: 20,
+                  //         bgcolor: '#b60557 !important',
+                  //         color: 'white',
+                  //         borderRadius: '20px',
+                  //         px: 2,
+                  //         py: 0.5,
+                  //         fontWeight: 'bold',
+                  //         fontSize: '0.8rem',
+                  //         boxShadow: '0 3px 5px rgba(0,0,0,0.2)',
+                  //         zIndex: 1
+                  //       }}
+                  //       style={{
+                  //        backgroundColor: '#b60557 !important',
+                  //       }}
+                  //     >
+                  //       פעיל
+                  //     </Box>
+
+                  //     <CardContent sx={{ p: 3 }}>
+                  //       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                  //         <Typography variant="h6" component="div" fontWeight="bold" color="#b60557">
+                  //           {order.activityName || "פעילות ללא שם"}
+                  //         </Typography>
+                  //         <Chip
+                  //           label={`#${order.orderId}`}
+                  //           color="primary"
+                  //           size="small"
+                  //           sx={{ fontWeight: 'bold', bgcolor: '#d57fa7f6' }}
+                  //         />
+                  //       </Box>
+
+                  //       <Divider sx={{ mb: 2 }} />
+
+                  //       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                  //         <EventIcon color="action" sx={{ mr: 1.5 }} />
+                  //         <Typography variant="body1">
+                  //           {order.date}
+                  //         </Typography>
+                  //       </Box>
+
+                  //       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                  //         <AccessTimeIcon color="action" sx={{ mr: 1.5 }} />
+                  //         <Typography variant="body1">
+                  //           {order.activeHour}
+                  //         </Typography>
+                  //       </Box>
+
+                  //       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                  //         <PersonIcon color="action" sx={{ mr: 1.5 }} />
+                  //         <Typography variant="body1">
+                  //           {order.brokerName || "לא צוין"}
+                  //         </Typography>
+                  //       </Box>
+
+                  //       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                  //         <Badge badgeContent={order.amountOfParticipants} color="secondary" sx={{ mr: 1.5 }}>
+                  //           <PersonIcon color="action" />
+                  //         </Badge>
+                  //         <Typography variant="body1">
+                  //           משתתפים
+                  //         </Typography>
+                  //       </Box>
+
+                  //       <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  //         <AttachMoneyIcon color="action" sx={{ mr: 1.5 }} />
+                  //         <Typography variant="body1" fontWeight="bold" color="#3b3a3d">
+                  //           {order.payment} ₪
+                  //         </Typography>
+                  //       </Box>
+                  //     </CardContent>
+
+                  //     <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'space-between' }}>
+                  //       <Box>
+                  //         <Tooltip title="מחיקת הזמנה">
+                  //           <IconButton onClick={() => deleteOrder(order.orderId)} color="error">
+                  //             <DeleteForeverOutlinedIcon />
+                  //           </IconButton>
+                  //         </Tooltip>
+                  //         <Tooltip title="עריכת הזמנה">
+                  //           <IconButton onClick={() => navigate(`editOrder/${order.orderId}`)} color="primary">
+                  //             <EditNoteOutlinedIcon />
+                  //           </IconButton>
+                  //         </Tooltip>
+                  //       </Box>
+                  //       <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
+                  //       <Chip
+                  //         label={order.isPayment===1?"שולם": "לא שולם"}
+                  //         color="default"
+                  //         icon={order.isPayment===1?<CheckCircleIcon />: <CancelIcon />}
+                  //         variant="outlined"
+                  //       />
+                  //     </Box>
+                  //       {/* כפתור עריכה להזמנות עתידיות */}
+                  //       <Button
+                  //         variant="contained"
+                  //         color="primary"
+                  //         size="small"
+                  //         startIcon={<EditNoteOutlinedIcon />}
+                  //         onClick={() => navigate(`editOrder/${order.orderId}`)}
+                  //         sx={{
+                  //           borderRadius: 2,
+                  //           bgcolor: '#d57fa7f6',
+                  //           '&:hover': { bgcolor: '#8e0443' }
+                  //         }}
+                  //       >
+                  //         עריכה
+                  //       </Button>
+                  //     </Box>
+                  //   </Card>
+                  // </Box>
                 ))
               ) : (
                 <Grid item xs={12}>

@@ -13,7 +13,7 @@ export const findCustomerThunk = createAsyncThunk(
         }
 
         else {
-            alert("findLogin")
+
             throw new Error("failed to fetch");
         }
     }

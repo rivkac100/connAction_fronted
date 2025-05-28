@@ -518,57 +518,94 @@
   
   /* התאמה למסכים קטנים מאוד */
   @media (max-width: 480px) {
+      .auth-dialog {
+          width: 100%;
+          height: 100vh;
+          max-height: 100vh;
+          top: 0;
+          left: 0;
+          transform: none;
+          border-radius: 0;
+      }
+
       .auth-title {
           font-size: 1.3rem;
       }
-  
+
+      .form-container {
+          padding: 10px 15px;
+      }
+
       .step-dot {
           width: 25px;
           height: 25px;
           font-size: 0.9rem;
+          margin: 0 5px;
       }
-  
+
+      .step-dot::after {
+          width: 10px;
+      }
+
       .input-group {
           margin-bottom: 10px;
       }
-  
+
       .auth-input {
-          padding: 10px 10px 10px 35px;
+          padding: 10px;
+          font-size: 0.95rem;
       }
-  
+
       .input-icon {
-          width: 35px;
+          width: 40px;
+          font-size: 1rem;
       }
-  
+
       .auth-button, .secondary-button1 {
           padding: 12px;
           font-size: 1rem;
+          min-height: 45px;
       }
-  
+
       .step-title {
           font-size: 1.1rem;
+          margin-bottom: 15px;
       }
-  
+
       .error-text {
           font-size: 0.8rem;
       }
-  
+
       .auth-links {
           font-size: 0.9rem;
+          margin-top: 15px;
       }
-  
+
       .success-icon {
           width: 60px;
           height: 60px;
           font-size: 1.8rem;
       }
-  
+
       .success-message h3 {
           font-size: 1.3rem;
       }
+
+      .success-message {
+          padding: 20px;
+      }
+
+      .info-box {
+          padding: 10px;
+          margin-top: 10px;
+      }
+
+      .info-box p {
+          font-size: 0.85rem;
+      }
   }
   
-  /* אנימציות נוספות */
+  /* אנימציות */
   @keyframes fadeIn {
       from {
           opacity: 0;
@@ -615,9 +652,16 @@
   }
   
   /* עיצוב RTL */
-  .auth-input, .error-text, .auth-links, .info-box p, .step-title {
+  .auth-input, .error-text, .auth-links, .info-box p, .step-title, .strength-label, .strength-text {
       text-align: right;
       direction: rtl;
+  }
+  
+  /* תיקון לסלקט בRTL */
+  select.auth-input {
+      background-position: left 10px center;
+      padding-left: 40px;
+      padding-right: 15px;
   }
   
   /* עיצוב מותאם לדיאלוג התחברות */

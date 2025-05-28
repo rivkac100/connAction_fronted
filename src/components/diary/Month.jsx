@@ -846,7 +846,7 @@ export const Month = () => {
                                     <span>הזמנות אחרות</span>
                                 </div>
                             </div>
-                    <Button  variant='contained' className='nav-button' onClick={() => navigate(-1)}>back</Button>
+                    <Button  variant='contained' className='nav-button' onClick={() => navigate(`/manager/${parms.mid}`)}>back</Button>
 
                         </div>
                     )}

@@ -13,6 +13,7 @@ const INITIAL_STATE_ORDER = {
     Myorders:[],
     orders: [],
     order:{},
+    myReport:{},
     update: false,
     add: false,
     findOrder:true,
@@ -60,6 +61,7 @@ export const ordersSlice = createSlice({
             // state.token = action.meta.org.order;
             state.token=0;
             state.sucsses = true;
+            state.myReport=action.payload[action.payload.length-1].reports;
         });
         //הוספת מקרה שהט'נק נכשל
         builder.addCase(addOrderThunk.rejected, (state, action) => {
@@ -74,6 +76,7 @@ export const ordersSlice = createSlice({
         //הוספת מקרה שהט'נק הסתיים בהצלחה
         builder.addCase(updateOrderThunk.fulfilled, (state, action) => {
              state.orders = action.payload;
+             state.myReport=action.payload[action.payload.length-1].reports;
              state.sucsses = true;
         });
         //הוספת מקרה שהט'נק נכשל
@@ -88,6 +91,7 @@ export const ordersSlice = createSlice({
              state.order = action.payload;
              state.update = true;
              state.add = false;
+             state.myReport = action.payload.reports;
              state.findOrder = false;
              state.activity=true;
         });

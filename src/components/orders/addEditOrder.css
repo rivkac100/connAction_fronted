@@ -57,6 +57,7 @@
   border-radius: 4px !important;
   font-weight: 500 !important;
   transition: all 0.3s ease !important;
+  background-color: #b60557 !important;
 }
 
 .action-button:hover {
@@ -66,7 +67,9 @@
 
 .back-button {
   color: #757575 !important;
-  border-color: #757575 !important;
+  background-color: #b60557 !important;
+
+  border-color:3px #757575 !important;
 }
 
 .back-button {
@@ -75,6 +78,7 @@
 
 .invoice-button {
   background-color: #b60557 !important;
+  min-width: 100px !important;
 }
 
 .invoice-button:hover {

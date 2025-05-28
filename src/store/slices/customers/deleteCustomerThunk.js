@@ -19,7 +19,7 @@ export const deleteCustomerThunk = createAsyncThunk(
             return data;
         }
         else {
-            alert("deleteLogin")
+
             throw new Error("failed to fetch");
         }
     }

@@ -13,7 +13,7 @@ export const managersFetchThunkById = createAsyncThunk(
         }
 
         else {
-            alert("managersFetch")
+   
             throw new Error("failed to fetch");
         }
     }

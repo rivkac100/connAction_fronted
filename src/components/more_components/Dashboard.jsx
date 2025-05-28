@@ -46,10 +46,11 @@ export const Dashboard = () => {
   const manager = useSelector(state => state.manager.myManager);
   const orders = useSelector(state => state.manager.MyOrders);
   useEffect(() => {
+    setView(true);
     if(location.pathname.split("/").pop()===params.mid){
       setView(true);
     }
-    else setView(false);
+   
     if(!manager){
     dispatch(managersFetchThunkById({ id: id }));
     

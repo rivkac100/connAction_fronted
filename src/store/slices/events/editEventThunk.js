@@ -19,7 +19,7 @@ export const editEventThunk = createAsyncThunk(
            // console.log('succses to Edit');
         }
         else {
-            alert("editLogin")
+
             throw new Error("failed to fetch");
         }
     }

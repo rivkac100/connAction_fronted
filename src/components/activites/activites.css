@@ -38,6 +38,7 @@
   padding: 8px 16px;
   font-weight: 600;
   text-transform: none;
+  color: white !important;
 }
 .aaa{
   background-color: #5d374a;
@@ -62,7 +63,7 @@
 }
 .action-button.primary {
   background-color: #b60557;
-  color: white;
+  color: white !important;
 }
 
 .action-button.primary:hover {

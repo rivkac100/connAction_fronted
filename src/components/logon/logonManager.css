@@ -64,6 +64,7 @@
       align-items: center;
       justify-content: center;
       border-radius: 50%;
+      z-index: 10;
   }
   
   .close-button:hover {
@@ -125,6 +126,24 @@
       justify-content: center;
   }
   
+  .form-container::-webkit-scrollbar {
+      width: 6px;
+  }
+  
+  .form-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+  }
+  
+  .form-container::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+  }
+  
+  .form-container::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+  }
+  
   /* קבוצות שדות קלט */
   .input-group {
       position: relative;
@@ -139,6 +158,11 @@
   .input-group:focus-within {
       border-color:  #b60557;
       box-shadow: 0 0 0 3px rgba(172, 36, 84, 0.1);
+  }
+  
+  .input-group.input-error {
+      border-color: #e74c3c;
+      animation: shake 0.6s ease-in-out;
   }
   
   .input-icon {
@@ -215,6 +239,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
+      overflow: hidden;
   }
   
   .auth-button:hover {
@@ -250,6 +276,7 @@
       margin-top: 20px;
       text-align: center;
       font-size: 0.95rem;
+      flex-shrink: 0;
   }
   
   .auth-links p {
@@ -269,7 +296,7 @@
   }
   
   .link-button:hover {
-      color: #b60557;
+      color: #a0044d;
   }
   
   .forgot-password {
@@ -478,54 +505,99 @@
   }
   
   /* התאמה למסכים קטנים */
+  @media (max-width: 1024px) {
+      .auth-dialog {
+          max-width: 95%;
+      }
+      
+      .logo-container1 {
+          flex: 0 0 30%;
+      }
+      
+      .form-container {
+          flex: 0 0 70%;
+          padding: 15px 25px;
+      }
+  }
+  
   @media (max-width: 768px) {
+      .auth-dialog {
+          width: 95%;
+          max-width: none;
+          height: 90vh;
+          max-height: 90vh;
+          top: 5%;
+          left: 50%;
+          transform: translateX(-50%);
+      }
+  
       .auth-content {
           flex-direction: column;
       }
   
       .logo-container1 {
-          flex: 0 0 150px;
+          flex: 0 0 120px;
       }
   
       .form-container {
           flex: 1;
-          padding: 20px;
-      }
-  
-      .auth-dialog {
-          width: 95%;
-          max-height: 90vh;
+          padding: 15px 20px;
           overflow-y: auto;
       }
   
       .form-buttons {
           flex-direction: column-reverse;
-      }
-  
-      .form-buttons button {
-          margin-left: 0;
-          margin-bottom: 10px;
-      }
-  
-      .secondary-button1 {
-          margin-left: 0;
-      }
-  
-      .auth-input {
-          font-size: 0.95rem;
-      }
-  }
-  
-  /* התאמה למסכים קטנים מאוד */
-  @media (max-width: 480px) {
-      .auth-title {
-          font-size: 1.3rem;
+          gap: 10px;
       }
   
       .step-dot {
           width: 25px;
           height: 25px;
           font-size: 0.9rem;
+          margin: 0 8px;
+      }
+  
+      .step-dot::after {
+          width: 15px;
+      }
+  
+      .image-upload-container {
+          padding: 15px;
+      }
+  
+      .image-preview img {
+          max-height: 120px;
+      }
+  }
+  
+  @media (max-width: 480px) {
+      .auth-dialog {
+          width: 100%;
+          height: 100vh;
+          max-height: 100vh;
+          top: 0;
+          left: 0;
+          transform: none;
+          border-radius: 0;
+      }
+  
+      .auth-title {
+          font-size: 1.3rem;
+      }
+  
+      .form-container {
+          padding: 10px 15px;
+      }
+  
+      .step-dot {
+          width: 22px;
+          height: 22px;
+          font-size: 0.8rem;
+          margin: 0 5px;
+      }
+  
+      .step-dot::after {
+          width: 10px;
       }
   
       .input-group {
@@ -533,20 +605,24 @@
       }
   
       .auth-input {
-          padding: 10px 10px 10px 35px;
+          padding: 10px;
+          font-size: 0.95rem;
       }
   
       .input-icon {
-          width: 35px;
+          width: 40px;
+          font-size: 1rem;
       }
   
       .auth-button, .secondary-button1 {
           padding: 12px;
           font-size: 1rem;
+          min-height: 45px;
       }
   
       .step-title {
           font-size: 1.1rem;
+          margin-bottom: 15px;
       }
   
       .error-text {
@@ -555,6 +631,7 @@
   
       .auth-links {
           font-size: 0.9rem;
+          margin-top: 15px;
       }
   
       .success-icon {
@@ -565,6 +642,45 @@
   
       .success-message h3 {
           font-size: 1.3rem;
+      }
+  
+      .success-message {
+          padding: 20px;
+      }
+  
+      .info-box {
+          padding: 10px;
+          margin-top: 10px;
+      }
+  
+      .info-box p {
+          font-size: 0.85rem;
+      }
+  
+      .image-upload-container {
+          padding: 10px;
+      }
+  
+      .image-upload-button {
+          padding: 8px 16px;
+          font-size: 0.85rem;
+      }
+  
+      .image-preview img {
+          max-height: 100px;
+      }
+  
+      .remember-me {
+          margin: 8px 0;
+      }
+  
+      .remember-me input {
+          width: 16px;
+          height: 16px;
+      }
+  
+      .remember-me label {
+          font-size: 0.85rem;
       }
   }
   
@@ -614,24 +730,40 @@
       transform: scale(0.98);
   }
   
-  /* עיצוב RTL */
-  .auth-input, .error-text, .auth-links, .info-box p, .step-title {
-      text-align: right;
-      direction: rtl;
-  }
-  
-  /* עיצוב מותאם לדיאלוג התחברות */
-  .login-dialog .form-container {
-      padding-top: 40px;
-      padding-bottom: 40px;
-  }
-  
-  /* עיצוב מותאם לדיאלוג הרשמה */
   .register-dialog .step-content {
       animation: fadeIn 0.5s ease-out;
   }
   
-  /* אפקט מעבר בין שלבים */
+  /* תיקון לגלילה */
+  .form-container::-webkit-scrollbar {
+      width: 6px;
+  }
+  
+  .form-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 3px;
+  }
+  
+  .form-container::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 3px;
+  }
+  
+  .form-container::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+  }
+  
+  /* תיקון למיקום הדיאלוג */
+  .auth-dialog[open] {
+      display: flex;
+  }
+  
+  /* תיקון לכפתור הסגירה */
+  .close-button {
+      z-index: 10;
+  }
+  
+  /* תיקון לאנימציות מעבר */
   .step-transition-enter {
       opacity: 0;
       transform: translateX(20px);
@@ -652,6 +784,212 @@
       opacity: 0;
       transform: translateX(-20px);
       transition: opacity 300ms, transform 300ms;
+  }
+  
+  /* תיקון לשדות עם שגיאות */
+  .input-group.input-error {
+      border-color: #e74c3c;
+      animation: shake 0.6s ease-in-out;
+  }
+  
+  /* תיקון לטקסט בעברית */
+  * {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* תיקון לכיוון הטקסט */
+  .auth-dialog {
+      direction: rtl;
+  }
+  
+  .auth-dialog * {
+      box-sizing: border-box;
+  }
+  
+  /* תיקון נוסף לפוזיציה */
+  .auth-dialog {
+      inset: unset;
+  }
+  
+  /* אפקט זוהר לכפתורים */
+  .auth-button {
+      position: relative;
+      overflow: hidden;
+  }
+  
+  .auth-button::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+      transform: rotate(30deg);
+      opacity: 0;
+      transition: opacity 0.3s;
+  }
+  
+  .auth-button:hover::after {
+      opacity: 1;
+      animation: shine 1.5s infinite;
+  }
+  
+  @keyframes shine {
+      from {
+          transform: rotate(30deg) translateX(-300%);
+      }
+  
+      to {
+          transform: rotate(30deg) translateX(300%);
+      }
+  }
+  
+  /* עיצוב מיוחד לשלב העלאת התמונה */
+  .image-upload-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+  }
+  
+  .upload-icon {
+      font-size: 3rem;
+      color: #b60557;
+      margin-bottom: 10px;
+  }
+  
+  .upload-text {
+      color: #666;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-bottom: 10px;
+  }
+  
+  /* עיצוב לטעינת תמונה */
+  .uploading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+  }
+  
+  .uploading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #b60557;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+  }
+  
+  /* עיצוב לשדות חובה */
+  .required-field::after {
+      content: ' *';
+      color: #e74c3c;
+      font-weight: bold;
+  }
+  
+  /* עיצוב לכותרות משנה */
+  .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #333;
+      margin: 20px 0 15px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f1f1f1;
+      text-align: right;
+  }
+  
+  /* עיצוב לקבוצת שדות */
+  .field-group {
+      margin-bottom: 25px;
+  }
+  
+  .field-group:last-child {
+      margin-bottom: 15px;
+  }
+  
+  /* עיצוב לטיפים */
+  .tip-box {
+      background-color: #e8f4fd;
+      border-right: 4px solid #2196f3;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: #1976d2;
+  }
+  
+  .tip-box::before {
+      content: '💡 ';
+      margin-left: 5px;
+  }
+  
+  /* Snackbar עיצוב */
+  .snackbar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #333;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 6px;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .snackbar.success {
+      background-color: #2ecc71;
+  }
+  
+  .snackbar.error {
+      background-color: #e74c3c;
+  }
+  
+  .snackbar.warning {
+      background-color: #f39c12;
+  }
+  
+  /* אפקט זוהר לכפתורים */
+  .auth-button {
+      position: relative;
+      overflow: hidden;
+  }
+  
+  .auth-button::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+      transform: rotate(30deg);
+      opacity: 0;
+      transition: opacity 0.3s;
+  }
+  
+  .auth-button:hover::after {
+      opacity: 1;
+      animation: shine 1.5s infinite;
+  }
+  
+  @keyframes shine {
+      from {
+          transform: rotate(30deg) translateX(-300%);
+      }
+  
+      to {
+          transform: rotate(30deg) translateX(300%);
+      }
   }
   
   /* עיצוב לתיבת סיסמה */

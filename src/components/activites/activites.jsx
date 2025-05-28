@@ -316,16 +316,26 @@ export const Activities = () => {
           </Typography>
 
           <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
-            {((param.id === param.mid || !param.id) && param.id  ) &&
+            {!param.id  &&
+              // <Button
+              //   variant="outlined"
+              //   startIcon={<AddIcon />}
+              //   className="action-button secondary"
+              //   color='white'
+              //   onClick={handleAddActivity}
+              //   // sx={{ bgcolor: '#af2263', '&:hover': { bgcolor: '#8e0443' } }}
+              // >
+              //   הוסף פעילות
+              // </Button>
               <Button
-                variant="contained"
-                startIcon={<AddIcon />}
-                className="action-button primary"
-                onClick={handleAddActivity}
-                sx={{ bgcolor: '#af2263', '&:hover': { bgcolor: '#8e0443' } }}
-              >
-                הוסף פעילות
-              </Button>}
+              variant="outlined"
+              startIcon={<RefreshIcon />}
+              className="action-button secondary"
+              onClick={handleAddActivity}
+            >
+              הוסף פעילות
+            </Button>
+              }
 
 
             <Button
@@ -560,7 +570,7 @@ export const Activities = () => {
                           <IconButton
                             size="small"
                             className="action-button order"
-                            onClick={(e) => handleOrderClick(e, activity)}
+                            onClick={(e) => {dispatch(editActivity(activity));handleOrderClick(e, activity)}}
                           >
                             <ShoppingCartIcon />
                           </IconButton>

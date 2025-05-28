@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-import "./treatmentReport.css";
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,8 +23,7 @@ import {
   DialogActions,
   IconButton
 } from "@mui/material";
-import { newCurrentTreatment } from "../../redux/slices/treatmentSlice";
-import { getOneTreatmentThunk } from "../../redux/slices/getOneTreatmentFetch";
+
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import {
@@ -102,10 +100,10 @@ export const Report = () => {
   const param = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const report = useSelector(state => state.report.report);
-//   const theTreatment = useSelector(state => state.treatment.curretntTreatment);
-//   const thePatient = useSelector(state => state.patient.currentPatient);
-//   const allActivities = useSelector(state => state.activity?.activitiesList || []);
+  const report = useSelector(state => state.order.myReport);
+  //   const theTreatment = useSelector(state => state.report.curretntTreatment);
+  //   const thePatient = useSelector(state => state.patient.currentPatient);
+  //   const allActivities = useSelector(state => state.activity?.activitiesList || []);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [exportingPdf, setExportingPdf] = useState(false);
@@ -115,30 +113,30 @@ export const Report = () => {
   const [signatureDialogOpen, setSignatureDialogOpen] = useState(false);
   const canvasRef = useRef(null);
   const signaturePadRef = useRef(null);
-//   const [treatment, setTreatment] = useState({
-//     treatmentId: theTreatment?.treatmentId,
-//     treatmentDate: theTreatment?.treatmentDate,
-//     treatmentTime: theTreatment?.treatmentTime,
-//     pationtId: theTreatment?.pationtId,
-//     isComing: true,
-//     escort: theTreatment?.escort || "",
-//     cooperation: theTreatment?.cooperation || 3,
-//     nextMeetingPlanning: theTreatment?.nextMeetingPlanning || "",
-//     bePaid: theTreatment?.bePaid || false,
-//     userId: theTreatment?.userId,
-//   });
+  //   const [report, setTreatment] = useState({
+  //     treatmentId: theTreatment?.treatmentId,
+  //     treatmentDate: theTreatment?.treatmentDate,
+  //     treatmentTime: theTreatment?.treatmentTime,
+  //     pationtId: theTreatment?.pationtId,
+  //     isComing: true,
+  //     escort: theTreatment?.escort || "",
+  //     cooperation: theTreatment?.cooperation || 3,
+  //     nextMeetingPlanning: theTreatment?.nextMeetingPlanning || "",
+  //     bePaid: theTreatment?.bePaid || false,
+  //     userId: theTreatment?.userId,
+  //   });
 
-//   const [aimActivities, setAimActivities] = useState({});
-//   const [activeAim, setActiveAim] = useState(null);
+  //   const [aimActivities, setAimActivities] = useState({});
+  //   const [activeAim, setActiveAim] = useState(null);
   const reportRef = useRef(null);
 
   // דוגמאות להצעות פעילויות
-//   const activitySuggestions = useSelector(state => state.activity.activitiesList);
+  //   const activitySuggestions = useSelector(state => state.activity.activitiesList);
 
   // פתיחת דיאלוג החתימה
   const openSignatureDialog = () => {
     setSignatureDialogOpen(true);
-    
+
     // אתחול ה-SignaturePad אחרי שהדיאלוג נפתח ומוצג
     setTimeout(() => {
       initSignaturePad();
@@ -146,19 +144,19 @@ export const Report = () => {
   };
   const initSignaturePad = () => {
     if (!canvasRef.current) return;
-    
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    
+
     // התאמת גודל הקנבס לגודל האמיתי שלו בדף
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width;
     canvas.height = rect.height;
-    
+
     // ניקוי הקנבס
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
+
     // יצירת אובייקט SignaturePad חדש
     signaturePadRef.current = new SignaturePad(canvas, {
       minWidth: 1,
@@ -166,44 +164,44 @@ export const Report = () => {
       penColor: 'black',
       backgroundColor: 'rgba(255, 255, 255, 0)'
     });
-    
+
     // אם יש חתימה קיימת, טען אותה לקנבס
     if (signature && signaturePadRef.current) {
       const img = new Image();
       img.onload = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        
+
         const ctx = canvas.getContext('2d');
         // ניקוי הקנבס
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
+
         // חישוב גודל התמונה בקנבס תוך שמירה על יחס הגובה-רוחב
         const imgAspect = img.height / img.width;
         let drawWidth = canvas.width * 0.8;
         let drawHeight = drawWidth * imgAspect;
-        
+
         // אם הגובה גדול מדי, התאם את הרוחב
         if (drawHeight > canvas.height * 0.8) {
           drawHeight = canvas.height * 0.8;
           drawWidth = drawHeight / imgAspect;
         }
-        
+
         // חישוב מיקום מרכזי
         const x = (canvas.width - drawWidth) / 2;
         const y = (canvas.height - drawHeight) / 2;
-        
+
         // ציור התמונה במרכז הקנבס
         ctx.drawImage(img, x, y, drawWidth, drawHeight);
-        
+
         // עדכון ה-SignaturePad
         signaturePadRef.current.fromDataURL(canvas.toDataURL());
       };
       img.src = signature;
     }
   };
-  
+
   // ניקוי החתימה
   const clearSignature = () => {
     if (!signaturePadRef.current) return;
@@ -213,12 +211,12 @@ export const Report = () => {
   // שמירת החתימה
   const saveSignature = () => {
     if (!signaturePadRef.current) return;
-    
+
     if (signaturePadRef.current.isEmpty()) {
       alert("אנא חתום לפני השמירה");
       return;
     }
-    
+
     // שמירת החתימה כתמונת PNG עם רקע שקוף
     setSignature(signaturePadRef.current.toDataURL('image/png'));
     closeSignatureDialog();
@@ -261,18 +259,18 @@ export const Report = () => {
   
   <div style="margin-bottom: 30px;">
     <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי לקוח</h2>
-    <p style="font-size: 14px; margin: 5px 0;">שם: ${customer.instituteName  || 'לא צוין'}</p>
-    <p style="font-size: 14px; margin: 5px 0;">טלפון: ${customer.mobile || 'לא צוין'}</p>
-    <p style="font-size: 14px; margin: 5px 0;">אימייל: ${customer.email || 'לא צוין'}</p>
-    <p style="font-size: 14px; margin: 5px 0;">איש קשר: ${customer.contactName || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">שם: ${report.instituteName || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">טלפון: ${report.customerTel || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">אימייל: ${report.customerEmail || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">עיר : ${report.customerCity || 'לא צוין'}</p>
   </div>
   
   <div style="margin-bottom: 30px;">
     <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי הזמנה</h2>
-    <p style="font-size: 14px; margin: 5px 0;">פעילות: ${activityName || activity.name || 'לא צוין'}</p>
-    <p style="font-size: 14px; margin: 5px 0;">תאריך: ${order.date || 'לא צוין'}</p>
-    <p style="font-size: 14px; margin: 5px 0;">שעה: ${order.activeHour || 'לא צוין'}</p>
-    <p style="font-size: 14px; margin: 5px 0;">מספר משתתפים: ${order.amountOfParticipants || 0}</p>
+    <p style="font-size: 14px; margin: 5px 0;">פעילות: ${report.activityName   || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">תאריך: ${report.orderDate || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">שעה: ${report.orderTime || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">מספר משתתפים: ${report.amountOfParticipants || 0}</p>
   </div>
   
   <div style="margin-bottom: 30px;">
@@ -288,17 +286,17 @@ export const Report = () => {
       </thead>
       <tbody>
         <tr style="border-bottom: 1px solid #ddd;">
-          <td style="text-align: right; padding: 10px; font-size: 14px;">${activityName || activity.name || 'פעילות'}</td>
-          <td style="text-align: right; padding: 10px; font-size: 14px;">${order.amountOfParticipants || 0}</td>
-          <td style="text-align: right; padding: 10px; font-size: 14px;">₪${activity.price || 0}</td>
-          <td style="text-align: right; padding: 10px; font-size: 14px;">₪${totalPrice}</td>
+          <td style="text-align: right; padding: 10px; font-size: 14px;">${report.activityName  || 'פעילות'}</td>
+          <td style="text-align: right; padding: 10px; font-size: 14px;">${report.amountOfParticipants || 0}</td>
+          <td style="text-align: right; padding: 10px; font-size: 14px;">₪${report.activityPrice || 0}</td>
+          <td style="text-align: right; padding: 10px; font-size: 14px;">₪${report.payment}</td>
         </tr>
       </tbody>
     </table>
   </div>
   
   <div style="text-align: left; margin-bottom: 30px;">
-    <h3 style="color: #b60557; font-size: 18px;">סה"כ לתשלום: ₪${totalPrice}</h3>
+    <h3 style="color: #b60557; font-size: 18px;">סה"כ לתשלום: ₪${report.payment}</h3>
   </div>
   
   <div style="text-align: center; margin-top: 50px;">
@@ -312,18 +310,18 @@ export const Report = () => {
         <div style="height: 80px; display: flex; justify-content: center; align-items: center;">
           <img src="${signature}" style="max-height: 70px; max-width: 100%;" />
         </div>
-        <p style="font-size: 12px; margin-top: 5px;">שם המטפל/ת: ${localStorage.getItem('userName') || 'המטפל/ת'}</p>
+        <p style="font-size: 12px; margin-top: 5px;">שם המנהל/ת: ${localStorage.getItem('userName') || 'המנהל/ת'}</p>
       </div>
       
       <div style="width: 45%;">
         <p style="font-size: 14px; margin-bottom: 5px;"><strong>חתימת המטופל/ת:</strong></p>
         <div style="border-bottom: 1px solid #000; height: 40px;"></div>
-        <p style="font-size: 12px; margin-top: 5px;">שם המטופל/ת: ${thePatient?.firstName || ''} ${thePatient?.lastName || ''}</p>
+        <p style="font-size: 12px; margin-top: 5px;">שם הלקוח/ת: ${''} ${''}</p>
       </div>
     </div>
     
     <div style="margin-top: 40px; text-align: center; font-size: 10px; color: #999;">
-      <p>מסמך זה הופק באמצעות מערכת CliniClick. כל הזכויות שמורות © ${new Date().getFullYear()}</p>
+      <p>מסמך זה הופק באמצעות מערכת connAction. כל הזכויות שמורות © ${new Date().getFullYear()}</p>
       <p>המסמך נחתם דיגיטלית ומאושר לשימוש רשמי</p>
     </div>
   `;
@@ -361,8 +359,8 @@ export const Report = () => {
       pdf.text(`עמוד 1 מתוך 1`, pdfWidth / 2, pdfHeight - 5, { align: 'center' });
 
       // שמירת הקובץ
-      const patientName = `${thePatient?.firstName || ''}_${thePatient?.lastName || ''}`;
-      const fileName = `דוח_טיפול_${patientName}_${theTreatment.treatmentDate || ''}.pdf`;
+      const patientName = `${report?.instituteName || ''} || ''}`;
+      const fileName = `_סיכום הזמנה_${patientName}_${report.date || ''}.pdf`;
       pdf.save(fileName);
 
       setExportingPdf(false);
@@ -375,122 +373,122 @@ export const Report = () => {
   };
 
 
-  const confirm = async () => {
-    setSaving(true);
+  // const confirm = async () => {
+  //   setSaving(true);
 
-    try {
-      // שמירת כל הפעילויות עבור כל מטרה
+  //   try {
+  //     // שמירת כל הפעילויות עבור כל מטרה
 
-      const activityPromises = Object.entries(aimActivities).map(([aimId, activity]) => {
-        if (activity.activityName) {
-          return dispatch(addActivityFetch({
-            activityId: null,
-            activityName: activity.activityName,
-            activityDiscription: activity.activityDescription,
-            activityAim: aimId
-          }));
-        }
-        return Promise.resolve();
-      });
+  //     const activityPromises = Object.entries(aimActivities).map(([aimId, activity]) => {
+  //       if (activity.activityName) {
+  //         return dispatch(addActivityFetch({
+  //           activityId: null,
+  //           activityName: activity.activityName,
+  //           activityDiscription: activity.activityDescription,
+  //           activityAim: aimId
+  //         }));
+  //       }
+  //       return Promise.resolve();
+  //     });
 
-      await Promise.all(activityPromises);
-      await dispatch(updateTreatmentThunk({ treatmentId: theTreatment?.treatmentId, treatment: treatment }));
+  //     await Promise.all(activityPromises);
+  //     await dispatch(updateTreatmentThunk({ treatmentId: theTreatment?.treatmentId, report: report }));
 
-      setSaving(false);
-      navigate('../');
-    } catch (error) {
-      console.error("שגיאה בשמירת הנתונים:", error);
-      setSaving(false);
-    }
-  };
+  //     setSaving(false);
+  //     navigate('../');
+  //   } catch (error) {
+  //     console.error("שגיאה בשמירת הנתונים:", error);
+  //     setSaving(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      await dispatch(getOneTreatmentThunk(param.treatmentId));
-      setLoading(false);
-    };
-    loadData();
-  }, []);
+  // useEffect(() => {
+  //   const loadData = async () => {
+  //     setLoading(true);
+  //     await dispatch(getOneTreatmentThunk(param.treatmentId));
+  //     setLoading(false);
+  //   };
+  //   loadData();
+  // }, []);
 
-  useEffect(() => {
-    dispatch(getActivityThunk());
-  }, [theTreatment]);
+  // useEffect(() => {
+  //   dispatch(getActivityThunk());
+  // }, [theTreatment]);
 
-  useEffect(() => {
-    dispatch(getAimsOfPatientsThunk(theTreatment.pationtId));
-  }, [thePatient]);
-  useEffect(() => {
-    if (theTreatment?.pationtId) {
-      dispatch(getPatientByIdThunk(theTreatment.pationtId));
+  // useEffect(() => {
+  //   dispatch(getAimsOfPatientsThunk(theTreatment.pationtId));
+  // }, [thePatient]);
+  // useEffect(() => {
+  //   if (theTreatment?.pationtId) {
+  //     dispatch(getPatientByIdThunk(theTreatment.pationtId));
 
-      // עדכון ה-state המקומי עם ערכים מהטיפול הנוכחי
-      setTreatment(prev => ({
-        ...prev,
-        treatmentId: theTreatment.treatmentId,
-        treatmentDate: theTreatment.treatmentDate,
-        treatmentTime: theTreatment.treatmentTime,
-        pationtId: theTreatment.pationtId,
-        escort: theTreatment.escort || "",
-        cooperation: theTreatment.cooperation || 3,
-        nextMeetingPlanning: theTreatment.nextMeetingPlanning || "",
-        bePaid: theTreatment.bePaid || false,
-        userId: theTreatment.userId,
-      }));
-    }
-  }, [theTreatment?.pationtId]);
+  //     // עדכון ה-state המקומי עם ערכים מהטיפול הנוכחי
+  //     setTreatment(prev => ({
+  //       ...prev,
+  //       treatmentId: theTreatment.treatmentId,
+  //       treatmentDate: theTreatment.treatmentDate,
+  //       treatmentTime: theTreatment.treatmentTime,
+  //       pationtId: theTreatment.pationtId,
+  //       escort: theTreatment.escort || "",
+  //       cooperation: theTreatment.cooperation || 3,
+  //       nextMeetingPlanning: theTreatment.nextMeetingPlanning || "",
+  //       bePaid: theTreatment.bePaid || false,
+  //       userId: theTreatment.userId,
+  //     }));
+  //   }
+  // }, [theTreatment?.pationtId]);
 
   // אתחול aimActivities כאשר המטרות נטענות
-  useEffect(() => {
-    if (aimsForExam && aimsForExam.length > 0) {
-      const initialAimActivities = {};
-      aimsForExam.forEach(aim => {
-        if (aim) {
-          initialAimActivities[aim.aimId] = {
-            activityName: '',
-            activityDescription: ''
-          };
-        }
-      });
-      setAimActivities(initialAimActivities);
+  // useEffect(() => {
+  //   if (aimsForExam && aimsForExam.length > 0) {
+  //     const initialAimActivities = {};
+  //     aimsForExam.forEach(aim => {
+  //       if (aim) {
+  //         initialAimActivities[aim.aimId] = {
+  //           activityName: '',
+  //           activityDescription: ''
+  //         };
+  //       }
+  //     });
+  //     setAimActivities(initialAimActivities);
 
-      // הגדרת המטרה הראשונה כפעילה
-      if (aimsForExam[0]) {
-        setActiveAim(aimsForExam[0].aimId);
-      }
-    }
-  }, [aimsForExam]);
+  //     // הגדרת המטרה הראשונה כפעילה
+  //     if (aimsForExam[0]) {
+  //       setActiveAim(aimsForExam[0].aimId);
+  //     }
+  //   }
+  // }, [aimsForExam]);
 
-  const handleActivityChange = (aimId, field, value) => {
-    setAimActivities(prev => ({
-      ...prev,
-      [aimId]: {
-        ...prev[aimId],
-        [field]: value
-      }
-    }));
-  };
-  if (loading) {
-    return (
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        flexDirection: 'column',
-        gap: 2
-      }}>
-        <CircularProgress sx={{ color: '#ac2454' }} />
-        <Typography sx={{ color: '#ac2454', fontWeight: 'bold' }}>
-          טוען נתוני טיפול...
-        </Typography>
-      </Box>
-    );
-  }
+  // const handleActivityChange = (aimId, field, value) => {
+  //   setAimActivities(prev => ({
+  //     ...prev,
+  //     [aimId]: {
+  //       ...prev[aimId],
+  //       [field]: value
+  //     }
+  //   }));
+  // };
+  // if (loading) {
+  //   return (
+  //     <Box sx={{
+  //       display: 'flex',
+  //       justifyContent: 'center',
+  //       alignItems: 'center',
+  //       height: '100vh',
+  //       flexDirection: 'column',
+  //       gap: 2
+  //     }}>
+  //       <CircularProgress sx={{ color: '#ac2454' }} />
+  //       <Typography sx={{ color: '#ac2454', fontWeight: 'bold' }}>
+  //         טוען נתוני טיפול...
+  //       </Typography>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <Box
-      className="treatment-report-container"
+      className="report-report-container"
       sx={{
         maxWidth: 1000,
         margin: '0 auto',
@@ -501,7 +499,7 @@ export const Report = () => {
       <Paper
         ref={reportRef}  // הוספת ה-ref כאן
         elevation={5}
-        className="treatment-report-paper"
+        className="report-report-paper"
         sx={{
           padding: { xs: 2, md: 4 },
           borderRadius: 4,
@@ -530,7 +528,7 @@ export const Report = () => {
             textAlign: 'center',
             fontFamily: 'Rubik, Arial, sans-serif'
           }} className="title-text">
-            סיכום הטיפול
+            {report.isOk == "true" ? "סיכום הזמנה" : "דרישה לתשלום"}
           </Typography>
         </Box>
 
@@ -553,7 +551,7 @@ export const Report = () => {
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                   <Person sx={{ color: '#ac2454', mr: 1 }} />
                   <Typography variant="h6" sx={{ color: '#ac2454', fontWeight: 'bold' }}>
-                    פרטי המטופל והטיפול
+                    פרטי עסק
                   </Typography>
                 </Box>
 
@@ -563,20 +561,20 @@ export const Report = () => {
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Badge sx={{ color: '#ac2454', mr: 1 }} />
                     <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
-                      ת.ז מטופל:
+                      מספר עסק:
                     </Typography>
                     <Typography component="span">
-                      {theTreatment?.pationtId}
+                      {report?.numOfComp}
                     </Typography>
                   </Box>
 
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Person sx={{ color: '#ac2454', mr: 1 }} />
                     <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
-                      שם מלא:
+                      שם העסק:
                     </Typography>
                     <Typography component="span">
-                      {thePatient?.firstName} {thePatient?.lastName}
+                      {report?.compName} 
                     </Typography>
                   </Box>
 
@@ -586,17 +584,216 @@ export const Report = () => {
                       תאריך:
                     </Typography>
                     <Typography component="span">
-                      {theTreatment?.treatmentDate}
+                      {report?.date}
                     </Typography>
                   </Box>
 
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <AccessTime sx={{ color: '#ac2454', mr: 1 }} />
                     <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      קטגוריה
+                    </Typography>
+                    <Typography component="span">
+                      {report?.kategory}
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Person sx={{ color: '#ac2454', mr: 1 }} />
+                  <Typography variant="h6" sx={{ color: '#ac2454', fontWeight: 'bold' }}>
+                    פרטי לקוח
+                  </Typography>
+                </Box>
+
+                <Divider sx={{ mb: 2, backgroundColor: '#ac245433' }} />
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Badge sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      מספר לקוח:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.customerId}
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Person sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      שם מוסד:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.instituteName}
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      אימייל:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.customerEmail}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      טל:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.customerTel}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      עיר:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.customerCity}
+                    </Typography>
+                  </Box>
+              
+                </Box>
+              </CardContent>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Person sx={{ color: '#ac2454', mr: 1 }} />
+                  <Typography variant="h6" sx={{ color: '#ac2454', fontWeight: 'bold' }}>
+                    פרטי פעילות
+                  </Typography>
+                </Box>
+
+                <Divider sx={{ mb: 2, backgroundColor: '#ac245433' }} />
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Badge sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      קוד פעילות:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.activityId}
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Person sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      שם פעילות:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.activityName}
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      תיאור:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.activityDescription}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      מחיר:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.activityPrice}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      מחיר לילה:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.activityNightPrice}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      אורך :
+                    </Typography>
+                    <Typography component="span">
+                      {report?.lenOfActivity}
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Person sx={{ color: '#ac2454', mr: 1 }} />
+                  <Typography variant="h6" sx={{ color: '#ac2454', fontWeight: 'bold' }}>
+                    פרטי הזמנה
+                  </Typography>
+                </Box>
+
+                <Divider sx={{ mb: 2, backgroundColor: '#ac245433' }} />
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Badge sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      מספר הזמנה:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.orderId}
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Person sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      כמות ממשתפים:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.amountOfParticipants}
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
                       שעה:
                     </Typography>
                     <Typography component="span">
-                      {theTreatment?.treatmentTime}
+                      {report?.orderTime}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      תאריך:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.orderDate}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      מחיר:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.customerCity}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
+                    <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
+                      מחיר:
+                    </Typography>
+                    <Typography component="span">
+                      {report?.isPayment==1?"שולם":"לא שולם"}
                     </Typography>
                   </Box>
                 </Box>
@@ -618,125 +815,32 @@ export const Report = () => {
               }}
             >
               <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <MedicalInformation sx={{ color: '#ac2454', mr: 1 }} />
-                  <Typography variant="h6" sx={{ color: '#ac2454', fontWeight: 'bold' }}>
-                    רקע
-                  </Typography>
-                </Box>
-                <Divider sx={{ mb: 2, backgroundColor: '#ac245433' }} />
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Typography component="span">
-                      {thePatient?.background}
-                    </Typography>
-                  </Box>
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Card
-              className="treatment-details-card card-hover"
-              elevation={3}
-              sx={{
-                height: '100%',
-                borderRadius: 3,
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 8px 20px rgba(172, 36, 84, 0.2)'
-                }
-              }}
-            >
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Assignment sx={{ color: '#ac2454', mr: 1 }} />
-                  <Typography variant="h6" sx={{ color: '#ac2454', fontWeight: 'bold' }}>
-                    פרטי מעקב
-                  </Typography>
-                </Box>
+                
+        
+         
 
                 <Divider sx={{ mb: 2, backgroundColor: '#ac245433' }} />
 
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <EmojiPeople sx={{ color: '#ac2454', mr: 1 }} />
-                    <StyledTextField
-                      label="מלווה"
-                      variant="outlined"
-                      fullWidth
-                      value={treatment.escort || ''}
-                      onChange={e => setTreatment({ ...treatment, escort: e.target.value })}
-                      size="small"
-                      InputProps={{
-                        sx: { borderRadius: 2 }
-                      }}
-                      className="escort-input input-focus"
-                    />
-                  </Box>
 
-                  <Box>
-                    <Typography
-                      component="legend"
-                      sx={{
-                        color: '#ac2454',
-                        mb: 0.5,
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <Psychology sx={{ mr: 1 }} /> שיתוף פעולה
-                    </Typography>
-                    <Box
-                      className="rating-container"
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        backgroundColor: 'rgba(172, 36, 84, 0.05)',
-                        borderRadius: 2,
-                        padding: 1
-                      }}
-                    >
-                      <StyledRating
-                        name="cooperation"
-                        value={Number(treatment.cooperation) || 3}
-                        precision={1}
-                        icon={<FavoriteIcon fontSize="inherit" />}
-                        emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-                        onChange={(_, value) => setTreatment({ ...treatment, cooperation: value })}
-                        sx={{ direction: 'ltr' }}
-                      />
-                      <Typography sx={{ mr: 1, color: '#ac2454', fontWeight: 'bold' }}>
-                        {treatment.cooperation ? `${treatment.cooperation}/5` : '3/5'}
-                      </Typography>
-                    </Box>
-                  </Box>
+
 
                   <Box
-                    className={`payment-status ${treatment.bePaid ? 'paid' : 'unpaid'}`}
+                    className={`payment-status ${report.bePaid ? 'paid' : 'unpaid'}`}
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      backgroundColor: treatment.bePaid ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
+                      backgroundColor: report.bePaid ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
                       borderRadius: 2,
                       padding: 1,
                       transition: 'background-color 0.3s ease'
                     }}
                   >
-                    <CheckCircle sx={{ color: treatment.bePaid ? '#4caf50' : '#ff9800', mr: 1 }} />
-                    <Typography sx={{ color: treatment.bePaid ? '#4caf50' : '#ff9800', mr: 1, fontWeight: 'bold' }}>
+                    <CheckCircle sx={{ color: report.isOk ? '#4caf50' : '#ff9800', mr: 1 }} />
+                    <Typography sx={{ color: report.isOk ? '#4caf50' : '#ff9800', mr: 1, fontWeight: 'bold' }}>
                       האם שולם
                     </Typography>
-                    <Checkbox
-                      checked={treatment.bePaid || false}
-                      onChange={() => setTreatment({ ...treatment, bePaid: !treatment.bePaid })}
-                      sx={{
-                        color: '#ac2454',
-                        '&.Mui-checked': { color: '#4caf50' },
-                        '& .MuiSvgIcon-root': { fontSize: 28 }
-                      }}
-                    />
+
                   </Box>
                 </Box>
               </CardContent>
@@ -842,344 +946,137 @@ export const Report = () => {
           </Grid>
         </Grid>
 
-        <Box sx={{ mt: 3 }} className="next-meeting-container">
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-            <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
-            <Typography sx={{ color: '#ac2454', fontWeight: 'bold' }}>
-              תכנון הפגישה הבאה
-            </Typography>
-          </Box>
-          <StyledTextField
-            variant="outlined"
-            fullWidth
-            multiline
-            rows={2}
-            value={treatment.nextMeetingPlanning || ''}
-            onChange={e => setTreatment({ ...treatment, nextMeetingPlanning: e.target.value })}
-            placeholder="תאר את התכנון לפגישה הבאה..."
-            InputProps={{
-              sx: {
-                borderRadius: 2,
-                backgroundColor: 'rgba(255, 255, 255, 0.7)'
-              }
-            }}
-            className="next-meeting-input input-focus"
-          />
-        </Box>
 
-        <Box sx={{ mt: 4 }} className="aims-activities-container">
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <Lightbulb sx={{ color: '#ac2454', mr: 1 }} />
-            <Typography variant="h6" sx={{ color: '#ac2454', fontWeight: 'bold' }}>
-              פעילויות לקידום מטרות
-            </Typography>
-          </Box>
 
-          {/* תצוגת מטרות כלחצנים */}
-          <Box
-            className="aim-chips-container"
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 1,
-              mb: 3,
-              overflowX: 'auto',
-              pb: 1
-            }}
-          >
-            {aimsForExam.map((aim) => {
-              if (!aim) return null;
 
-              const isActive = activeAim === aim.aimId;
-              const hasActivity = aimActivities[aim.aimId]?.activityName;
 
-              return (
-                <Chip
-                  key={aim.aimId}
-                  label={aim.aimName}
-                  onClick={() => setActiveAim(aim.aimId)}
-                  color={isActive ? "primary" : "default"}
-                  variant={isActive ? "filled" : "outlined"}
-                  icon={hasActivity ? <CheckCircle /> : <Lightbulb />}
-                  sx={{
-                    borderRadius: '20px',
-                    fontWeight: 'bold',
-                    backgroundColor: isActive ? '#ac2454' : hasActivity ? 'rgba(76, 175, 80, 0.1)' : 'transparent',
-                    color: isActive ? 'white' : hasActivity ? '#4caf50' : '#666',
-                    borderColor: isActive ? '#ac2454' : hasActivity ? '#4caf50' : '#ddd',
-                    '&:hover': {
-                      backgroundColor: isActive ? '#8e1c44' : 'rgba(172, 36, 84, 0.1)',
-                    },
-                    transition: 'all 0.3s ease',
-                    px: 1.5,
-                    py: 2.5
-                  }}
-                  className={`aim-chip ${isActive ? 'active' : ''} ${hasActivity ? 'completed' : ''}`}
-                />
-              );
-            })}
-          </Box>
 
-          {/* תצוגת המטרה הפעילה */}
-          {aimsForExam.map((aim) => {
-            if (!aim || activeAim !== aim.aimId) return null;
 
-            return (
-              <Paper
-                key={aim.aimId}
-                elevation={3}
-                className="aim-card"
-                sx={{
-                  padding: 3,
-                  marginBottom: 2,
-                  borderRadius: 3,
-                  background: 'linear-gradient(to bottom right, #fff, #fdf5f8)',
-                  border: '1px solid rgba(172, 36, 84, 0.2)',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}
-              >
-                <Box sx={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '8px',
-                  height: '100%',
-                  backgroundColor: '#ac2454'
-                }} />
 
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: 'bold',
-                    mb: 2,
-                    color: '#ac2454',
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                  className="aim-title"
-                >
-                  <Lightbulb sx={{ mr: 1 }} /> מטרה: {aim.aimName}
-                </Typography>
-
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={6}>
-                    <Autocomplete
-                      freeSolo
-                      options={activitySuggestions?.map(activity => activity.activityName)}
-                      value={aimActivities[aim.aimId]?.activityName || ''}
-                      onChange={(_, newValue) => handleActivityChange(aim.aimId, 'activityName', newValue)}
-                      renderOption={(props, option) => (
-                        <Box component="li" {...props} sx={{ display: 'flex', alignItems: 'center' }}>
-                          <Typography sx={{ ml: 1 }}>{option}</Typography>
-                        </Box>
-                      )}
-                      // renderInput={(params) => (
-                      //   <StyledTextField
-                      //     {...params}
-                      //     label="פעילות"
-                      //     variant="outlined"
-                      //     fullWidth
-                      //     size="medium"
-                      //     placeholder="בחר או הזן פעילות חדשה..."
-                      //     className="activity-input input-focus"
-                      //   />
-                      // )}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <StyledTextField
-                      label="תיאור הפעילות"
-                      variant="outlined"
-                      fullWidth
-                      size="medium"
-                      multiline
-                      rows={1}
-                      value={aimActivities[aim.aimId]?.activityDescription || ''}
-                      onChange={(e) => handleActivityChange(aim.aimId, 'activityDescription', e.target.value)}
-                      placeholder="תאר את הפעילות בקצרה..."
-                      InputProps={{
-                        sx: { borderRadius: 2 }
-                      }}
-                      className="activity-description-input input-focus"
-                    />
-                  </Grid>
-                </Grid>
-
-                {/* תצוגת הצעות פעילויות */}
-                <Box sx={{ mt: 3 }} className="activity-suggestions">
-                  <Typography variant="body2" sx={{ color: '#666', mb: 1 }}>
-                    הצעות פעילויות נפוצות:
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      gap: 1
-                    }}
-                    className="suggestions-chips"
-                  >
-                    {activitySuggestions.slice(0, 5).map((activity, index) => (
-                      <Chip
-                        key={index}
-                        label={activity.activityName}
-                        onClick={() => handleActivityChange(aim.aimId, 'activityName', activity.activityName)}
-                        sx={{
-                          borderRadius: '20px',
-                          transition: 'all 0.2s ease',
-                          '&:hover': {
-                            backgroundColor: 'rgba(172, 36, 84, 0.1)',
-                            transform: 'translateY(-2px)'
-                          }
-                        }}
-                        className="suggestion-chip"
-                      />
-                    ))}
-                  </Box>
-                </Box>
-              </Paper>
-            );
-          })}
-        </Box>
 
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 4 }} className="actions-container">
-  <StyledButton
-    variant="contained"
-    onClick={generateProfessionalPDF}
-    disabled={saving || exportingPdf}
-    sx={{
-      backgroundColor: '#ac2454',
-      color: 'white',
-      '&:hover': { backgroundColor: '#8e1c44' },
-      minWidth: 150,
-      fontSize: '1rem'
-    }}
-    startIcon={exportingPdf ? <CircularProgress size={20} color="inherit" /> : <PictureAsPdf />}
-    className="pdf-button button-hover"
-  >
-    {exportingPdf ? 'מייצא...' : 'ייצוא דוח מקצועי'}
-  </StyledButton>
+          <StyledButton
+            variant="contained"
+            onClick={generateProfessionalPDF}
+            disabled={saving || exportingPdf}
+            sx={{
+              backgroundColor: '#ac2454',
+              color: 'white',
+              '&:hover': { backgroundColor: '#8e1c44' },
+              minWidth: 150,
+              fontSize: '1rem'
+            }}
+            startIcon={exportingPdf ? <CircularProgress size={20} color="inherit" /> : <PictureAsPdf />}
+            className="pdf-button button-hover"
+          >
+            {exportingPdf ? 'מייצא...' : 'ייצוא דוח מקצועי'}
+          </StyledButton>
 
-  <StyledButton
-    variant="contained"
-    onClick={confirm}
-    disabled={saving || exportingPdf}
-    sx={{
-      backgroundColor: '#ac2454',
-      color: 'white',
-      '&:hover': { backgroundColor: '#8e1c44' },
-      minWidth: 150,
-      fontSize: '1rem'
-    }}
-    startIcon={saving ? <CircularProgress size={20} color="inherit" /> : <CheckCircle />}
-    className="confirm-button button-hover"
-  >
-    {saving ? 'שומר...' : 'אישור'}
-  </StyledButton>
+        
 
-  <StyledButton
-    variant="outlined"
-    onClick={() => navigate('/calender')}
-    disabled={saving || exportingPdf}
-    sx={{
-      color: '#ac2454',
-      borderColor: '#ac2454',
-      '&:hover': { borderColor: '#8e1c44', color: '#8e1c44' },
-      minWidth: 150,
-      fontSize: '1rem'
-    }}
-    startIcon={<Cancel />}
-    className="cancel-button button-hover"
-  >
-    ביטול
-  </StyledButton>
-</Box>
+          <StyledButton
+            variant="outlined"
+            onClick={() => navigate('/calender')}
+            disabled={saving || exportingPdf}
+            sx={{
+              color: '#ac2454',
+              borderColor: '#ac2454',
+              '&:hover': { borderColor: '#8e1c44', color: '#8e1c44' },
+              minWidth: 150,
+              fontSize: '1rem'
+            }}
+            startIcon={<Cancel />}
+            className="cancel-button button-hover"
+          >
+            ביטול
+          </StyledButton>
+        </Box>
 
-{/* דיאלוג החתימה */}
-<Dialog 
-  open={signatureDialogOpen} 
-  onClose={closeSignatureDialog}
-  maxWidth="sm"
-  fullWidth
->
-  <DialogTitle sx={{ backgroundColor: '#ac2454', color: 'white', textAlign: 'center' }}>
-    חתימה דיגיטלית
-    <IconButton
-      aria-label="close"
-      onClick={closeSignatureDialog}
-      sx={{
-        position: 'absolute',
-        right: 8,
-        top: 8,
-        color: 'white',
-      }}
-    >
-      <Close />
-    </IconButton>
-  </DialogTitle>
-  <DialogContent sx={{ padding: 3 }}>
-    <Typography variant="body1" sx={{ mb: 2, textAlign: 'center' }}>
-      נא לחתום במסגרת למטה
-    </Typography>
-    <Box 
-      sx={{ 
-        border: '1px solid #ccc', 
-        borderRadius: 2, 
-        height: 200, 
-        backgroundColor: 'white',
-        boxShadow: 'inset 0 0 5px rgba(0,0,0,0.1)'
-      }}
-    >
-      <canvas 
-        ref={canvasRef} 
-        style={{ width: '100%', height: '100%', touchAction: 'none' }}
-      />
-    </Box>
-  </DialogContent>
-  <DialogActions sx={{ padding: 2, justifyContent: 'center', gap: 2 }}>
-    <Button 
-      variant="outlined" 
-      onClick={clearSignature}
-      startIcon={<Cancel />}
-      sx={{ borderColor: '#ac2454', color: '#ac2454' }}
-    >
-      נקה
-    </Button>
-    <Button 
-      variant="contained" 
-      onClick={saveSignature}
-      startIcon={<Save />}
-      sx={{ backgroundColor: '#ac2454', '&:hover': { backgroundColor: '#8e1c44' } }}
-    >
-      שמור חתימה
-    </Button>
-  </DialogActions>
-</Dialog>
+        {/* דיאלוג החתימה */}
+        <Dialog
+          open={signatureDialogOpen}
+          onClose={closeSignatureDialog}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle sx={{ backgroundColor: '#ac2454', color: 'white', textAlign: 'center' }}>
+            חתימה דיגיטלית
+            <IconButton
+              aria-label="close"
+              onClick={closeSignatureDialog}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                color: 'white',
+              }}
+            >
+              <Close />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent sx={{ padding: 3 }}>
+            <Typography variant="body1" sx={{ mb: 2, textAlign: 'center' }}>
+              נא לחתום במסגרת למטה
+            </Typography>
+            <Box
+              sx={{
+                border: '1px solid #ccc',
+                borderRadius: 2,
+                height: 200,
+                backgroundColor: 'white',
+                boxShadow: 'inset 0 0 5px rgba(0,0,0,0.1)'
+              }}
+            >
+              <canvas
+                ref={canvasRef}
+                style={{ width: '100%', height: '100%', touchAction: 'none' }}
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions sx={{ padding: 2, justifyContent: 'center', gap: 2 }}>
+            <Button
+              variant="outlined"
+              onClick={clearSignature}
+              startIcon={<Cancel />}
+              sx={{ borderColor: '#ac2454', color: '#ac2454' }}
+            >
+              נקה
+            </Button>
+            <Button
+              variant="contained"
+              onClick={saveSignature}
+              startIcon={<Save />}
+              sx={{ backgroundColor: '#ac2454', '&:hover': { backgroundColor: '#8e1c44' } }}
+            >
+              שמור חתימה
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-{/* אנימציית טעינה בזמן ייצוא PDF */}
-{exportingPdf && (
-  <Box
-    className="exporting-overlay"
-    sx={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(255, 255, 255, 0.8)',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 9999,
-      flexDirection: 'column'
-    }}
-  >
-    <CircularProgress size={60} sx={{ color: '#ac2454' }} />
-    <Typography variant="h6" sx={{ mt: 2, color: '#ac2454', fontWeight: 'bold' }}>
-      מייצא דוח מקצועי...
-    </Typography>
-  </Box>
-)}
+        {/* אנימציית טעינה בזמן ייצוא PDF */}
+        {exportingPdf && (
+          <Box
+            className="exporting-overlay"
+            sx={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 9999,
+              flexDirection: 'column'
+            }}
+          >
+            <CircularProgress size={60} sx={{ color: '#ac2454' }} />
+            <Typography variant="h6" sx={{ mt: 2, color: '#ac2454', fontWeight: 'bold' }}>
+              מייצא דוח מקצועי...
+            </Typography>
+          </Box>
+        )}
 
       </Paper>
 

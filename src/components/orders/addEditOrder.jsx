@@ -30,7 +30,11 @@ export const AddEditOrder = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // const customers = useSelector(state => state.customers.customers);
+  // const activities = useSelector(state => state.activity.activities);
+  
   const myOrder = useSelector(state => state.order.order);
+  const report = useSelector(state => state.order.myReport);
   const manager = useSelector(state => state.manager.myManager);
   const isM = useSelector(state => state.manager.isM);
   const actDispatch = useSelector(state => state.order.activity);
@@ -75,7 +79,7 @@ export const AddEditOrder = () => {
       dispatch(editfindOrder());
       console.log(order);
       refDialog.current.showModal();
-
+    
     }
     // Initialize order with default values if not already set
     if (!order) {
@@ -92,20 +96,18 @@ export const AddEditOrder = () => {
       dispatch(editfindOrder());
     }
 
-    if (params.id) {
-      setOrder(prev => ({ ...prev, customerId: parseInt(params.id) }));
-    }
 
-    if (params.idActivity) {
-      if (!activity && params.idActivity && actDispatch) {
+
+    if (params.idActivity && actDispatch) {
+
+      if (!activity && params.idActivity && actDispatch ) {
         dispatch(activityFetchThunkById({ id: parseInt(params.idActivity) }));
         console.log(activity);
       }
       else if (activity) {
         dispatch(editCust());
       }
-      setOrder(prev => ({ ...prev, activityId: parseInt(params.idActivity) }));
-      console.log("Setting activity ID:", params.idActivity);
+
 
       // Find activity price
       // const activity = activities?.find(a => a.activityId === parseInt(params.idActivity));
@@ -118,14 +120,8 @@ export const AddEditOrder = () => {
 
 
 
-    // Make sure the dialog exists before trying to open it
-    // if ( refDialog.current) {
-    //   console.log("Opening dialog");
-    //   refDialog.current.showModal();
-    // } else {
-    //   console.error("Dialog reference is not available");
-    // }
-  }, [params]); // Add dependencies
+    
+  }, [params,order?.amountOfParticipants]); // Add dependencies
   useEffect(()=>{
     if(params.orderId){
       // if (!myOrder || (myOrder.orderId !== parseInt(params.orderId))) {
@@ -146,39 +142,48 @@ export const AddEditOrder = () => {
   },[params.orderId]);
   useEffect(() => {
     if (params.id) {
+      setOrder({...order, customerId: parseInt(params.id) });
 
-
-      if (!customer && custDispatch) {
-        // Fetch activities
-
+      if (!customer && actDispatch ) {
         dispatch(customersFetchThunkById({ id: parseInt(params.id) }));
-
-        // dispatch(activitiesFetch());
       }
-      else if (customer && custDispatch) {
+      else if (customer ) {
         dispatch(editIsManager());
       }
     }
   }, [customer, params.id,custDispatch]);
   useEffect(() => {
+    if (params.idActivity) {
+      setOrder({...order, activityId: parseInt(params.idActivity) });
+    }
+    if (!activity && params.idActivity && actDispatch ) {
+      dispatch(activityFetchThunkById({ id: parseInt(params.idActivity) }));
+      console.log(activity);
+    }
+    else if (activity && actDispatch) {
+      dispatch(editCust());
+    }
+
+  }, [params.idActivity,actDispatch,activity]);
+  useEffect(() => {
     if (params.mid) {
       setOrder({...order, managerId: parseInt(params.mid) });
 
-      if (!manager && mangDispatch) {
+      if (!manager ) {
         // Fetch activities
 
         dispatch(managersFetchThunkById({ id: parseInt(params.mid) }));
 
         // dispatch(activitiesFetch());
       }
-      else if (manager && mangDispatch) {
+      else if (manager ) {
         dispatch(editCan());
       }
     }
   }, [manager, params.mid,mangDispatch]);
   // Recalculate price when amount changes
   useEffect(() => {
-    if (order.activityId > 1000 && order.amountOfParticipants && !activity.activityId && actDispatch) {
+    if (order.activityId > 1000 && order.amountOfParticipants && !activity.activityId  ) {
       // const activity = activities.find(a => a.activityId === parseInt(params.idActivity));
       dispatch(activityFetchThunkById({ id: order.activityId }));
 
@@ -186,12 +191,13 @@ export const AddEditOrder = () => {
         setTotalPrice(activity.price * order.amountOfParticipants);
       }
     }
-    else if (activity) {
+    else if (activity && actDispatch) {
       dispatch(editCust());
     }
   }, [order.amountOfParticipants, order.activityId]);
+
   useEffect(() => {
-    if (order.customerId > 10000 && !customer && custDispatch) {
+    if (order.customerId > 10000 && !customer ) {
       dispatch(customersFetchThunkById({ id: order.customerId }));
     }
     else if (customer && custDispatch) {
@@ -201,7 +207,7 @@ export const AddEditOrder = () => {
   useEffect(() => {
     
 
-     if (order.managerId > 1 && !manager && mangDispatch) {
+     if (order.managerId > 1 && !manager ) {
       dispatch(managersFetchThunkById({ id: order.managerId }));
     }
     else if (manager && mangDispatch) {
@@ -209,22 +215,15 @@ export const AddEditOrder = () => {
     }
 
   }, [order.managerId,mangDispatch])
-  useEffect(() => {
-    
 
-    if ( !manager && mangDispatch) {
-     dispatch(managersFetchThunkById({ id:params.mid }));
-   }
-   else if (manager && mangDispatch) {
-     dispatch(editCan());
-   }
-
- }, [params.mid]);
   const saveOrder = () => {
+    debugger
     console.log(customer);
     console.log(manager);
     console.log(activity);
     console.log(order);
+
+    // setOrder({...order, customerId: customer.customerId, managerId: manager.managerId, activityId: activity.activityId, date: order.date, activeHour: order.activeHour, payment: totalPrice, amountOfParticipants: order.amountOfParticipants, isOk: order.isOk, isPayment: order.isPayment });
     if (order.activityId && order.customerId) {
       // יצירת עותק של ההזמנה עם הוספת השניות לשעה
       const orderToSave = {
@@ -234,27 +233,22 @@ export const AddEditOrder = () => {
           order.activeHour
       };
 
-      if (edit && updateDispatch && saveDispatch) {
-
+      if (edit ) {
         dispatch(updateOrderThunk({ details: orderToSave }));
         refDialog.current.close();
         navigate('/orders');
-      } else if (addDispatch && saveDispatch) {
-
+      } else {
         dispatch(addOrderThunk({ details: orderToSave }));
-        refDialog.current.close();
-        navigate(-1);
+        // refDialog.current.close();
+        // navigate(-1);
       }
     } else {
       alert("לא ניתן להוסיף/לערוך - חסרים פרטים חיוניים");
     }
   };
   const proceedToPayment = () => {
-    console.log(customer);
-    console.log(manager);
-    console.log(activity);
-    console.log(order);
-    if (order.activityId && order.customerId && order.amountOfParticipants > 0) {
+
+      setTotalPrice(activity.price * order.amountOfParticipants);
       try {
         // הוספת השניות לשעה
         const formattedHour = order.activeHour && !order.activeHour.includes(":00") ?
@@ -284,9 +278,7 @@ export const AddEditOrder = () => {
         console.error('Error navigating to payment page:', error);
         alert(`שגיאה במעבר לדף התשלום: ${error.message}`);
       }
-    } else {
-      alert("לא ניתן לעבור לתשלום - חסרים פרטים חיוניים");
-    }
+   
   };
   const check = async () => {
     console.log(customer);
@@ -296,13 +288,13 @@ export const AddEditOrder = () => {
     console.log(order);
     console.log(timeDispatch);
     //  await dispatch( activityFetchThunkById({ id: order.activityId }));
-    if ( activity.lenOfActivity && order.date && order.activeHour && order.amountOfParticipants && order.activityId && order.customerId && order.managerId) {
-      dispatch(timeIsAvailableThunk({ id: order.managerId, date: order.date, time: order.activeHour, len: activity.lenOfActivity }));
-    }
+    // if ( activity.lenOfActivity && order.date && order.activeHour && order.amountOfParticipants && order.activityId && order.customerId && order.managerId) {
+    //   dispatch(timeIsAvailableThunk({ id: order.managerId, date: order.date, time: order.activeHour, len: activity.lenOfActivity }));
+    // }
 
-    else {
-      alert("לא ניתן לבדוק - חסרים פרטים חיוניים");
-    }
+    // else {
+    //   alert("לא ניתן לבדוק - חסרים פרטים חיוניים");
+    // }
   }
   const cancel = () => {
     refDialog.current.close();
@@ -311,16 +303,16 @@ export const AddEditOrder = () => {
 
   const generateInvoice = () => {
     // מציאת פרטי הלקוח והפעילות
-    // const customer = customers.find(c => c.instituteId === parseInt(params.id));
-    // const activity = activities.find(a => a.activityId === parseInt(params.idActivity));  
+    console.log(customer);
+    console.log(manager);
+    console.log(activity);
+    setOrder({ ...order, managerId: params.mid?params.mid:order.managerId });
+    console.log(order);
      if(!customer && order.customerId) {
       dispatch(customersFetchThunkById({ id: order.customerId }));
       console.log(customer);
     }
-    if (!order.customerId || !order.activityId) {
-      alert("לא ניתן להפיק חשבונית - חסרים פרטים");
-      return;
-    }
+
 
     // יצירת אלמנט HTML זמני לחשבונית
     const invoiceElement = document.createElement('div');
@@ -335,57 +327,57 @@ export const AddEditOrder = () => {
     console.log(customer.instituteName);
     // הוספת תוכן החשבונית
     invoiceElement.innerHTML = `
-      <div style="text-align: center; margin-bottom: 30px;">
-        <h1 style="color: #b60557; font-size: 28px; margin-bottom: 10px;">חשבונית עסקה</h1>
-        <p style="font-size: 14px; color: #666;">מספר חשבונית: INV-${Date.now().toString().slice(-6)}</p>
-        <p style="font-size: 14px; color: #666;">תאריך: ${new Date().toLocaleDateString('he-IL')}</p>
-      </div>
-      
-      <div style="margin-bottom: 30px;">
-        <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי לקוח</h2>
-        <p style="font-size: 14px; margin: 5px 0;">שם: ${customer.instituteName  || 'לא צוין'}</p>
-        <p style="font-size: 14px; margin: 5px 0;">טלפון: ${customer.mobile || 'לא צוין'}</p>
-        <p style="font-size: 14px; margin: 5px 0;">אימייל: ${customer.email || 'לא צוין'}</p>
-        <p style="font-size: 14px; margin: 5px 0;">איש קשר: ${customer.contactName || 'לא צוין'}</p>
-      </div>
-      
-      <div style="margin-bottom: 30px;">
-        <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי הזמנה</h2>
-        <p style="font-size: 14px; margin: 5px 0;">פעילות: ${activityName || activity.name || 'לא צוין'}</p>
-        <p style="font-size: 14px; margin: 5px 0;">תאריך: ${order.date || 'לא צוין'}</p>
-        <p style="font-size: 14px; margin: 5px 0;">שעה: ${order.activeHour || 'לא צוין'}</p>
-        <p style="font-size: 14px; margin: 5px 0;">מספר משתתפים: ${order.amountOfParticipants || 0}</p>
-      </div>
-      
-      <div style="margin-bottom: 30px;">
-        <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי תשלום</h2>
-        <table style="width: 100%; border-collapse: collapse;">
-          <thead>
-            <tr style="border-bottom: 1px solid #ddd;">
-              <th style="text-align: right; padding: 10px; font-size: 14px;">תיאור</th>
-              <th style="text-align: right; padding: 10px; font-size: 14px;">כמות</th>
-              <th style="text-align: right; padding: 10px; font-size: 14px;">מחיר ליחידה</th>
-              <th style="text-align: right; padding: 10px; font-size: 14px;">סה"כ</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom: 1px solid #ddd;">
-              <td style="text-align: right; padding: 10px; font-size: 14px;">${activityName || activity.name || 'פעילות'}</td>
-              <td style="text-align: right; padding: 10px; font-size: 14px;">${order.amountOfParticipants || 0}</td>
-              <td style="text-align: right; padding: 10px; font-size: 14px;">₪${activity.price || 0}</td>
-              <td style="text-align: right; padding: 10px; font-size: 14px;">₪${totalPrice}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-      <div style="text-align: left; margin-bottom: 30px;">
-        <h3 style="color: #b60557; font-size: 18px;">סה"כ לתשלום: ₪${totalPrice}</h3>
-      </div>
-      
-      <div style="text-align: center; margin-top: 50px;">
-        <p style="font-size: 14px; color: #666;">תודה שבחרתם בנו!</p>
-      </div>
+    <div style="text-align: center; margin-bottom: 30px;">
+    <h1 style="color: #b60557; font-size: 28px; margin-bottom: 10px;">חשבונית עסקה</h1>
+    <p style="font-size: 14px; color: #666;">מספר חשבונית: INV-${Date.now().toString().slice(-6)}</p>
+    <p style="font-size: 14px; color: #666;">תאריך: ${new Date().toLocaleDateString('he-IL')}</p>
+  </div>
+  
+  <div style="margin-bottom: 30px;">
+    <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי לקוח</h2>
+    <p style="font-size: 14px; margin: 5px 0;">שם: ${customer.instituteName || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">טלפון: ${customer.customerTel || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">אימייל: ${customer.customerEmail || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">עיר : ${customer.customerCity || 'לא צוין'}</p>
+  </div>
+  
+  <div style="margin-bottom: 30px;">
+    <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי הזמנה</h2>
+    <p style="font-size: 14px; margin: 5px 0;">פעילות: ${activity.activityName   || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">תאריך: ${order.date || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">שעה: ${order.activeHour || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">מספר משתתפים: ${order.amountOfParticipants || 0}</p>
+  </div>
+  
+  <div style="margin-bottom: 30px;">
+    <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי תשלום</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="border-bottom: 1px solid #ddd;">
+          <th style="text-align: right; padding: 10px; font-size: 14px;">תיאור</th>
+          <th style="text-align: right; padding: 10px; font-size: 14px;">כמות</th>
+          <th style="text-align: right; padding: 10px; font-size: 14px;">מחיר ליחידה</th>
+          <th style="text-align: right; padding: 10px; font-size: 14px;">סה"כ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom: 1px solid #ddd;">
+          <td style="text-align: right; padding: 10px; font-size: 14px;">${activity.activityName  || 'פעילות'}</td>
+          <td style="text-align: right; padding: 10px; font-size: 14px;">${order.amountOfParticipants || 0}</td>
+          <td style="text-align: right; padding: 10px; font-size: 14px;">₪${activity.activityPrice || 0}</td>
+          <td style="text-align: right; padding: 10px; font-size: 14px;">₪${totalPrice}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div style="text-align: left; margin-bottom: 30px;">
+    <h3 style="color: #b60557; font-size: 18px;">סה"כ לתשלום: ₪${totalPrice}</h3>
+  </div>
+  
+  <div style="text-align: center; margin-top: 50px;">
+    <p style="font-size: 14px; color: #666;">תודה שבחרתם בנו!</p>
+  </div>
     `;
 
     // הוספת האלמנט לדף
@@ -436,7 +428,7 @@ export const AddEditOrder = () => {
 
         <Box className="order-form">
           <Grid container spacing={3}>
-            {!params.id && (
+            {!order.customerId && (
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -474,7 +466,7 @@ export const AddEditOrder = () => {
               />
             </Grid>
 
-            {!params.idActivity && (
+            {!order.activityId && (
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth
@@ -529,7 +521,7 @@ export const AddEditOrder = () => {
         </Box>
 
         <Box className="order-actions">
-          {!isAvailable &&
+          {/* {!isAvailable &&
             <Button
               variant="contained"
               startIcon={<SaveIcon />}
@@ -539,17 +531,16 @@ export const AddEditOrder = () => {
               style={{ backgroundColor: '#b60557', color: 'white' }}
             >
               בדיקה האם הזמן זמין
-            </Button>}
-          {(isAvailable || edit) && <Button
+            </Button>} */}
+           <Button
             variant="contained"
             startIcon={<SaveIcon />}
             onClick={saveOrder}
-            disabled={!isAvailable}
             className="action-button save-button"
             style={{ backgroundColor: '#b60557', color: 'white' }}
           >
             שמור
-          </Button>}
+          </Button>
 
           <Button
             variant="contained"
@@ -561,26 +552,35 @@ export const AddEditOrder = () => {
           >
             המשך לתשלום
           </Button>
-
+          {report.orderId && 
           <Button
             variant="contained"
             startIcon={<ReceiptIcon />}
-            onClick={generateInvoice}
+            onClick={()=>navigate(`report`)}
             className="action-button invoice-button"
             style={{ backgroundColor: '#b60557', color: 'white' }}
           >
             הפק חשבונית
           </Button>
-
+          }  
           <Button
             variant="contained"
             startIcon={<ArrowBackIcon />}
             onClick={cancel}
-            className="action-button back-button"
+            className="action-button invoice-button"
             style={{ backgroundColor: '#b60557', color: 'white' }}
           >
             חזור
           </Button>
+          {/* <Button
+            variant="contained"
+            startIcon={<ArrowBackIcon />}
+            onClick={cancel}
+            className="back-button"
+            style={{ backgroundColor: '#b60557 !important', color: 'white' }}
+          >
+            חזור
+          </Button> */}
         </Box>
         <Outlet />
       </Container>

@@ -90,9 +90,11 @@ export const Start = () => {
 
       if (user) {
         if (user.userType === "manager"){
+          dispatch(editManager(user));
           navigate(`/manager/${user.id}`);
         }
         else if (user.userType === "customer"){
+          dispatch(editCustomer(user));
           navigate(`/home/${user.instituteId}`);
         }
       }
@@ -150,51 +152,7 @@ export const Start = () => {
 
               </p>
 
-              {/* לשוניות */}
-              {/* <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-                <div
-                  onClick={() => handleTabChange(null, 0,)}
-                  style={{
-                    padding: '10px 20px',
-                    cursor: 'pointer',
-                    backgroundColor: tabValue === 0 ? '#b60557' : '#f1f1f1',
-                    color: tabValue === 0 ? 'white' : '#666',
-                    borderRadius: '8px 0 0 8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-
-                    transition: 'all 0.3s ease',
-                    fontWeight: tabValue === 0 ? '600' : 'normal'
-                  }}
-                >
-
-                  <AdminPanelSettingsIcon style={{ fontSize: '1.2rem' }} />
-                  <span>מנהל</span>
-                </div>
-                <div
-                  onClick={() => handleTabChange(null, 1,)}
-                  style={{
-                    padding: '10px 20px',
-                    cursor: 'pointer',
-                    backgroundColor: tabValue === 1 ? '#b60557' : '#f1f1f1',
-                    color: tabValue === 1 ? 'white' : '#666',
-                    borderRadius: '0 8px 8px 0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-
-                    transition: 'all 0.3s ease',
-                    fontWeight: tabValue === 1 ? '600' : 'normal'
-                  }}
-                >
-
-                  <BusinessIcon style={{ fontSize: '1.2rem' }} />
-                  <span>לקוח</span>
-                </div>
-              </div> */}
+              
             </div>
 
             {error && (
@@ -205,19 +163,7 @@ export const Start = () => {
 
             <form onSubmit={handleSubmit}>
               <>
-                {/* <div className="input-group">
-                    <div className="input-icon">
-                      <PersonIcon />
-                    </div>
-                    <input
-                      type="text"
-                      name="username"
-                      className="auth-input"
-                      placeholder="שם משתמש"
-                      value={formData.username}
-                      onChange={handleInputChange}
-                    />
-                  </div> */}
+         
 
                 <div className="input-group">
                   <div className="input-icon">
@@ -251,7 +197,7 @@ export const Start = () => {
                   <button
                     type="submit"
                     className="auth-button"
-                    style={{width:"55%"}}
+                    style={{width:"55%",marginLeft:"20px !important"}}
                     onClick={() => navigate("logon")}
 
                   >                  
@@ -260,7 +206,7 @@ export const Start = () => {
                   <button
                     type="submit"
                     className="auth-button"
-                    style={{width:"55%",marginLeft:"10px"}}
+                    style={{width:"55%",marginLeft:"20px !important" }}
                     onClick={() => navigate("logonManager")}
                   >
 

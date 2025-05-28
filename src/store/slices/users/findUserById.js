@@ -15,7 +15,7 @@ export const findUserById = createAsyncThunk(
         }
 
         else {
-            alert("ordersFetch")
+
             throw new Error("failed to fetch");
         }
     }

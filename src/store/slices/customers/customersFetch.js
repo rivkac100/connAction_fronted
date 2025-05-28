@@ -13,7 +13,7 @@ export const customersFetchThunk = createAsyncThunk(
         }
 
         else {
-            alert("customersFetch")
+   
             throw new Error("failed to fetch");
         }
     }

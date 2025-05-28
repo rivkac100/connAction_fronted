@@ -14,7 +14,7 @@ export const findUserByPassId = createAsyncThunk(
         }
 
         else {
-            alert("ordersFetch")
+       
             throw new Error("failed to fetch");
         }
     }

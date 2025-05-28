@@ -271,7 +271,7 @@ export const Navigation = ({ managerId, managerName }) => {
        </Box> */
        }
        <Box 
-        className="header-section"
+        className="header-sec"
         sx={{
           pt: { xs: 4, md: 6 },
           pb: { xs: 4, md: 6 },

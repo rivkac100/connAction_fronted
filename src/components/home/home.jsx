@@ -118,6 +118,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { managersFetchThunk } from '../../store/slices/managers/managersFetch';
 import './home.css';
 import { editManager } from '../../store/slices/managers/managersSlice';
+import { editActivity } from '../../store/slices/activites/activitySlice';
 
 // קומפוננטת לוגו מודרנית עם אנימציה
 const ModernLogo = ({ size = 'medium' }) => {

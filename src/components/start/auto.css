@@ -217,6 +217,8 @@ select.auth-input {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 10px !important;
+    
 }
 
 .auth-button:hover {
