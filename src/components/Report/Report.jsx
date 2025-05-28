@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, use } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -51,6 +51,7 @@ import SignaturePad from 'signature_pad';
 import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
 import html2canvas from 'html2canvas';
+import { reportByOIdThunk } from "../../store/slices/reports/reportByOIdThunk";
 
 
 // סגנון מותאם לדירוג כוכבים
@@ -100,7 +101,7 @@ export const Report = () => {
   const param = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const report = useSelector(state => state.order.myReport);
+  const report = useSelector(state => state.report.myReport);
   //   const theTreatment = useSelector(state => state.report.curretntTreatment);
   //   const thePatient = useSelector(state => state.patient.currentPatient);
   //   const allActivities = useSelector(state => state.activity?.activitiesList || []);
@@ -132,7 +133,11 @@ export const Report = () => {
 
   // דוגמאות להצעות פעילויות
   //   const activitySuggestions = useSelector(state => state.activity.activitiesList);
-
+  useEffect(() => {
+    if (!report?.Id) {
+      dispatch(reportByOIdThunk(param.oid));
+    }
+  }, []);
   // פתיחת דיאלוג החתימה
   const openSignatureDialog = () => {
     setSignatureDialogOpen(true);

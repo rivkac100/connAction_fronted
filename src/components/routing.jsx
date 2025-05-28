@@ -166,6 +166,8 @@ export const Routing = () => {
         </Route>
         <Route path="upcoming" element={<MyOrders upcoming={true} />} />
         <Route path="myOrders" element={<MyOrders />}>
+          <Route path="report/:oid" element={<Report />} />
+
           <Route path="newOrder" element={<AddEditOrder />} >
             <Route path="payment" element={<Payment />} />
             <Route path="report" element={<Report />} />

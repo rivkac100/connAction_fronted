@@ -1,10 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { addCustomerThunk } from './addCustomerThunk';
-import { customersFetchThunk } from './customersFetch';
-//import { findCustomerThunk } from './findCustomerThunk';
-import { deleteCustomerThunk } from './deleteCustomerThunk';
-import { customersFetchThunkById } from './customerFetchThunkById';
-import { updateCustomerThunk } from './updateCustomerThunk';
 import { addReportThunk } from './addReportThunk';
 import { reportFetchThunkById } from './reportFetchThunkById';
 import { deleteReportThunk } from './deleteReportThunk';
@@ -17,7 +11,7 @@ const INITIAL_STATE_REPORT = {
     
 
     myReports: [],
-    report: {},
+    myReport: {},
 
     token: null,
     sucsses: false,
@@ -26,7 +20,7 @@ const INITIAL_STATE_REPORT = {
 
 }
 
-export const customersSlice = createSlice({
+export const reportSlice = createSlice({
 
     name: 'report',
     initialState: INITIAL_STATE_REPORT,
@@ -101,7 +95,7 @@ export const customersSlice = createSlice({
 
         builder.addCase(reportByOIdThunk.fulfilled, (state, action) => {
             sessionStorage.setItem("report", JSON.stringify(action.payload));
-            state.myReports = action.payload;
+            state.myReport = action.payload[0];
         });
 
         // הוספת מקרה שהט'נק נכשל 
@@ -164,4 +158,4 @@ export const customersSlice = createSlice({
 
     }
 })
-export const { editReport, editToken,editReports,editIsManager } = customersSlice.actions;
+export const { editReport, editToken,editReports,editIsManager } = reportSlice.actions;

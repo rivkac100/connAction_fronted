@@ -27,6 +27,7 @@ import { deleteOrderThunk } from '../../store/slices/orders/deleteOrderThunk';
 import { ordersByMangerIdThunk } from '../../store/slices/managers/ordersByMangerIdThunk';
 import './order.css';
 import { editOrder } from '../../store/slices/orders/orderSlice';
+import { reportByOIdThunk } from '../../store/slices/reports/reportByOIdThunk';
 
 export const MyOrders = () => {
   const navigate = useNavigate();
@@ -521,14 +522,14 @@ export const MyOrders = () => {
                           color="primary"
                           size="small"
                           startIcon={<EditNoteOutlinedIcon />}
-                          onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}}
+                          onClick={() => {dispatch(reportByOIdThunk({id:order.orderId}));navigate(`report/${order.orderId}`)}}
                           sx={{
                             borderRadius: 2,
                             bgcolor: '#d57fa7f6',
                             '&:hover': { bgcolor: '#8e0443' }
                           }}
                         >
-                          עריכה
+                         report
                         </Button>
                       </Box>
                     </Card>

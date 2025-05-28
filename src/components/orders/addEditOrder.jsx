@@ -428,7 +428,7 @@ export const AddEditOrder = () => {
 
         <Box className="order-form">
           <Grid container spacing={3}>
-            {!order.customerId && (
+            {(!order.customerId || order.customerId<10000) && (
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -466,7 +466,7 @@ export const AddEditOrder = () => {
               />
             </Grid>
 
-            {!order.activityId && (
+            {(!order.activityId ||order.activityId<1000) && (
               <Grid item xs={12} md={6}>
                 <TextField
                   fullWidth

@@ -76,7 +76,8 @@ export const ordersSlice = createSlice({
         //הוספת מקרה שהט'נק הסתיים בהצלחה
         builder.addCase(updateOrderThunk.fulfilled, (state, action) => {
              state.orders = action.payload;
-             state.myReport=action.payload[action.payload.length-1].reports;
+             console.log(action.payload[action.payload.length-1].reports[0])
+             state.myReport=action.payload[action.payload.length-1].reports[0];
              state.sucsses = true;
         });
         //הוספת מקרה שהט'נק נכשל
@@ -91,6 +92,7 @@ export const ordersSlice = createSlice({
              state.order = action.payload;
              state.update = true;
              state.add = false;
+             console.log(action.payload.reports);
              state.myReport = action.payload.reports;
              state.findOrder = false;
              state.activity=true;

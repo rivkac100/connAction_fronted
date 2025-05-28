@@ -375,6 +375,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 
 import './calendar.css';
+import { managersFetchThunkById } from "../../store/slices/managers/managerFetchThunkById";
 
 export const Month = () => {
     const parms = useParams();
@@ -391,18 +392,18 @@ export const Month = () => {
     const [isAnimating, setIsAnimating] = useState(false);
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
     // Redux selectors
+    const manager = useSelector(state => state.manager.myManager);
     const myOrders = useSelector(state => state.manager.MyOrders);
     // const orders = useSelector(state => state.order.orders);
-    const events = useSelector(state => state.events.events);
+    const events = useSelector(state => state.manager.MyEvents);
+
     
     // Fetch data on component mount
-    useEffect(() => {
-        if(events?.length == 0) dispatch(eventFetchThunk());
-    }, [events, dispatch]);
+   
     
     useEffect(() => {
-        if(myOrders?.length == 0) dispatch(customersFetchThunkById({ id: parseInt(parms.id) }));
-    }, [myOrders, dispatch, parms.id]);
+        if(myOrders?.length == 0) dispatch(managersFetchThunkById({ id: parseInt(parms.mid) }));
+    }, [myOrders.length==0, dispatch, parms.mid]);
     
     // useEffect(() => {
     //     // if(orders?.length == 0) dispatch(ordersFetchThunk());

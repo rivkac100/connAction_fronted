@@ -23,11 +23,11 @@ import './Dashboard.css';
 import { m } from 'framer-motion';
 import { findManagerThunk } from '../../store/slices/managers/findManagerThunk';
 import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
+import { editManager } from '../../store/slices/managers/managersSlice';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location=useLocation();
   const params = useParams();
   const id = params.mid;
   const [loading, setLoading] = useState(true);
@@ -46,24 +46,20 @@ export const Dashboard = () => {
   const manager = useSelector(state => state.manager.myManager);
   const orders = useSelector(state => state.manager.MyOrders);
   useEffect(() => {
-    setView(true);
-    if(location.pathname.split("/").pop()===params.mid){
-      setView(true);
-    }
-   
+
     if(!manager){
     dispatch(managersFetchThunkById({ id: id }));
     
   }
   }, [])
-  useEffect(() => {
-    console.log(parseInt(location.pathname.split("/").pop()));
-    if(parseInt(location.pathname.split("/").pop())===params.mid){
-      setView(true);
-      console.log(view);
-    }
+  // useEffect(() => {
+  //   console.log(parseInt(location.pathname.split("/").pop()));
+  //   if(parseInt(location.pathname.split("/").pop())===params.mid){
+  //     setView(true);
+  //     console.log(view);
+  //   }
  
-  }, [location]);
+  // }, [location]);
   // const handleRefresh = () => {
   //    dispatch(managersFetchThunkById({id:id}));
 
@@ -231,7 +227,7 @@ export const Dashboard = () => {
                     variant="contained"
                     fullWidth
                     className="quick-action-button"
-                    onClick={() => { setView(false); navigate(`month`) }}
+                    onClick={() => {    dispatch(editManager(manager)) ;setView(false); navigate(`month`) }}
                   >
                     צפייה ביומן
                   </Button>
@@ -272,8 +268,8 @@ export const Dashboard = () => {
             </Grid>
           </Grid>
         </Container>}
-        {!view &&
-      <Outlet />}
+        
+      <Outlet />
     </>
   );
 };

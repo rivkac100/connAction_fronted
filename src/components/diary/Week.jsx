@@ -295,6 +295,7 @@ import CalendarViewWeekIcon from '@mui/icons-material/CalendarViewWeek';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import './week.css';
+import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
 
 export const Week = () => {
     // State variables
@@ -318,9 +319,10 @@ export const Week = () => {
     const dispatch = useDispatch();
     
     // Redux selectors
-    const events = useSelector(state => state.events.events);
-    const myOrders = useSelector(state => state.customer.MyOrders);
-    const orders = useSelector(state => state.order.orders);
+    const myManager = useSelector(state => state.manager.myManager);
+    const myOrders = useSelector(state => state.manager.MyOrders);
+    // const orders = useSelector(state => state.order.orders);
+    const events = useSelector(state => state.manager.MyEvents);
     
     // Current date for today highlighting
     const today = new Date();
@@ -342,17 +344,13 @@ export const Week = () => {
     }, []);
     
     // Fetch data from Redux store
-    useEffect(() => {
-        if (events?.length === 0) dispatch(eventFetchThunk());
-    }, [events, dispatch]);
+
     
     useEffect(() => {
-        if (myOrders?.length === 0) dispatch(customersFetchThunkById({id: parseInt(param.id)}));
+        if (myOrders?.length === 0) dispatch(managersFetchThunkById({id: parseInt(param.mid)}));
     }, [myOrders, dispatch, param.id]);
     
-    useEffect(() => {
-        if (orders?.length === 0) dispatch(ordersFetchThunk());
-    }, [orders, dispatch]);
+
     
     // Navigation functions
     const newEvent = () => {
