@@ -52,6 +52,7 @@ import { jsPDF } from "jspdf";
 import 'jspdf-autotable';
 import html2canvas from 'html2canvas';
 import { reportByOIdThunk } from "../../store/slices/reports/reportByOIdThunk";
+import { reportFetchThunkById } from "../../store/slices/reports/reportFetchThunkById";
 
 
 // סגנון מותאם לדירוג כוכבים
@@ -101,19 +102,23 @@ export const Report = () => {
   const param = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const report = useSelector(state => state.report.myReport);
+  const report1 = useSelector(state => state.report.myReport);
+  const report2 = useSelector(state => state.order.myReport);
   //   const theTreatment = useSelector(state => state.report.curretntTreatment);
   //   const thePatient = useSelector(state => state.patient.currentPatient);
   //   const allActivities = useSelector(state => state.activity?.activitiesList || []);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [exportingPdf, setExportingPdf] = useState(false);
-
+  const [report, setReport] = useState(param.oid?report1:report2);
   // State לחתימה הדיגיטלית
   const [signature, setSignature] = useState(null);
+  const [signature1, setSignature1] = useState(null);
+
   const [signatureDialogOpen, setSignatureDialogOpen] = useState(false);
   const canvasRef = useRef(null);
   const signaturePadRef = useRef(null);
+  const signaturePadRef1 = useRef(null);
   //   const [report, setTreatment] = useState({
   //     treatmentId: theTreatment?.treatmentId,
   //     treatmentDate: theTreatment?.treatmentDate,
@@ -134,9 +139,15 @@ export const Report = () => {
   // דוגמאות להצעות פעילויות
   //   const activitySuggestions = useSelector(state => state.activity.activitiesList);
   useEffect(() => {
-    if (!report?.Id) {
+    if (param.oid) {
       dispatch(reportByOIdThunk(param.oid));
+      setReport(report1);
     }
+    else {
+      dispatch(reportFetchThunkById({id:report2.id}));
+      setReport(report2);
+    }
+    
   }, []);
   // פתיחת דיאלוג החתימה
   const openSignatureDialog = () => {
@@ -148,6 +159,7 @@ export const Report = () => {
     }, 300);
   };
   const initSignaturePad = () => {
+
     if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
@@ -311,7 +323,7 @@ export const Report = () => {
    
     <div style="display: flex; justify-content: space-between; margin-top: 40px;">
       <div style="width: 45%;">
-        <p style="font-size: 14px; margin-bottom: 5px;"><strong>חתימת המטפל/ת:</strong></p>
+        <p style="font-size: 14px; margin-bottom: 5px;"><strong>חתימת הלקוח/ה:</strong></p>
         <div style="height: 80px; display: flex; justify-content: center; align-items: center;">
           <img src="${signature}" style="max-height: 70px; max-width: 100%;" />
         </div>
@@ -319,8 +331,10 @@ export const Report = () => {
       </div>
       
       <div style="width: 45%;">
-        <p style="font-size: 14px; margin-bottom: 5px;"><strong>חתימת המטופל/ת:</strong></p>
+        <p style="font-size: 14px; margin-bottom: 5px;"><strong>חתימת המפיק/ה:</strong></p>
         <div style="border-bottom: 1px solid #000; height: 40px;"></div>
+        <img src="${signature}" style="max-height: 70px; max-width: 100%;" />
+
         <p style="font-size: 12px; margin-top: 5px;">שם הלקוח/ת: ${''} ${''}</p>
       </div>
     </div>
@@ -665,6 +679,24 @@ export const Report = () => {
               
                 </Box>
               </CardContent>
+              
+             
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Card
+              className="patient-card card-hover"
+              elevation={3}
+              sx={{
+                height: '100%',
+                borderRadius: 3,
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-5px)',
+                  boxShadow: '0 8px 20px rgba(172, 36, 84, 0.2)'
+                }
+              }}
+            >
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                   <Person sx={{ color: '#ac2454', mr: 1 }} />
@@ -734,7 +766,7 @@ export const Report = () => {
                   </Box>
                 </Box>
               </CardContent>
-              <CardContent>
+               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                   <Person sx={{ color: '#ac2454', mr: 1 }} />
                   <Typography variant="h6" sx={{ color: '#ac2454', fontWeight: 'bold' }}>
@@ -795,7 +827,7 @@ export const Report = () => {
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <CalendarToday sx={{ color: '#ac2454', mr: 1 }} />
                     <Typography component="span" sx={{ fontWeight: 'bold', color: '#ac2454', ml: 1 }}>
-                      מחיר:
+                      שולם:
                     </Typography>
                     <Typography component="span">
                       {report?.isPayment==1?"שולם":"לא שולם"}
@@ -803,22 +835,6 @@ export const Report = () => {
                   </Box>
                 </Box>
               </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Card
-              className="patient-card card-hover"
-              elevation={3}
-              sx={{
-                height: '100%',
-                borderRadius: 3,
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 8px 20px rgba(172, 36, 84, 0.2)'
-                }
-              }}
-            >
               <CardContent>
                 
         
@@ -831,11 +847,11 @@ export const Report = () => {
 
 
                   <Box
-                    className={`payment-status ${report.bePaid ? 'paid' : 'unpaid'}`}
+                    className={`payment-status ${report.isOk ? 'paid' : 'unpaid'}`}
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      backgroundColor: report.bePaid ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
+                      backgroundColor: report.isOk ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
                       borderRadius: 2,
                       padding: 1,
                       transition: 'background-color 0.3s ease'
@@ -847,6 +863,86 @@ export const Report = () => {
                     </Typography>
 
                   </Box>
+                </Box>
+              </CardContent>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Edit sx={{ color: '#ac2454', mr: 1 }} />
+                  <Typography variant="h6" sx={{ color: '#ac2454', fontWeight: 'bold' }}>
+                    חתימה דיגיטלית
+                  </Typography>
+                </Box>
+
+                <Divider sx={{ mb: 2, backgroundColor: '#ac245433' }} />
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                  {signature ? (
+                    <Box sx={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      border: '1px dashed #ac2454',
+                      borderRadius: 2,
+                      padding: 2,
+                      backgroundColor: 'rgba(255, 255, 255, 0.7)'
+                    }}>
+                      <img
+                        src={signature}
+                        alt="חתימה דיגיטלית"
+                        style={{
+                          maxWidth: '100%',
+                          maxHeight: '100px',
+                          marginBottom: '10px'
+                        }}
+                      />
+                      <Typography variant="caption" sx={{ color: '#666', mb: 1 }}>
+                        החתימה נשמרה בהצלחה
+                      </Typography>
+                      <StyledButton
+                        variant="outlined"
+                        size="small"
+                        onClick={openSignatureDialog}
+                        startIcon={<Edit />}
+                        sx={{
+                          color: '#ac2454',
+                          borderColor: '#ac2454',
+                          '&:hover': { borderColor: '#8e1c44', color: '#8e1c44' },
+                          fontSize: '0.8rem'
+                        }}
+                      >
+                        שינוי חתימה
+                      </StyledButton>
+                    </Box>
+                  ) : (
+                    <Box sx={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      border: '1px dashed #ac2454',
+                      borderRadius: 2,
+                      padding: 3,
+                      backgroundColor: 'rgba(255, 255, 255, 0.7)'
+                    }}>
+                      <Typography sx={{ color: '#666', mb: 2, textAlign: 'center' }}>
+                        לא נמצאה חתימה. אנא הוסף חתימה דיגיטלית לפני ייצוא ה-PDF.
+                      </Typography>
+                      <StyledButton
+                        variant="contained"
+                        onClick={openSignatureDialog}
+                        startIcon={<Edit />}
+                        sx={{
+                          backgroundColor: '#ac2454',
+                          color: 'white',
+                          '&:hover': { backgroundColor: '#8e1c44' },
+                          fontSize: '0.9rem'
+                        }}
+                      >
+                        הוספת חתימה
+                      </StyledButton>
+                    </Box>
+                  )}
                 </Box>
               </CardContent>
             </Card>
@@ -981,7 +1077,7 @@ export const Report = () => {
 
           <StyledButton
             variant="outlined"
-            onClick={() => navigate('/calender')}
+            onClick={() => navigate(-1)}
             disabled={saving || exportingPdf}
             sx={{
               color: '#ac2454',

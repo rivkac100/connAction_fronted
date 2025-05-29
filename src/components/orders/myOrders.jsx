@@ -36,7 +36,7 @@ export const MyOrders = () => {
 
   const myOrdersC = useSelector(state => state.customer.MyOrders);
   const myOrdersM = useSelector(state => state.manager.MyOrders);
-
+  const myReport = useSelector(state => state.report.MyReport);
   const id = params.id;
   const token = useSelector(state => state.order.token);
   const failed = useSelector(state => state.order.failed);
@@ -522,7 +522,8 @@ export const MyOrders = () => {
                           color="primary"
                           size="small"
                           startIcon={<EditNoteOutlinedIcon />}
-                          onClick={() => {dispatch(reportByOIdThunk({id:order.orderId}));navigate(`report/${order.orderId}`)}}
+                          
+                          onClick={() => {dispatch(reportByOIdThunk({id: order.orderId}));navigate(`report/${order.orderId}`)}}
                           sx={{
                             borderRadius: 2,
                             bgcolor: '#d57fa7f6',

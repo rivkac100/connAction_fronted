@@ -61,7 +61,7 @@ export const ordersSlice = createSlice({
             // state.token = action.meta.org.order;
             state.token=0;
             state.sucsses = true;
-            state.myReport=action.payload[action.payload.length-1].reports;
+            // state.myReport=action.payload[action.payload.length-1].report;
         });
         //הוספת מקרה שהט'נק נכשל
         builder.addCase(addOrderThunk.rejected, (state, action) => {
@@ -76,8 +76,8 @@ export const ordersSlice = createSlice({
         //הוספת מקרה שהט'נק הסתיים בהצלחה
         builder.addCase(updateOrderThunk.fulfilled, (state, action) => {
              state.orders = action.payload;
-             console.log(action.payload[action.payload.length-1].reports[0])
-             state.myReport=action.payload[action.payload.length-1].reports[0];
+            //  console.log(action.payload.last().reports[0])
+            //  state.myReport=action.payload.last().report;
              state.sucsses = true;
         });
         //הוספת מקרה שהט'נק נכשל
@@ -92,8 +92,8 @@ export const ordersSlice = createSlice({
              state.order = action.payload;
              state.update = true;
              state.add = false;
-             console.log(action.payload.reports);
-             state.myReport = action.payload.reports;
+             console.log(action.payload.report);
+             state.myReport = action.payload.report;
              state.findOrder = false;
              state.activity=true;
         });

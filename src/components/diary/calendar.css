@@ -109,7 +109,15 @@
     overflow: hidden;
     border: 1px solid #e0e0e0;
   }
-  
+   .time {
+    font-weight: 600;
+    color: #424242;
+    margin-bottom: 4px;
+  }
+  .today {
+    background-color: #f5f5f5;
+    border-left: 3px solid #b60557;
+  }
   .weekday-header {
     background-color: #f5f5f5;
     color: #424242;

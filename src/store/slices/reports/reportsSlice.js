@@ -94,8 +94,9 @@ export const reportSlice = createSlice({
         });
 
         builder.addCase(reportByOIdThunk.fulfilled, (state, action) => {
-            sessionStorage.setItem("report", JSON.stringify(action.payload));
-            state.myReport = action.payload[0];
+            // sessionStorage.setItem("report", JSON.stringify(action.payload));
+            console.log(action.payload)
+            state.myReport = action.payload;
         });
 
         // הוספת מקרה שהט'נק נכשל 

@@ -239,8 +239,8 @@ export const AddEditOrder = () => {
         navigate('/orders');
       } else {
         dispatch(addOrderThunk({ details: orderToSave }));
-        // refDialog.current.close();
-        // navigate(-1);
+        refDialog.current.close();
+        navigate(-1);
       }
     } else {
       alert("לא ניתן להוסיף/לערוך - חסרים פרטים חיוניים");
@@ -552,17 +552,17 @@ export const AddEditOrder = () => {
           >
             המשך לתשלום
           </Button>
-          {report.orderId && 
+          
           <Button
             variant="contained"
             startIcon={<ReceiptIcon />}
-            onClick={()=>navigate(`report`)}
+            onClick={generateInvoice}
             className="action-button invoice-button"
             style={{ backgroundColor: '#b60557', color: 'white' }}
           >
             הפק חשבונית
           </Button>
-          }  
+          
           <Button
             variant="contained"
             startIcon={<ArrowBackIcon />}
