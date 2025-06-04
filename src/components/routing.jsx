@@ -153,7 +153,7 @@ export const Routing = () => {
       <Route path="/home/:id" element={<Home />}>
         <Route path="activities/:mid" element={<Activities />} >
           <Route path="newActivity" element={<AddEditActivity />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="profile/:mid" element={<Profile />} />
           <Route path="newOrder/:idActivity" element={<AddEditOrder />} >
             <Route path="payment" element={<Payment />} />
             <Route path="report" element={<Report />} />
@@ -264,7 +264,7 @@ export const Routing = () => {
       </Route>
 
       {/* Profile route */}
-      <Route path="/profile/:id" element={<Profile />} />
+      <Route path="/profile/:mid" element={<Profile />} />
 
       {/* Activities route */}
       <Route path="/activites" element={<Activities />} />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { customersFetchThunkById } from '../../store/slices/customers/customerFetchThunkById';
 import {
@@ -42,7 +42,7 @@ export const MyOrders = () => {
   const failed = useSelector(state => state.order.failed);
   const [today, setToday] = useState(new Date().toLocaleDateString());
   const [before, setBefore] = useState(false);
-
+  const location = useLocation();
   // מצבים לסינון וחיפוש
   const [searchTerm, setSearchTerm] = useState('');
   const [showSearchOptions, setShowSearchOptions] = useState(false);
@@ -233,7 +233,7 @@ export const MyOrders = () => {
       <div className="gradient-bg"></div>
 
       {/* Header */}
-      <Container maxWidth="xl">
+      {location.pathname.split("/").pop()==='myOrders' && <Container maxWidth="xl">
         <Box className="orders-header">
           <Typography variant="h2" className="page-title">
             היסטוריית הזמנות
@@ -437,7 +437,7 @@ export const MyOrders = () => {
                           boxShadow: '0 3px 5px rgba(0,0,0,0.2)',
                           zIndex: 1
                         }}
-                
+
                       >
                         פעיל
                       </Box>
@@ -503,178 +503,39 @@ export const MyOrders = () => {
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="עריכת הזמנה">
-                            <IconButton onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}} color="primary">
+                            <IconButton onClick={() => { dispatch(editOrder(order)); navigate(`editOrder/${order.orderId}`) }} color="primary">
                               <EditNoteOutlinedIcon />
                             </IconButton>
                           </Tooltip>
                         </Box>
                         <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
-                        <Chip
-                          label={order.isPayment===1?"שולם": "לא שולם"}
-                          color="default"
-                          icon={order.isPayment===1?<CheckCircleIcon />: <CancelIcon />}
-                          variant="outlined"
-                        />
-                      </Box>
+                          <Chip
+                            label={order.isPayment === 1 ? "שולם" : "לא שולם"}
+                            color="default"
+                            icon={order.isPayment === 1 ? <CheckCircleIcon /> : <CancelIcon />}
+                            variant="outlined"
+                          />
+                        </Box>
                         {/* כפתור עריכה להזמנות עתידיות */}
                         <Button
                           variant="contained"
                           color="primary"
                           size="small"
                           startIcon={<EditNoteOutlinedIcon />}
-                          
-                          onClick={() => {dispatch(reportByOIdThunk({id: order.orderId}));navigate(`report/${order.orderId}`)}}
+
+                          onClick={() => { dispatch(reportByOIdThunk({ id: order.orderId })); navigate(`report/${order.orderId}`) }}
                           sx={{
                             borderRadius: 2,
                             bgcolor: '#d57fa7f6',
                             '&:hover': { bgcolor: '#8e0443' }
                           }}
                         >
-                         report
+                          report
                         </Button>
                       </Box>
                     </Card>
                   </Grid>
-                  // <Box
-                  //   key={order.orderId}
-                  //   sx={{
-                  //     width: {
-                  //       xs: 'calc(100% - 16px)',
-                  //       sm: 'calc(50% - 16px)',
-                  //       md: 'calc(33.333% - 16px)',
-                  //       lg: 'calc(20% - 16px)'
-                  //     },
-                  //     margin: '8px',
-                  //   }}
-                  // >
-                  //   <Card
-                  //     elevation={3}
-                  //     sx={{
-                  //       height: '100%',
-                  //       borderRadius: 2,
-                  //       transition: 'transform 0.2s, box-shadow 0.2s',
-                  //       '&:hover': {
-                  //         transform: 'translateY(-5px)',
-                  //         boxShadow: '0 8px 16px rgba(0,0,0,0.2)'
-                  //       },
-                  //       position: 'relative',
-                  //       overflow: 'visible'
-                  //     }}
-                  //   >
-                  //     <Box
-                  //       sx={{
-                  //         position: 'absolute',
-                  //         top: -10,
-                  //         right: 20,
-                  //         bgcolor: '#b60557 !important',
-                  //         color: 'white',
-                  //         borderRadius: '20px',
-                  //         px: 2,
-                  //         py: 0.5,
-                  //         fontWeight: 'bold',
-                  //         fontSize: '0.8rem',
-                  //         boxShadow: '0 3px 5px rgba(0,0,0,0.2)',
-                  //         zIndex: 1
-                  //       }}
-                  //       style={{
-                  //        backgroundColor: '#b60557 !important',
-                  //       }}
-                  //     >
-                  //       פעיל
-                  //     </Box>
 
-                  //     <CardContent sx={{ p: 3 }}>
-                  //       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                  //         <Typography variant="h6" component="div" fontWeight="bold" color="#b60557">
-                  //           {order.activityName || "פעילות ללא שם"}
-                  //         </Typography>
-                  //         <Chip
-                  //           label={`#${order.orderId}`}
-                  //           color="primary"
-                  //           size="small"
-                  //           sx={{ fontWeight: 'bold', bgcolor: '#d57fa7f6' }}
-                  //         />
-                  //       </Box>
-
-                  //       <Divider sx={{ mb: 2 }} />
-
-                  //       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                  //         <EventIcon color="action" sx={{ mr: 1.5 }} />
-                  //         <Typography variant="body1">
-                  //           {order.date}
-                  //         </Typography>
-                  //       </Box>
-
-                  //       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                  //         <AccessTimeIcon color="action" sx={{ mr: 1.5 }} />
-                  //         <Typography variant="body1">
-                  //           {order.activeHour}
-                  //         </Typography>
-                  //       </Box>
-
-                  //       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                  //         <PersonIcon color="action" sx={{ mr: 1.5 }} />
-                  //         <Typography variant="body1">
-                  //           {order.brokerName || "לא צוין"}
-                  //         </Typography>
-                  //       </Box>
-
-                  //       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                  //         <Badge badgeContent={order.amountOfParticipants} color="secondary" sx={{ mr: 1.5 }}>
-                  //           <PersonIcon color="action" />
-                  //         </Badge>
-                  //         <Typography variant="body1">
-                  //           משתתפים
-                  //         </Typography>
-                  //       </Box>
-
-                  //       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  //         <AttachMoneyIcon color="action" sx={{ mr: 1.5 }} />
-                  //         <Typography variant="body1" fontWeight="bold" color="#3b3a3d">
-                  //           {order.payment} ₪
-                  //         </Typography>
-                  //       </Box>
-                  //     </CardContent>
-
-                  //     <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'space-between' }}>
-                  //       <Box>
-                  //         <Tooltip title="מחיקת הזמנה">
-                  //           <IconButton onClick={() => deleteOrder(order.orderId)} color="error">
-                  //             <DeleteForeverOutlinedIcon />
-                  //           </IconButton>
-                  //         </Tooltip>
-                  //         <Tooltip title="עריכת הזמנה">
-                  //           <IconButton onClick={() => navigate(`editOrder/${order.orderId}`)} color="primary">
-                  //             <EditNoteOutlinedIcon />
-                  //           </IconButton>
-                  //         </Tooltip>
-                  //       </Box>
-                  //       <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
-                  //       <Chip
-                  //         label={order.isPayment===1?"שולם": "לא שולם"}
-                  //         color="default"
-                  //         icon={order.isPayment===1?<CheckCircleIcon />: <CancelIcon />}
-                  //         variant="outlined"
-                  //       />
-                  //     </Box>
-                  //       {/* כפתור עריכה להזמנות עתידיות */}
-                  //       <Button
-                  //         variant="contained"
-                  //         color="primary"
-                  //         size="small"
-                  //         startIcon={<EditNoteOutlinedIcon />}
-                  //         onClick={() => navigate(`editOrder/${order.orderId}`)}
-                  //         sx={{
-                  //           borderRadius: 2,
-                  //           bgcolor: '#d57fa7f6',
-                  //           '&:hover': { bgcolor: '#8e0443' }
-                  //         }}
-                  //       >
-                  //         עריכה
-                  //       </Button>
-                  //     </Box>
-                  //   </Card>
-                  // </Box>
                 ))
               ) : (
                 <Grid item xs={12}>
@@ -718,7 +579,7 @@ export const MyOrders = () => {
                           boxShadow: '0 3px 5px rgba(0,0,0,0.2)',
                           zIndex: 1
                         }}
-                
+
                       >
                         פעיל
                       </Box>
@@ -784,26 +645,26 @@ export const MyOrders = () => {
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="עריכת הזמנה">
-                            <IconButton onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}} color="primary">
+                            <IconButton onClick={() => { dispatch(editOrder(order)); navigate(`editOrder/${order.orderId}`) }} color="primary">
                               <EditNoteOutlinedIcon />
                             </IconButton>
                           </Tooltip>
                         </Box>
                         <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
-                        <Chip
-                          label={order.isPayment===1?"שולם": "לא שולם"}
-                          color="default"
-                          icon={order.isPayment===1?<CheckCircleIcon />: <CancelIcon />}
-                          variant="outlined"
-                        />
-                      </Box>
+                          <Chip
+                            label={order.isPayment === 1 ? "שולם" : "לא שולם"}
+                            color="default"
+                            icon={order.isPayment === 1 ? <CheckCircleIcon /> : <CancelIcon />}
+                            variant="outlined"
+                          />
+                        </Box>
                         {/* כפתור עריכה להזמנות עתידיות */}
                         <Button
                           variant="contained"
                           color="primary"
                           size="small"
                           startIcon={<EditNoteOutlinedIcon />}
-                          onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}}
+                          onClick={() => { dispatch(editOrder(order)); navigate(`editOrder/${order.orderId}`) }}
                           sx={{
                             borderRadius: 2,
                             bgcolor: '#d57fa7f6',
@@ -843,7 +704,7 @@ export const MyOrders = () => {
                   <TableCell align="center" sx={{ fontWeight: 'bold', color: "white" }}>משתתפים</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold', color: "white" }}>תשלום</TableCell>
                   <TableCell align="center" sx={{ fontWeight: 'bold', color: "white" }}>פעולות</TableCell>
-                  <TableCell align="center" sx={{ fontWeight: 'bold', color: "white" }}>סטטוס</TableCell>              
+                  <TableCell align="center" sx={{ fontWeight: 'bold', color: "white" }}>סטטוס</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -873,7 +734,7 @@ export const MyOrders = () => {
                             <IconButton
                               size="small"
                               color="primary"
-                              onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}}
+                              onClick={() => { dispatch(editOrder(order)); navigate(`editOrder/${order.orderId}`) }}
                               sx={{ color: '#af2263' }}
                             >
                               <EditNoteOutlinedIcon />
@@ -882,10 +743,10 @@ export const MyOrders = () => {
                         </TableCell>
                         <TableCell align="center">
                           <Chip
-                           label={order.isPayment===1?"שולם": "לא שולם"}
+                            label={order.isPayment === 1 ? "שולם" : "לא שולם"}
                             color="default"
                             size="small"
-                            icon={order.isPayment?<CheckCircleIcon />: <CancelIcon />}
+                            icon={order.isPayment ? <CheckCircleIcon /> : <CancelIcon />}
                           />
                         </TableCell>
                       </TableRow>
@@ -926,7 +787,7 @@ export const MyOrders = () => {
                             <IconButton
                               size="small"
                               color="primary"
-                              onClick={() => {dispatch(editOrder(order));navigate(`editOrder/${order.orderId}`)}}
+                              onClick={() => { dispatch(editOrder(order)); navigate(`editOrder/${order.orderId}`) }}
                               sx={{ color: '#af2263' }}
                             >
                               <EditNoteOutlinedIcon />
@@ -935,10 +796,10 @@ export const MyOrders = () => {
                         </TableCell>
                         <TableCell align="center">
                           <Chip
-                           label={order.isPayment===1?"שולם": "לא שולם"}
+                            label={order.isPayment === 1 ? "שולם" : "לא שולם"}
                             color="default"
                             size="small"
-                            icon={order.isPayment?<CheckCircleIcon />: <CancelIcon />}
+                            icon={order.isPayment ? <CheckCircleIcon /> : <CancelIcon />}
                           />
                         </TableCell>
                       </TableRow>
@@ -962,7 +823,7 @@ export const MyOrders = () => {
           הזמנות שעברו
         </Typography>
 
-     {/* תצוגת כרטיסים להזמנות שעברו */}
+        {/* תצוגת כרטיסים להזמנות שעברו */}
         {viewMode === 'cards' && (
           <Box sx={{
             display: 'grid',
@@ -975,293 +836,180 @@ export const MyOrders = () => {
             gap: 2
           }}>
             {params.id ?
-             (
-              pastOrdersC && pastOrdersC.length > 0 ? (
-              pastOrdersC.map(order => (
-                <Grid item xs={12} sm={6} md={4} key={order.orderId}>
-                <Card
-                  elevation={2}
-                  sx={{
-                    height: '100%',
-                    borderRadius: 2,
-                    opacity: 0.9,
-                    border: '1px solid #e0e0e0'
-                  }}
-                >
-                  <CardContent sx={{ p: 3 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                      <Typography variant="h6" component="div" fontWeight="bold" color="#b60557" sx={{ opacity: 0.7 }}>
-                        {order.activityName || "פעילות ללא שם"}
-                      </Typography>
-                      <Chip
-                        label={`#${order.orderId}`}
-                        color="default"
-                        size="small"
-                        sx={{ fontWeight: 'bold' }}
-                      />
-                    </Box>
-                    <Divider sx={{ mb: 2 }} />
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                      <EventIcon color="action" sx={{ mr: 1.5 }} />
-                      <Typography variant="body1" color="text.secondary">
-                        {order.date}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                      <AccessTimeIcon color="action" sx={{ mr: 1.5 }} />
-                      <Typography variant="body1" color="text.secondary">
-                        {order.activeHour}
-                      </Typography>
-                    </Box>
+              (
+                pastOrdersC && pastOrdersC.length > 0 ? (
+                  pastOrdersC.map(order => (
+                    <Grid item xs={12} sm={6} md={4} key={order.orderId}>
+                      <Card
+                        elevation={2}
+                        sx={{
+                          height: '100%',
+                          borderRadius: 2,
+                          opacity: 0.9,
+                          border: '1px solid #e0e0e0'
+                        }}
+                      >
+                        <CardContent sx={{ p: 3 }}>
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                            <Typography variant="h6" component="div" fontWeight="bold" color="#b60557" sx={{ opacity: 0.7 }}>
+                              {order.activityName || "פעילות ללא שם"}
+                            </Typography>
+                            <Chip
+                              label={`#${order.orderId}`}
+                              color="default"
+                              size="small"
+                              sx={{ fontWeight: 'bold' }}
+                            />
+                          </Box>
+                          <Divider sx={{ mb: 2 }} />
+                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                            <EventIcon color="action" sx={{ mr: 1.5 }} />
+                            <Typography variant="body1" color="text.secondary">
+                              {order.date}
+                            </Typography>
+                          </Box>
+                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                            <AccessTimeIcon color="action" sx={{ mr: 1.5 }} />
+                            <Typography variant="body1" color="text.secondary">
+                              {order.activeHour}
+                            </Typography>
+                          </Box>
 
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                      <PersonIcon color="action" sx={{ mr: 1.5 }} />
-                      <Typography variant="body1" color="text.secondary">
-                        {order.customerName || "לא צוין"}
-                      </Typography>
-                    </Box>
-
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                      <Badge badgeContent={order.amountOfParticipants} color="default" sx={{ mr: 1.5 }}>
-                        <PersonIcon color="action" />
-                      </Badge>
-                      <Typography variant="body1" color="text.secondary">
-                        משתתפים
-                      </Typography>
-                    </Box>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <AttachMoneyIcon color="action" sx={{ mr: 1.5 }} />
-                      <Typography variant="body1" fontWeight="bold" color="text.secondary">
-                        {order.payment} ₪
-                      </Typography>
-                    </Box>
-                  </CardContent>
-
-                  <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
-                    <Chip
-                      label={order.isPayment===1?"שולם": "לא שולם"}
-                      color="default"
-                      icon={order.isPayment?<CheckCircleIcon />:<CancelIcon />}
-                      variant="outlined"
-                    />
-                  </Box>
-
-                </Card>
-              </Grid>
-            ))
-          ) : (
-            <Grid item xs={12}>
-              <Paper sx={{ p: 3, textAlign: 'center', bgcolor: '#f8f9fa' }}>
-                <Typography variant="h6" color="text.secondary">
-                  אין הזמנות קודמות
-                </Typography>
-              </Paper>
-            </Grid>
-
-          )
-              //     <Box
-              //       key={order.orderId}
-              //       sx={{
-              //        width: {
-              //           xs: 'calc(100% - 16px)',
-              //           sm: 'calc(50% - 16px)',
-              //           md: 'calc(33.333% - 16px)',
-              //           lg: 'calc(20% - 16px)'
-              //         },
-              //         margin: '8px',
-              //       }}
-              //     >
-
-              //       <Card
-              //         elevation={2}
-              //         sx={{
-              //           height: '100%',
-              //           borderRadius: 2,
-              //           opacity: 0.9,
-              //           border: '1px solid #e0e0e0'
-              //         }}
-              //       >
-              //       <Box
-              //           sx={{
-              //             position: 'absolute',
-              //             top: -10,
-              //             right: 20,
-              //             bgcolor: '#b60557',
-              //             color: 'white',
-              //             borderRadius: '20px',
-              //             px: 2,
-              //             py: 0.5,
-              //             fontWeight: 'bold',
-              //             fontSize: '0.8rem',
-              //             boxShadow: '0 3px 5px rgba(0,0,0,0.2)',
-              //             zIndex: 1
-              //           }}
-              //         >
-              //           פעיל
-              //         </Box>
-
-              //       <CardContent sx={{ p: 3 }}>
-              //           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-              //             <Typography variant="h6" component="div" fontWeight="bold" color="#af2263" sx={{ opacity: 0.7 }}>
-              //               {order.activityName || "פעילות ללא שם"}
-              //             </Typography>
-              //             <Chip
-              //               label={`#${order.orderId}`}
-              //               color="default"
-              //               size="small"
-              //               sx={{ fontWeight: 'bold' }}
-              //             />
-              //           </Box>
-              //          <Divider sx={{ mb: 2 }} />
-              //        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-              //             <EventIcon color="action" sx={{ mr: 1.5 }} />
-              //             <Typography variant="body1" color="text.secondary">
-              //               {order.date}
-              //             </Typography>
-              //           </Box>
-
-              //           <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-              //             <AccessTimeIcon color="action" sx={{ mr: 1.5 }} />
-              //             <Typography variant="body1" color="text.secondary">
-              //               {order.activeHour}
-              //             </Typography>
-              //           </Box>
-
-              //           <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-              //             <PersonIcon color="action" sx={{ mr: 1.5 }} />
-              //             <Typography variant="body1" color="text.secondary">
-              //               {order.brokerName || "לא צוין"}
-              //             </Typography>
-              //           </Box>
-
-              //           <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-              //             <Badge badgeContent={order.amountOfParticipants} color="default" sx={{ mr: 1.5 }}>
-              //               <PersonIcon color="action" />
-              //             </Badge>
-              //             <Typography variant="body1" color="text.secondary">
-              //               משתתפים
-              //             </Typography>
-              //           </Box>
-
-              //           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              //             <AttachMoneyIcon color="action" sx={{ mr: 1.5 }} />
-              //             <Typography variant="body1" fontWeight="bold" color="text.secondary">
-              //               {order.payment} ₪
-              //             </Typography>
-              //           </Box>
-              //         </CardContent>
-              //      <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
-              //           <Chip
-
-              //             label={order.isPayment===1?"שולם": "לא שולם"}
-              //             color="default"
+                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                            <PersonIcon color="action" sx={{ mr: 1.5 }} />
+                            <Typography variant="body1" color="text.secondary">
+                              {order.customerName || "לא צוין"}
+                            </Typography>
+                          </Box>
 
 
-              //             icon={<CheckCircleIcon />}
-              //             variant="outlined"
-              //           />
-              //         </Box>
-              //       </Card>
-              //     </Box>
-              //   ))
-              // ) : (
-              //   <Grid item xs={12}>
-              //     <Paper sx={{ p: 3, textAlign: 'center', bgcolor: '#f8f9fa' }}>
-              //       <Typography variant="h6" color="text.secondary">
-              //         אין הזמנות קודמות
-              //       </Typography>
-              //     </Paper>
-              //   </Grid>
-              // )
-            ) : (
-              pastOrdersM && pastOrdersM.length > 0 ? (
-                pastOrdersM.map(order => (
-                  <Grid item xs={12} sm={6} md={4} key={order.orderId}>
-                    <Card
-                      elevation={2}
-                      sx={{
-                        height: '100%',
-                        borderRadius: 2,
-                        opacity: 0.9,
-                        border: '1px solid #e0e0e0'
-                      }}
-                    >
-                      <CardContent sx={{ p: 3 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                          <Typography variant="h6" component="div" fontWeight="bold" color="#b60557" sx={{ opacity: 0.7 }}>
-                            {order.activityName || "פעילות ללא שם"}
-                          </Typography>
+                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                            <Badge badgeContent={order.amountOfParticipants} color="default" sx={{ mr: 1.5 }}>
+                              <PersonIcon color="action" />
+                            </Badge>
+                            <Typography variant="body1" color="text.secondary">
+                              משתתפים
+                            </Typography>
+                          </Box>
+
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <AttachMoneyIcon color="action" sx={{ mr: 1.5 }} />
+                            <Typography variant="body1" fontWeight="bold" color="text.secondary">
+                              {order.payment} ₪
+                            </Typography>
+                          </Box>
+                        </CardContent>
+
+                        <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
                           <Chip
-                            label={`#${order.orderId}`}
+                            label={order.isPayment === 1 ? "שולם" : "לא שולם"}
                             color="default"
-                            size="small"
-                            sx={{ fontWeight: 'bold' }}
+                            icon={order.isPayment ? <CheckCircleIcon /> : <CancelIcon />}
+                            variant="outlined"
                           />
                         </Box>
-                        <Divider sx={{ mb: 2 }} />
-                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                          <EventIcon color="action" sx={{ mr: 1.5 }} />
-                          <Typography variant="body1" color="text.secondary">
-                            {order.date}
-                          </Typography>
-                        </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                          <AccessTimeIcon color="action" sx={{ mr: 1.5 }} />
-                          <Typography variant="body1" color="text.secondary">
-                            {order.activeHour}
-                          </Typography>
-                        </Box>
 
-                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                          <PersonIcon color="action" sx={{ mr: 1.5 }} />
-                          <Typography variant="body1" color="text.secondary">
-                            {order.customerName || "לא צוין"}
-                          </Typography>
-                        </Box>
-
-
-                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                          <Badge badgeContent={order.amountOfParticipants} color="default" sx={{ mr: 1.5 }}>
-                            <PersonIcon color="action" />
-                          </Badge>
-                          <Typography variant="body1" color="text.secondary">
-                            משתתפים
-                          </Typography>
-                        </Box>
-
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                          <AttachMoneyIcon color="action" sx={{ mr: 1.5 }} />
-                          <Typography variant="body1" fontWeight="bold" color="text.secondary">
-                            {order.payment} ₪
-                          </Typography>
-                        </Box>
-                      </CardContent>
-
-                      <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
-                        <Chip
-                          label={order.isPayment===1?"שולם": "לא שולם"}
-                          color="default"
-                          icon={order.isPayment===1?<CheckCircleIcon />: <CancelIcon />}
-                          variant="outlined"
-                        />
-                      </Box>
-
-                    </Card>
+                      </Card>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item xs={12}>
+                    <Paper sx={{ p: 3, textAlign: 'center', bgcolor: '#f8f9fa' }}>
+                      <Typography variant="h6" color="text.secondary">
+                        אין הזמנות קודמות
+                      </Typography>
+                    </Paper>
                   </Grid>
-                ))
-              ) : (
-                <Grid item xs={12}>
-                  <Paper sx={{ p: 3, textAlign: 'center', bgcolor: '#f8f9fa' }}>
-                    <Typography variant="h6" color="text.secondary">
-                      אין הזמנות קודמות
-                    </Typography>
-                  </Paper>
-                </Grid>
 
-              )
-            )}
+                )
+
+              ) : (
+                pastOrdersM && pastOrdersM.length > 0 ? (
+                  pastOrdersM.map(order => (
+                    <Grid item xs={12} sm={6} md={4} key={order.orderId}>
+                      <Card
+                        elevation={2}
+                        sx={{
+                          height: '100%',
+                          borderRadius: 2,
+                          opacity: 0.9,
+                          border: '1px solid #e0e0e0'
+                        }}
+                      >
+                        <CardContent sx={{ p: 3 }}>
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                            <Typography variant="h6" component="div" fontWeight="bold" color="#b60557" sx={{ opacity: 0.7 }}>
+                              {order.activityName || "פעילות ללא שם"}
+                            </Typography>
+                            <Chip
+                              label={`#${order.orderId}`}
+                              color="default"
+                              size="small"
+                              sx={{ fontWeight: 'bold' }}
+                            />
+                          </Box>
+                          <Divider sx={{ mb: 2 }} />
+                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                            <EventIcon color="action" sx={{ mr: 1.5 }} />
+                            <Typography variant="body1" color="text.secondary">
+                              {order.date}
+                            </Typography>
+                          </Box>
+                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                            <AccessTimeIcon color="action" sx={{ mr: 1.5 }} />
+                            <Typography variant="body1" color="text.secondary">
+                              {order.activeHour}
+                            </Typography>
+                          </Box>
+
+                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                            <PersonIcon color="action" sx={{ mr: 1.5 }} />
+                            <Typography variant="body1" color="text.secondary">
+                              {order.customerName || "לא צוין"}
+                            </Typography>
+                          </Box>
+
+
+                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                            <Badge badgeContent={order.amountOfParticipants} color="default" sx={{ mr: 1.5 }}>
+                              <PersonIcon color="action" />
+                            </Badge>
+                            <Typography variant="body1" color="text.secondary">
+                              משתתפים
+                            </Typography>
+                          </Box>
+
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <AttachMoneyIcon color="action" sx={{ mr: 1.5 }} />
+                            <Typography variant="body1" fontWeight="bold" color="text.secondary">
+                              {order.payment} ₪
+                            </Typography>
+                          </Box>
+                        </CardContent>
+
+                        <Box sx={{ p: 2, bgcolor: '#f5f5f5', display: 'flex', justifyContent: 'center' }}>
+                          <Chip
+                            label={order.isPayment === 1 ? "שולם" : "לא שולם"}
+                            color="default"
+                            icon={order.isPayment === 1 ? <CheckCircleIcon /> : <CancelIcon />}
+                            variant="outlined"
+                          />
+                        </Box>
+
+                      </Card>
+                    </Grid>
+                  ))
+                ) : (
+                  <Grid item xs={12}>
+                    <Paper sx={{ p: 3, textAlign: 'center', bgcolor: '#f8f9fa' }}>
+                      <Typography variant="h6" color="text.secondary">
+                        אין הזמנות קודמות
+                      </Typography>
+                    </Paper>
+                  </Grid>
+
+                )
+              )}
           </Box>
         )}
         {/* תצוגת טבלה להזמנות שעברו */}
@@ -1298,10 +1046,10 @@ export const MyOrders = () => {
                         <TableCell align="center">₪{order.payment}</TableCell>
                         <TableCell align="center">
                           <Chip
-                           label={order.isPayment===1?"שולם": "לא שולם"}
+                            label={order.isPayment === 1 ? "שולם" : "לא שולם"}
                             color="default"
                             size="small"
-                            icon={order.isPayment?<CheckCircleIcon />: <CancelIcon />}
+                            icon={order.isPayment ? <CheckCircleIcon /> : <CancelIcon />}
                           />
                         </TableCell>
                       </TableRow>
@@ -1332,10 +1080,10 @@ export const MyOrders = () => {
                         <TableCell align="center">₪{order.payment}</TableCell>
                         <TableCell align="center">
                           <Chip
-                  label={order.isPayment===1?"שולם": "לא שולם"}
+                            label={order.isPayment === 1 ? "שולם" : "לא שולם"}
                             color="default"
                             size="small"
-                            icon={order.isPayment?<CheckCircleIcon />: <CancelIcon />}
+                            icon={order.isPayment ? <CheckCircleIcon /> : <CancelIcon />}
                           />
                         </TableCell>
                       </TableRow>
@@ -1365,7 +1113,7 @@ export const MyOrders = () => {
             {snackbar.message}
           </Alert>
         </Snackbar>
-      </Container>
+      </Container>}
       <Outlet />
     </Box>
   );

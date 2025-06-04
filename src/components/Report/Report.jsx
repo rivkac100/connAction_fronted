@@ -135,6 +135,7 @@ export const Report = () => {
   //   const [aimActivities, setAimActivities] = useState({});
   //   const [activeAim, setActiveAim] = useState(null);
   const reportRef = useRef(null);
+  const refDialog=useRef();
 
   // דוגמאות להצעות פעילויות
   //   const activitySuggestions = useSelector(state => state.activity.activitiesList);
@@ -147,7 +148,7 @@ export const Report = () => {
       dispatch(reportFetchThunkById({id:report2.id}));
       setReport(report2);
     }
-    
+    // refDialog.current.showModal();
   }, []);
   // פתיחת דיאלוג החתימה
   const openSignatureDialog = () => {
@@ -276,7 +277,7 @@ export const Report = () => {
   
   <div style="margin-bottom: 30px;">
     <h2 style="color: #b60557; font-size: 18px; margin-bottom: 15px;">פרטי לקוח</h2>
-    <p style="font-size: 14px; margin: 5px 0;">שם: ${report.instituteName || 'לא צוין'}</p>
+    <p style="font-size: 14px; margin: 5px 0;">שם: ${report.customerName || 'לא צוין'}</p>
     <p style="font-size: 14px; margin: 5px 0;">טלפון: ${report.customerTel || 'לא צוין'}</p>
     <p style="font-size: 14px; margin: 5px 0;">אימייל: ${report.customerEmail || 'לא צוין'}</p>
     <p style="font-size: 14px; margin: 5px 0;">עיר : ${report.customerCity || 'לא צוין'}</p>
@@ -323,18 +324,21 @@ export const Report = () => {
    
     <div style="display: flex; justify-content: space-between; margin-top: 40px;">
       <div style="width: 45%;">
-        <p style="font-size: 14px; margin-bottom: 5px;"><strong>חתימת הלקוח/ה:</strong></p>
+        <p style="font-size: 14px; margin-bottom: 5px;"><strong>חתימת המפיק/ה:</strong></p>
+
         <div style="height: 80px; display: flex; justify-content: center; align-items: center;">
-          <img src="${signature}" style="max-height: 70px; max-width: 100%;" />
+          <img src="${param.mid?signature :""}" style="max-height: 70px; max-width: 100%;" />
         </div>
+        <div style="border-bottom: 1px solid #000; height: 40px;"></div>
         <p style="font-size: 12px; margin-top: 5px;">שם המנהל/ת: ${localStorage.getItem('userName') || 'המנהל/ת'}</p>
       </div>
       
       <div style="width: 45%;">
-        <p style="font-size: 14px; margin-bottom: 5px;"><strong>חתימת המפיק/ה:</strong></p>
+        <p style="font-size: 14px; margin-bottom: 5px;"><strong>חתימת הלקוח/ה:</strong></p>
+        <div style="height: 80px; display: flex; justify-content: center; align-items: center;">
+        <img src="${param.id?signature :""}" style="max-height: 70px; max-width: 100%;" />
+        </div>
         <div style="border-bottom: 1px solid #000; height: 40px;"></div>
-        <img src="${signature}" style="max-height: 70px; max-width: 100%;" />
-
         <p style="font-size: 12px; margin-top: 5px;">שם הלקוח/ת: ${''} ${''}</p>
       </div>
     </div>
@@ -392,120 +396,9 @@ export const Report = () => {
   };
 
 
-  // const confirm = async () => {
-  //   setSaving(true);
-
-  //   try {
-  //     // שמירת כל הפעילויות עבור כל מטרה
-
-  //     const activityPromises = Object.entries(aimActivities).map(([aimId, activity]) => {
-  //       if (activity.activityName) {
-  //         return dispatch(addActivityFetch({
-  //           activityId: null,
-  //           activityName: activity.activityName,
-  //           activityDiscription: activity.activityDescription,
-  //           activityAim: aimId
-  //         }));
-  //       }
-  //       return Promise.resolve();
-  //     });
-
-  //     await Promise.all(activityPromises);
-  //     await dispatch(updateTreatmentThunk({ treatmentId: theTreatment?.treatmentId, report: report }));
-
-  //     setSaving(false);
-  //     navigate('../');
-  //   } catch (error) {
-  //     console.error("שגיאה בשמירת הנתונים:", error);
-  //     setSaving(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const loadData = async () => {
-  //     setLoading(true);
-  //     await dispatch(getOneTreatmentThunk(param.treatmentId));
-  //     setLoading(false);
-  //   };
-  //   loadData();
-  // }, []);
-
-  // useEffect(() => {
-  //   dispatch(getActivityThunk());
-  // }, [theTreatment]);
-
-  // useEffect(() => {
-  //   dispatch(getAimsOfPatientsThunk(theTreatment.pationtId));
-  // }, [thePatient]);
-  // useEffect(() => {
-  //   if (theTreatment?.pationtId) {
-  //     dispatch(getPatientByIdThunk(theTreatment.pationtId));
-
-  //     // עדכון ה-state המקומי עם ערכים מהטיפול הנוכחי
-  //     setTreatment(prev => ({
-  //       ...prev,
-  //       treatmentId: theTreatment.treatmentId,
-  //       treatmentDate: theTreatment.treatmentDate,
-  //       treatmentTime: theTreatment.treatmentTime,
-  //       pationtId: theTreatment.pationtId,
-  //       escort: theTreatment.escort || "",
-  //       cooperation: theTreatment.cooperation || 3,
-  //       nextMeetingPlanning: theTreatment.nextMeetingPlanning || "",
-  //       bePaid: theTreatment.bePaid || false,
-  //       userId: theTreatment.userId,
-  //     }));
-  //   }
-  // }, [theTreatment?.pationtId]);
-
-  // אתחול aimActivities כאשר המטרות נטענות
-  // useEffect(() => {
-  //   if (aimsForExam && aimsForExam.length > 0) {
-  //     const initialAimActivities = {};
-  //     aimsForExam.forEach(aim => {
-  //       if (aim) {
-  //         initialAimActivities[aim.aimId] = {
-  //           activityName: '',
-  //           activityDescription: ''
-  //         };
-  //       }
-  //     });
-  //     setAimActivities(initialAimActivities);
-
-  //     // הגדרת המטרה הראשונה כפעילה
-  //     if (aimsForExam[0]) {
-  //       setActiveAim(aimsForExam[0].aimId);
-  //     }
-  //   }
-  // }, [aimsForExam]);
-
-  // const handleActivityChange = (aimId, field, value) => {
-  //   setAimActivities(prev => ({
-  //     ...prev,
-  //     [aimId]: {
-  //       ...prev[aimId],
-  //       [field]: value
-  //     }
-  //   }));
-  // };
-  // if (loading) {
-  //   return (
-  //     <Box sx={{
-  //       display: 'flex',
-  //       justifyContent: 'center',
-  //       alignItems: 'center',
-  //       height: '100vh',
-  //       flexDirection: 'column',
-  //       gap: 2
-  //     }}>
-  //       <CircularProgress sx={{ color: '#ac2454' }} />
-  //       <Typography sx={{ color: '#ac2454', fontWeight: 'bold' }}>
-  //         טוען נתוני טיפול...
-  //       </Typography>
-  //     </Box>
-  //   );
-  // }
 
   return (
+    // <dialog ref={refDialog} className="order-dialog">
     <Box
       className="report-report-container"
       sx={{
@@ -524,7 +417,7 @@ export const Report = () => {
           borderRadius: 4,
           border: '1px solid #ac2454',
           position: 'relative',
-          overflow: 'hidden',
+          // overflow: 'hidden',
           background: 'linear-gradient(to bottom, #fff, #fdf5f8)'
         }}
       >
@@ -583,7 +476,7 @@ export const Report = () => {
                       מספר עסק:
                     </Typography>
                     <Typography component="span">
-                      {report?.numOfComp}
+                      {report?.compNumber}
                     </Typography>
                   </Box>
 
@@ -645,7 +538,7 @@ export const Report = () => {
                       שם מוסד:
                     </Typography>
                     <Typography component="span">
-                      {report?.instituteName}
+                      {report?.customerName}
                     </Typography>
                   </Box>
 
@@ -857,15 +750,16 @@ export const Report = () => {
                       transition: 'background-color 0.3s ease'
                     }}
                   >
-                    <CheckCircle sx={{ color: report.isOk ? '#4caf50' : '#ff9800', mr: 1 }} />
-                    <Typography sx={{ color: report.isOk ? '#4caf50' : '#ff9800', mr: 1, fontWeight: 'bold' }}>
-                      האם שולם
+                    <CheckCircle sx={{ color: report.isPayment ? '#4caf50' : '#d60141', mr: 1 }} />
+                    <Typography sx={{ color: report.isPayment ? '#4caf50' : '#d60141', mr: 1, fontWeight: 'bold' }}>
+                    {report?.isPayment==1?"שולם":"לא שולם"}
+                     
                     </Typography>
 
                   </Box>
                 </Box>
               </CardContent>
-              <CardContent>
+              {param.mid && <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                   <Edit sx={{ color: '#ac2454', mr: 1 }} />
                   <Typography variant="h6" sx={{ color: '#ac2454', fontWeight: 'bold' }}>
@@ -930,7 +824,7 @@ export const Report = () => {
                       </Typography>
                       <StyledButton
                         variant="contained"
-                        onClick={openSignatureDialog}
+                        onClick={()=>{openSignatureDialog()}}
                         startIcon={<Edit />}
                         sx={{
                           backgroundColor: '#ac2454',
@@ -944,11 +838,12 @@ export const Report = () => {
                     </Box>
                   )}
                 </Box>
-              </CardContent>
+              </CardContent>}
             </Card>
           </Grid>
 
           {/* חלק החתימה הדיגיטלית */}
+          {param.id && 
           <Grid item xs={12} md={6}>
             <Card
               className="signature-card card-hover"
@@ -963,7 +858,7 @@ export const Report = () => {
                 }
               }}
             >
-              <CardContent>
+             <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                   <Edit sx={{ color: '#ac2454', mr: 1 }} />
                   <Typography variant="h6" sx={{ color: '#ac2454', fontWeight: 'bold' }}>
@@ -974,7 +869,7 @@ export const Report = () => {
                 <Divider sx={{ mb: 2, backgroundColor: '#ac245433' }} />
 
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                  {signature ? (
+                  {signature  ? (
                     <Box sx={{
                       width: '100%',
                       display: 'flex',
@@ -1040,11 +935,11 @@ export const Report = () => {
                         הוספת חתימה
                       </StyledButton>
                     </Box>
-                  )}
+                 )}
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
+          </Grid>}
         </Grid>
 
 
@@ -1077,7 +972,7 @@ export const Report = () => {
 
           <StyledButton
             variant="outlined"
-            onClick={() => navigate(-1)}
+            onClick={() => {navigate(-1)}}
             disabled={saving || exportingPdf}
             sx={{
               color: '#ac2454',
@@ -1227,7 +1122,7 @@ export const Report = () => {
             justifyContent: 'center',
             alignItems: 'center',
             position: 'relative',
-            overflow: 'hidden'
+            // overflow: 'hidden'
           }}>
             <canvas
               ref={canvasRef}
@@ -1296,6 +1191,7 @@ export const Report = () => {
         </DialogActions>
       </Dialog>
     </Box>
+    // </dialog>
   );
 };
 

@@ -389,9 +389,9 @@ export const Customers = () => {
     handleMenuClose();
   };
 
-  const handleDeleteConfirm = async () => {
+  const handleDeleteConfirm =  () => {
     try {
-      await dispatch(deleteCustomerThunk(selectedCustomer.instituteId));
+       dispatch(deleteCustomerThunk({id:selectedCustomer.instituteId}));
       setOpenDeleteDialog(false);
       setSnackbar({
         open: true,
@@ -512,55 +512,7 @@ export const Customers = () => {
     handleExportMenuClose();
   };
 
- //  const exportToPDF = () => {
- //    const doc = new jsPDF('landscape');
- 
- //    // Add title
- //    doc.setFont('Helvetica', 'bold');
- //    doc.setFontSize(18);
- //    doc.text('רשימת לקוחות', doc.internal.pageSize.width / 2, 20, { align: 'center' });
- 
- //    // Add date
- //    doc.setFont('Helvetica', 'normal');
- //    doc.setFontSize(12);
- //    doc.text(`תאריך הפקה: ${new Date().toLocaleDateString('he-IL')}`, doc.internal.pageSize.width - 20, 30, { align: 'right' });
- 
- //    // Create table data
- //    const tableColumn = ['מזהה', 'שם מוסד', 'איש קשר', 'טלפון', 'עיר', 'סכום', 'תאריך תשלום'];
- //    const tableRows = filteredCustomers.map(customer => [
- //      customer.instituteId,
- //      customer.instituteName,
- //      customer.contactName || '',
- //      customer.mobile || '',
- //      customer.city || '',
- //      `₪${customer.amount?.toLocaleString() || 0}`,
- //      `₪${customer.due?.toLocaleString() || 0}`
- //      //customer.due ? //new Date(customer.due).toLocaleDateString('he-IL') : ''
- //    ]);
- // console.log(tableRows);
- //   //  Generate table
- //   //  doc.autoTable({
- //   //    head: [tableColumn],
- //   //    body: tableRows,
- //   //    startY: 40,
- //   //    styles: { font: 'Helvetica', halign: 'right' },
- //   //    headStyles: { fillColor: [123, 31, 162], textColor: 255 },
- //   //    alternateRowStyles: { fillColor: [245, 247, 250] },
- //   //    margin: { top: 40 }
- //   //  });
- 
- //    // Save PDF
- //    doc.save('רשימת_לקוחות.pdf');
- 
- //    // Show success message
- //    setSnackbar({
- //      open: true,
- //      message: 'הקובץ יוצא בהצלחה',
- //      severity: 'success'
- //    });
- 
- //    handleExportMenuClose();
- //  };
+
  
  const exportToPDF = async () => {
   try {
@@ -1144,7 +1096,7 @@ export const Customers = () => {
                {!isMobile && (
                  <TableCell className="table-header-cell">קהילה</TableCell>
                )}
-               <TableCell className="table-header-cell" onClick={() => handleSort('amount')}>
+               {/* <TableCell className="table-header-cell" onClick={() => handleSort('amount')}>
                  סכום
                  {sortConfig.key === 'amount' && (
                    <SortIcon className={`sort-icon ${sortConfig.direction === 'asc' ? 'asc' : 'desc'}`} />
@@ -1155,7 +1107,7 @@ export const Customers = () => {
                  {sortConfig.key === 'due' && (
                    <SortIcon className={`sort-icon ${sortConfig.direction === 'asc' ? 'asc' : 'desc'}`} />
                  )}
-               </TableCell>
+               </TableCell> */}
                <TableCell className="table-header-cell">פעולות</TableCell>
              </TableRow>
            </TableHead>
@@ -1206,7 +1158,7 @@ export const Customers = () => {
                      {!isMobile && (
                        <TableCell className="table-cell">{customer.community || "-"}</TableCell>
                      )}
-                     <TableCell className="table-cell amount-cell">
+                     {/* <TableCell className="table-cell amount-cell">
                        ₪{(customer.amount || 0).toLocaleString()}
                      </TableCell>
                      <TableCell className="table-cell">
@@ -1219,7 +1171,7 @@ export const Customers = () => {
                        ) : (
                          "-"
                        )}
-                     </TableCell>
+                     </TableCell> */}
                      <TableCell className="table-cell">
                        {isMobile ? (
                          <IconButton
@@ -1230,7 +1182,7 @@ export const Customers = () => {
                          </IconButton>
                        ) : (
                          <Box className="action-buttons">
-                           <Tooltip title="עריכה">
+                           {/* <Tooltip title="עריכה">
                              <IconButton
                                size="small"
                                onClick={() =>{dispatch(editCustomer(customer));navigate(`editCustomer/${customer.instituteId}`)}}
@@ -1248,7 +1200,7 @@ export const Customers = () => {
                              >
                                <DeleteIcon />
                              </IconButton>
-                           </Tooltip>
+                           </Tooltip> */}
                            <Tooltip title="צפייה בפרטים">
                              <IconButton
                                size="small"

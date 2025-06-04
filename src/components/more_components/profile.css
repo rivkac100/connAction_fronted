@@ -26,8 +26,9 @@
   .edit-button, .save-button, .cancel-button {
     color: #757575;
   }
-  /* div{
+  /* .divi{
     color:;
+
   } */
   .edit-button:hover {
     color:  #b60557;

@@ -99,7 +99,15 @@
     border-color: #b60557;
     color: #b60557;
   }
-  
+  .dia{
+    border: none;
+    background-color: white;
+    color: #424242 !important;
+    border: 3px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px;
+    align-items: center;
+  }
   /* Calendar Grid */
   .calendar-grid {
     display: grid;

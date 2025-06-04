@@ -322,7 +322,7 @@
 //     );
 // };
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { eventFetchThunk } from "../../store/slices/events/eventFetchThunk";
@@ -397,6 +397,8 @@ export const Month = () => {
     const [eventView, setEventView] = useState(false);
     const [orderView, setOrderView] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
+    const orderRef=useRef();
+    const eventRef=useRef();
     // Redux selectors
     const manager = useSelector(state => state.manager.myManager);
     const myOrders = useSelector(state => state.manager.MyOrders);
@@ -640,7 +642,8 @@ export const Month = () => {
 
         const weekDays = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
         const calendarCells = [];
-
+        const eventToDayMap = [];
+        const orderToDayMap = [];
         // Add weekday headers
         weekDays.forEach(day => {
             calendarCells.push(
@@ -671,7 +674,28 @@ export const Month = () => {
             const eventsToday = events.filter(ev => ev.date === formattedDate);
             const ordersToday = myOrders.filter(o => o.date === formattedDate);
             // const otherOrdersToday = orders?.filter(o => o.date === formattedDate && o.customerId !== parseInt(parms.id));
-
+            eventsToday.forEach(ev => {
+               eventToDayMap.push(       
+                <div 
+                // key={`event-${event.id}`}
+                className={ 'today' }
+              
+            >
+                <div className="time">{ev.title}</div>
+                <div className="title">{ev.description}</div>
+            </div>
+               )
+            });
+           ordersToday.forEach(o=>{
+            orderToDayMap.push(
+                    <div
+                    // key={`order-${o.id}`}
+                    className={`week-event my-order`}
+                >
+                    <div className="time">{o.activityName}</div>
+                    <div className="title">{o.customerName}</div>
+                </div>
+            ) })
             calendarCells.push(
                 <div
                     onClick={() => {
@@ -691,25 +715,46 @@ export const Month = () => {
                                     color: '#b60557',
                                     marginLeft: '2px'
                                 }} 
-                                onClick={()=>{setOrderView(true);setOpenDialog(true)}}/>
+                                onClick={()=>{setOrderView(true);orderRef.current.showModal();}}/>
                                
                             )}
                             {eventsToday.length > 0 && (
                                 <PlaylistAddCheckCircleIcon style={{
                                     fontSize: '0.9rem',
                                     color: '#757575',
-                                    marginLeft: '2px'
-                                }} 
-                                onClick={()=>{setEventView(true);setOpenDialog(true)}}/>
+                                    marginLeft: '2px',
+                                    "fonnt-size": "1.1rem"
+                                }}
+                               
+                                onClick={()=>{setEventView(true);eventRef.current.showModal();}}/>
                             )}
-                           {eventView && < Dialog
+                         {eventView && <dialog ref={eventRef}
+                            >
+                               {eventsToday.forEach((o)=>{
+
+                                       <div
+                                       // key={`event-${event.id}`}
+                                       className={`week-event my-order`}
+                                    >
+                                        <div className="time">{o.title}</div>
+                                        <div className="title">{o.description}</div>
+                                    </div>
+                               })
+                               }
+                                
+                                <button className="nav-button" onClick={() => {setEventView(false);eventRef.current.close();}}
+                                     >back</button>
+
+                         
+                         </dialog>}
+                           {/* {eventView && < dialog
                                 open={openDialog}
                                 onClose={() => setOpenDialog(false)}
                             >
                                 <DialogTitle>אירועים ליום זה 
 
                                 </DialogTitle>
-                                { eventsToday.map((o)=>{
+                               { eventsToday.map((o)=>{
                                        
                                        <div 
                                        // key={`event-${event.id}`}
@@ -719,22 +764,13 @@ export const Month = () => {
                                        <div className="time">{o.title}</div>
                                        <div className="title">{o.description}</div>
                                    </div>
-                                    })}
+                                    })} 
                                 <DialogContent>
                                 <DialogContentText>
-                                      { eventsToday.map((o)=>{
-                                       
-                                        <div 
-                                        // key={`event-${event.id}`}
-                                        className={ 'today' }
-                                      
-                                    >
-                                        <div className="time">{o.title}</div>
-                                        <div className="title">{o.description}</div>
-                                    </div>
-                                     })}
-                                    </DialogContentText>
-                                </DialogContent>
+                        
+                                    {/* </DialogContentText>
+                                </DialogContent> 
+                                {eventToDayMap}
                                 <DialogActions>
                                  
                                     <Button onClick={() => setOpenDialog(false)} color="primary">
@@ -742,46 +778,15 @@ export const Month = () => {
                                     </Button>
                                   
                                 </DialogActions>
-                            </Dialog>}
-                            {orderView &&<Dialog
-                                open={openDialog}
-                                onClose={() => setOpenDialog(false)}
-                            >
-                                <DialogTitle>הזמנות ליום זה  </DialogTitle>
-                                { ordersToday.map((o)=>{
-                                        <div 
-                                        // key={`event-${event.id}`}
-                                        className={ 'today' }
-                                      
-                                    >
-                                        <div className="time">{o.activityName}</div>
-                                        <div className="title">{o.customerName}</div>
-                                    </div>
-                                     })}
-                                <DialogContent>
-                                    <DialogContentText>
-                                      { ordersToday.map((o)=>{
-                                        <div 
-                                        // key={`event-${event.id}`}
-                                        className={ 'today' }
-                                      
-                                    >
-                                        <div className="time">{o.activityName}</div>
-                                        <div className="title">{o.customerName}</div>
-                                    </div>
-                                     })}
-                                    </DialogContentText>
-                                </DialogContent>
-                                <DialogActions>
-                               
-                                    <Button onClick={() => setOpenDialog(false)} color="primary">
-                                       חזור
-                                    </Button>
-                                    {/* <Button onClick={handleDeleteConfirm} color="error" autoFocus>
-                                        מחיקה
-                                    </Button> */}
-                                </DialogActions>
-                            </Dialog>}
+                            </dialog>} */}
+                           
+                         <dialog className="dia" ref={orderRef}>
+
+                                    
+                                     {orderToDayMap}
+                                     <button className="nav-button" onClick={() => {setOrderView(false);orderRef.current.close();}}
+                                     >back</button>
+                                </dialog>
                         </div>
                     </div>
 

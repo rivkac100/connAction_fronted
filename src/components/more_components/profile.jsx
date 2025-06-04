@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Container, 
-  Paper, 
-  Typography, 
-  Box, 
-  TextField, 
-  Button, 
-  Grid, 
-  Avatar, 
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  Container,
+  Paper,
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Grid,
+  Avatar,
   Divider,
   IconButton,
   Snackbar,
@@ -22,28 +22,31 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { Navigation } from './navigation';
 import './profile.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import { m } from 'framer-motion';
+import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
 // import { useDispatch } from 'react-redux';
 
 export const Profile = () => {
   const navigate = useNavigate();
-//   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const params = useParams();
-  const id = params.id;
-  
+  const id = params.mid;
+  const refDialog = useRef();
+  const manager = useSelector((state) => state.manager.myManager);
   const [editing, setEditing] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
     severity: 'success'
   });
-  
+
   // This would normally come from your Redux store
   const [profile, setProfile] = useState({
-    name: 'שרה כהן',
-    email: 'sarah@example.com',
-    phone: '050-1234567',
-    address: 'רחוב הרצל 123, תל אביב',
-    bio: 'מפיקת אירועים ומרצה מקצועית עם ניסיון של 10 שנים בתחום. מתמחה בהפקת כנסים, סדנאות והרצאות בנושאי העצמה, מנהיגות וצמיחה אישית.',
+    name: manager.managerName,
+    email: manager.managerEmail,
+    phone: manager.managerPhone,
+    address: manager.address,
+    bio: manager.description,
     // website: 'www.sarahcohen.co.il',
     // socialMedia: {
     //   facebook: 'facebook.com/sarahcohen',
@@ -51,12 +54,17 @@ export const Profile = () => {
     //   linkedin: 'linkedin.com/in/sarahcohen'
     // }
   });
-  
+  useEffect(() => {
+    if (!manager.id) {
+      dispatch(managersFetchThunkById({ id: params.mid }));
+    }
+    refDialog.current.showModal();
+  }, []);
   const [formData, setFormData] = useState({ ...profile });
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
       setFormData({
@@ -73,27 +81,27 @@ export const Profile = () => {
       });
     }
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Here you would dispatch an action to update the profile in your backend
     // For now, we'll just update the local state
     setProfile(formData);
     setEditing(false);
-    
+
     setSnackbar({
       open: true,
       message: 'הפרופיל עודכן בהצלחה',
       severity: 'success'
     });
   };
-  
+
   const handleCancel = () => {
     setFormData({ ...profile });
     setEditing(false);
   };
-  
+
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -102,47 +110,73 @@ export const Profile = () => {
   };
 
   return (
-    <>
-      <Navigation managerId={id} managerName={profile.name} />
+    <dialog ref={refDialog}>
+      {/* <Navigation managerId={id} managerName={profile.name} /> */}
       <Container maxWidth="md" className="profile-container">
         <Paper className="profile-paper">
           <Box className="profile-header">
-            <IconButton 
-              className="back-button" 
+            <IconButton
+              className="back-button"
               onClick={() => navigate(`/manager/${id}`)}
             >
+
               <ArrowBackIcon />
             </IconButton>
+
             <Typography variant="h5" className="profile-title">
               פרופיל אישי
             </Typography>
-            {!editing ? (
-              <IconButton 
-                className="edit-button" 
-                onClick={() => setEditing(true)}
+            {!editing ? (<>
+              {!params.id &&
+                <IconButton
+                  className="edit-button"
+                  onClick={() => setEditing(true)}
+                >
+                  <EditIcon />
+                </IconButton>
+              }
+              <IconButton
+                className="edit-button"
+                onClick={() => { navigate(-1); refDialog.current.close(); }}
+
               >
-                <EditIcon />
+                <ArrowBackIcon />
               </IconButton>
+              <IconButton
+                className="back-button"
+                onClick={() => { navigate(-1); refDialog.current.close(); }}
+              >
+
+                <ArrowBackIcon />
+
+              </IconButton></>
             ) : (
               <Box className="edit-actions">
-                <IconButton 
-                  className="save-button" 
+                <IconButton
+                  className="save-button"
                   onClick={handleSubmit}
                 >
                   <SaveIcon />
                 </IconButton>
-                <IconButton 
-                  className="cancel-button" 
+                <IconButton
+                  className="cancel-button"
                   onClick={handleCancel}
                 >
                   <CancelIcon />
                 </IconButton>
+                <IconButton
+                  className="edit-button"
+                  onClick={() => { navigate(-1); refDialog.current.close(); }}
+                >
+                  <ArrowBackIcon />
+
+                </IconButton>
               </Box>
             )}
           </Box>
-          
+
           <Divider />
-          
+
           <Box className="profile-content">
             <Grid container spacing={4}>
               <Grid item xs={12} md={4} className="profile-avatar-section">
@@ -155,7 +189,7 @@ export const Profile = () => {
                   </Typography>
                 )}
               </Grid>
-              
+
               <Grid item xs={12} md={8}>
                 <form className="profile-form">
                   <Grid container spacing={2}>
@@ -246,13 +280,13 @@ export const Profile = () => {
                         rows={4}
                       />
                     </Grid>
-                    
+
                     {/* <Grid item xs={12}>
                       <Typography variant="h6" className="social-media-title">
                         רשתות חברתיות
                       </Typography>
                     </Grid> */}
-                    
+
                     {/* <Grid item xs={12} sm={4}>
                       <TextField
                         fullWidth
@@ -302,21 +336,21 @@ export const Profile = () => {
           </Box>
         </Paper>
       </Container>
-      
-      <Snackbar 
-        open={snackbar.open} 
-        autoHideDuration={6000} 
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
-        <Alert 
-          onClose={handleCloseSnackbar} 
-          severity={snackbar.severity} 
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
           sx={{ width: '100%' }}
         >
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </>
+    </dialog>
   );
 };

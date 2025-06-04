@@ -100,7 +100,7 @@
 //     <div><Outlet></Outlet></div>
 //   </div>
 // }
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { 
   Button, Container, Typography, Box, Card, CardContent, CardMedia, 
   Chip, Avatar, Paper, Divider, IconButton, Tooltip, useMediaQuery, useTheme
@@ -263,6 +263,8 @@ const NavButton = ({ icon, label, onClick, variant = "primary" }) => {
 
 // קומפוננטת כרטיס מנהל מודרנית
 const ManagerCard = ({ manager, onClick }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <Card 
       elevation={0}
@@ -404,7 +406,35 @@ const ManagerCard = ({ manager, onClick }) => {
             {manager.managerEmail}
           </Typography>
         </Box>
-        
+        <Button
+          variant="contained"
+          endIcon={<ArrowForwardIcon />}
+          onClick={()=>{dispatch(editManager(manager));navigate(`profile/${manager.id}`)}}
+          sx={{ 
+            mt: 'auto',
+            bgcolor: '#af2263',
+            '&:hover': {
+              bgcolor: '#8e0443'
+            },
+            borderRadius: 8,
+            py: 1,
+            textTransform: 'none',
+            fontWeight: 'bold'
+          }}
+          style={{
+            color: 'white',
+            fontSize: '0.8rem',
+            padding: '0.5rem 1rem',
+            marginBottom: '1rem',
+            // borderRadius: '10px',
+            backgroundColor: '#af2263',
+            '&:hover': {
+              backgroundColor: '#8e0443',
+            },
+          }}
+        >
+          לפרופיל
+        </Button>
         <Button
           variant="contained"
           endIcon={<ArrowForwardIcon />}
@@ -424,7 +454,9 @@ const ManagerCard = ({ manager, onClick }) => {
           צפה בפעילויות
         </Button>
       </CardContent>
+      <Outlet/>
     </Card>
+    
   );
 };
 
@@ -434,7 +466,7 @@ export const Home = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
-  
+  const location=useLocation();
   const params = useParams();
   const managers = useSelector(state => state.manager.managers);
   const isC = useSelector(state => state.customer.isC);
@@ -442,6 +474,7 @@ export const Home = () => {
   const [view, setView] = useState(true);
   
   useEffect(() => {
+    console.log(location.pathname);
     if (managers?.length === 0) {
       dispatch(managersFetchThunk());
     }
@@ -527,7 +560,7 @@ export const Home = () => {
           <Box 
             className="navigation-section"
             sx={{
-              maxWidth: '1200px',
+              maxWidth: '1500px',
               mx: 'auto',
               mb: 6
             }}
@@ -538,7 +571,7 @@ export const Home = () => {
                 gridTemplateColumns: { 
                   xs: '1fr', 
                   sm: 'repeat(2, 1fr)', 
-                  md: isM !== -1 ? 'repeat(5, 1fr)' : 'repeat(4, 1fr)' 
+                  md: isM !== -1 ? 'repeat(6, 1fr)' : 'repeat(5, 1fr)' 
                 },
                 gap: 2
               }}
@@ -564,7 +597,7 @@ export const Home = () => {
                   icon={<InfoIcon />} 
                   label="אודותינו" 
                   onClick={() => navigate(`/about`)}
-                  variant="secondary"
+                  // variant="secondary"
                 />
               </Box>
               
@@ -586,6 +619,13 @@ export const Home = () => {
                   onClick={() => { setView(false); navigate(`activities`); }}
                 />
               </Box>
+              <Box>
+                <NavButton  
+                  icon={<ExploreIcon />} 
+                  label="מפיקות" 
+                  onClick={() => { setView(true); navigate(`/home/${params.id}`); }}
+                />
+              </Box>
             </Box>
           </Box>
         
@@ -595,7 +635,7 @@ export const Home = () => {
       <Container maxWidth="xl">
  
         <Box className="content-area">
-          {view && (
+          {(location.pathname.split('/').pop() === params.id || location.pathname.split('/')[3]==='profile') && (
             <Box className="managers-section">
               <Box sx={{ textAlign: 'center', mb: 6 }}>
                 <Typography 

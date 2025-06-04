@@ -32,7 +32,7 @@ export const Dashboard = () => {
   const id = params.mid;
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState(true);
-  
+  const location= useLocation();
   const [managerData, setManagerData] = useState({
     name: 'משתמש',
     upcomingEvents: 0,
@@ -102,7 +102,7 @@ export const Dashboard = () => {
   return (
     <>
       <Navigation managerId={id} managerName={managerData.name} />
-      {view &&
+      {location.pathname.split("/").pop()===params.mid &&
         <Container maxWidth="xl" className="dashboard-container">
           <Box className="dashboard-header">
             <Typography variant="h4" className="welcome-message">
@@ -259,7 +259,7 @@ export const Dashboard = () => {
                     variant="contained"
                     fullWidth
                     className="quick-action-button"
-                    onClick={() => navigate(`/profile/${id}`)}
+                    onClick={() =>{dispatch(editManager(manager)) ; navigate(`/profile/${params.mid}`)}}
                   >
                     עדכון פרטי פרופיל
                   </Button>
