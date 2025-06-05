@@ -97,6 +97,7 @@ export const reportSlice = createSlice({
             // sessionStorage.setItem("report", JSON.stringify(action.payload));
             console.log(action.payload)
             state.myReport = action.payload;
+            console.log(state.myReport);
         });
 
         // הוספת מקרה שהט'נק נכשל 

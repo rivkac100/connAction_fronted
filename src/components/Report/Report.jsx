@@ -140,8 +140,10 @@ export const Report = () => {
   // דוגמאות להצעות פעילויות
   //   const activitySuggestions = useSelector(state => state.activity.activitiesList);
   useEffect(() => {
+    debugger
     if (param.oid) {
-      dispatch(reportByOIdThunk(param.oid));
+      if(!report1.id)
+      dispatch(reportByOIdThunk({id:parseInt(param.oid)}));
       setReport(report1);
     }
     else {

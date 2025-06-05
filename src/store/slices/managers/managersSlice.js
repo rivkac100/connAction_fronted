@@ -81,17 +81,21 @@ export const managersSlice = createSlice({
         });
         //הוספת מקרה שהט'נק נכשל
         builder.addCase(ordersByMangerIdThunk.rejected, (state, action) => {
+            state.MyOrders=action.payload
             state.failed = true;
         });
         builder.addCase(ordersByMangerIdThunk.pending, (state, action) => {
         });
         //הוספת מקרה שהט'נק הסתיים בהצלחה
         builder.addCase(ordersByMangerIdThunk.fulfilled, (state, action) => {
+            console.log(action.payload);
             state.MyOrders=action.payload
+            console.log(state.MyOrders);
             // state.token = action.payload;
             state.sucsses = true;
         });
         builder.addCase(customersByMangerIdThunk.rejected, (state, action) => {
+      
             state.failed = true;
         });
         builder.addCase(customersByMangerIdThunk.pending, (state, action) => {

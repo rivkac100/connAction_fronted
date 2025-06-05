@@ -60,16 +60,24 @@ export const MyOrders = () => {
 
   useEffect(() => {
     if (params.id && (!myOrdersC || myOrdersC.length === 0)) {
-      dispatch(customersFetchThunkById({ id: params.id }));
+      dispatch(customersFetchThunkById({ id:parseInt(params.id) }));
     }
-    if (params.mid && (!myOrdersM || myOrdersM.length === 0)) {
-      dispatch(ordersByMangerIdThunk({ id: params.mid }));
+    else if (params.mid && (!myOrdersM || myOrdersM.length === 0)){
+     dispatch(ordersByMangerIdThunk({ id:parseInt(params.mid)}));
+      console.log(myOrdersM);
     }
 
     if (today === new Date().toLocaleDateString()) {
       setToday(splitToDate(today));
     }
+    console.log(myOrdersM);
   }, []);
+  // useEffect(() => {
+  //   if (params.mid && (!myOrdersM || myOrdersM.length === 0)) {
+  //     dispatch(ordersByMangerIdThunk({ id: parseInt(params.mid)}));
+  //      console.log(myOrdersM);
+  //    }
+  // }, [myOrdersM]);
 
   const splitToDate = (d) => {
     const s = d.split("/");
@@ -233,7 +241,7 @@ export const MyOrders = () => {
       <div className="gradient-bg"></div>
 
       {/* Header */}
-      {location.pathname.split("/").pop()==='myOrders' && <Container maxWidth="xl">
+      {(location.pathname.split("/").pop()==='myOrders'|| location.pathname.split("/").pop()==="orders") && <Container maxWidth="xl">
         <Box className="orders-header">
           <Typography variant="h2" className="page-title">
             היסטוריית הזמנות
@@ -523,7 +531,7 @@ export const MyOrders = () => {
                           size="small"
                           startIcon={<EditNoteOutlinedIcon />}
 
-                          onClick={() => { dispatch(reportByOIdThunk({ id: order.orderId })); navigate(`report/${order.orderId}`) }}
+                          onClick={() => {console.log(order.orderId); dispatch(reportByOIdThunk({ id: order.orderId })); navigate(`report/${order.orderId}`) }}
                           sx={{
                             borderRadius: 2,
                             bgcolor: '#d57fa7f6',

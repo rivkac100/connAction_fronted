@@ -24,6 +24,7 @@ import { m } from 'framer-motion';
 import { findManagerThunk } from '../../store/slices/managers/findManagerThunk';
 import { managersFetchThunkById } from '../../store/slices/managers/managerFetchThunkById';
 import { editManager } from '../../store/slices/managers/managersSlice';
+import { ordersByMangerIdThunk } from '../../store/slices/managers/ordersByMangerIdThunk';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -251,7 +252,7 @@ export const Dashboard = () => {
                     variant="contained"
                     fullWidth
                     className="quick-action-button"
-                    onClick={() => { setView(false); navigate(`orders`) }}
+                    onClick={() => { setView(false);dispatch(ordersByMangerIdThunk({id:parseInt(params.mid)})); navigate(`orders`) }}
                   >
                     הסטוריית הזמנות
                   </Button>

@@ -379,6 +379,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import './calendar.css';
 import { managersFetchThunkById } from "../../store/slices/managers/managerFetchThunkById";
 import { ordersByMangerIdThunk } from "../../store/slices/managers/ordersByMangerIdThunk";
+import { m } from "framer-motion";
 
 export const Month = () => {
     const parms = useParams();
@@ -411,8 +412,9 @@ export const Month = () => {
 
     useEffect(() => {
         if (myOrders?.length == 0) dispatch(ordersByMangerIdThunk({ id: parseInt(parms.mid) }));
-    }, [myOrders.length == 0, dispatch, parms.mid]);
-
+        console.log(myOrders);
+    }, [myOrders, dispatch]);
+   
     // useEffect(() => {
     //     // if(orders?.length == 0) dispatch(ordersFetchThunk());
     // }, [orders, dispatch]);
@@ -672,7 +674,7 @@ export const Month = () => {
             // Check for events and orders on this day
             const formattedDate = splitToDate(date.toLocaleDateString());
             const eventsToday = events.filter(ev => ev.date === formattedDate);
-            const ordersToday = myOrders.filter(o => o.date === formattedDate);
+            const ordersToday = myOrders?.filter(o => o.date === formattedDate);
             // const otherOrdersToday = orders?.filter(o => o.date === formattedDate && o.customerId !== parseInt(parms.id));
             eventsToday.forEach(ev => {
                eventToDayMap.push(       
@@ -686,8 +688,8 @@ export const Month = () => {
             </div>
                )
             });
-           ordersToday.forEach(o=>{
-            orderToDayMap.push(
+           ordersToday?.forEach(o=>{
+            orderToDayMap?.push(
                     <div
                     // key={`order-${o.id}`}
                     className={`week-event my-order`}
@@ -709,7 +711,7 @@ export const Month = () => {
                     <div className="day-number">
                         {day}
                         <div>
-                            {ordersToday.length > 0 && (
+                            {ordersToday?.length > 0 && (
                                 <StarsIcon style={{
                                     fontSize: '0.9rem',
                                     color: '#b60557',
@@ -718,7 +720,7 @@ export const Month = () => {
                                 onClick={()=>{setOrderView(true);orderRef.current.showModal();}}/>
                                
                             )}
-                            {eventsToday.length > 0 && (
+                            {eventsToday?.length > 0 && (
                                 <PlaylistAddCheckCircleIcon style={{
                                     fontSize: '0.9rem',
                                     color: '#757575',
@@ -791,7 +793,7 @@ export const Month = () => {
                     </div>
 
                     <div className="day-content">
-                        {ordersToday.length > 0 && (
+                        {ordersToday?.length > 0 && (
                             <div className="event-indicator my-order"></div>
                         )}
                         {eventsToday.length > 0 && (

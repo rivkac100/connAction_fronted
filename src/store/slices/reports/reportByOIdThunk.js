@@ -16,7 +16,7 @@ export const reportByOIdThunk = createAsyncThunk(
         }
 
         else {
-            alert("findLogin")
+         
             throw new Error("failed to fetch");
         }
     }
