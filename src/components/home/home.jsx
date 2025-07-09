@@ -571,7 +571,7 @@ export const Home = () => {
                 gridTemplateColumns: { 
                   xs: '1fr', 
                   sm: 'repeat(2, 1fr)', 
-                  md: isM !== -1 ? 'repeat(6, 1fr)' : 'repeat(5, 1fr)' 
+                  md: isM !== -1 ? 'repeat(7, 1fr)' : 'repeat(6, 1fr)' 
                 },
                 gap: 2
               }}
@@ -626,6 +626,13 @@ export const Home = () => {
                   onClick={() => { setView(true); navigate(`/home/${params.id}`); }}
                 />
               </Box>
+              <Box>
+                <NavButton  
+                  icon={< EditCalendarIcon/>} 
+                  label="edit" 
+                  onClick={() => {navigate(`edit`);}}
+                />
+              </Box>
             </Box>
           </Box>
         
@@ -635,7 +642,7 @@ export const Home = () => {
       <Container maxWidth="xl">
  
         <Box className="content-area">
-          {(location.pathname.split('/').pop() === params.id || location.pathname.split('/')[3]==='profile') && (
+          {(location.pathname.split('/').pop() === params.id || location.pathname.split('/')[3]==='profile' || location.pathname.split('/').pop()==='edit') && (
             <Box className="managers-section">
               <Box sx={{ textAlign: 'center', mb: 6 }}>
                 <Typography 

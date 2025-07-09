@@ -162,7 +162,9 @@ export const NewEditCustomer = () => {
         city: "",
         community: "",
         pass: "",
-        userType: "customer"
+        userType: "customer",
+        amount: 0,
+        due: 0
         // confirmPassword: ""
     });
     const refDialog = useRef();
@@ -177,6 +179,7 @@ export const NewEditCustomer = () => {
     const isEditMode = Boolean(params.id);
     const formTitle = isEditMode ? "עריכת לקוח" : "הוספת לקוח חדש";
     useEffect(() => {
+        console.log( myCustomer);
         refDialog.current.showModal();
     }, []);
     // Fetch customer data if in edit mode
@@ -190,15 +193,15 @@ export const NewEditCustomer = () => {
     useEffect(() => {
         if (isEditMode && myCustomer) {
             // Format date for the date input
-            let formattedDue = "";
-            if (myCustomer.due) {
-                const dueDate = new Date(myCustomer.due);
-                formattedDue = dueDate.toISOString().split('T')[0];
-            }
+            // let formattedDue = "";
+            // if (myCustomer.due) {
+            //     const dueDate = new Date(myCustomer.due);
+            //     formattedDue = dueDate.toISOString().split('T')[0];
+            // }
 
             setCustomer({
                 ...myCustomer,
-                due: formattedDue
+                due:0
             });
         }
     }, [myCustomer, isEditMode]);

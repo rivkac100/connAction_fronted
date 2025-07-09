@@ -151,6 +151,7 @@ export const Routing = () => {
       {/* Home and nested routes */}
 
       <Route path="/home/:id" element={<Home />}>
+        <Route path="edit" element={<NewEditCustomer />} />
         <Route path="activities/:mid" element={<Activities />} >
           <Route path="newActivity" element={<AddEditActivity />} />
           <Route path="profile/:mid" element={<Profile />} />
