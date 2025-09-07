@@ -75,7 +75,7 @@ export const About = () => {
             </IconButton>
             <div className="new-hebrew-logo-5">
               <div className="new-logo-circle">
-                <span className="new-logo-text-circle">הצלחה</span>
+                <span className="new-logo-text-circle">connAction</span>
               </div>
             </div>
           </Box>
@@ -241,8 +241,8 @@ export const About = () => {
           <Box className="footer-content">
             <Box className="footer-logo">
               <div className="custom-logo footer-logo-style">
-                <span className="logo-text">Pro</span>
-                <span className="logo-text accent">Event</span>
+                {/* <span className="logo-text">conn</span> */}
+                <span className="logo-text accent">connAction</span>
               </div>
               <Typography variant="body2" className="footer-tagline">
                 המשרד הדיגיטלי המושלם למפיקות ומרצות
