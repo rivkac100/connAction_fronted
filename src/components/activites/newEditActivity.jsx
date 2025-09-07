@@ -101,17 +101,6 @@ const theme = createTheme({
   },
 });
 
-// Styled components
-
-
-// const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
-//   paddingTop: '56.25%', // 4:3 aspect ratio
-//   backgroundSize: 'contain',backgroundPosition: 'center',height: 140,
-//   backgroundColor: '#FFF',
-// }));
-
-
-
 
 export const AddEditActivity = () => {
   const dispatch = useDispatch();
@@ -294,24 +283,7 @@ export const AddEditActivity = () => {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="xl" sx={{ py: 4 }}>
-        {/* <PageHeader>
-        
-                <Button
-                  variant="contained"
-                  color="primary"
-                  startIcon={<AddIcon />}
-                  onClick={openAddProductDialog}
-                  sx={{ height: '5vh' }}
-                >
-                  הוסף מוצר חדש
-                </Button>
-              </PageHeader> */}
-
-
-        {/* Pagination */}
-
-
-
+       
 
         {/* Add Product Dialog */}
         <Dialog
@@ -355,22 +327,7 @@ export const AddEditActivity = () => {
                   rows={3}
                 />
               </Grid>
-              {/* <Grid item xs={12} md={6}>
-                      <FormControl fullWidth variant="outlined" required>
-                        <InputLabel id="category-label">קטגוריה</InputLabel>
-                        <Select
-                          labelId="category-label"
-                          name="pcategory"
-                          value={newActivity.pcategory}
-                          onChange={handleNewActivityChange}
-                          label="קטגוריה"
-                        >
-                          {categories.map(category => (
-                            <MenuItem key={category} value={category}>{category}</MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </Grid> */}
+            
               <Grid item xs={12}>
                 <TextField
                   name="location"
@@ -392,10 +349,7 @@ export const AddEditActivity = () => {
                   variant="outlined"
                   value={newActivity.lenOfActivity}
                   onChange={handleNewActivityChange}
-                  // InputProps={{
-                  //   startAdornment: <InputAdornment position="start">₪</InputAdornment>,
-                  //   inputProps: { min: 0, step: 0.01 }
-                  // }}
+                
                   required
                 />
               </Grid>
@@ -431,18 +385,7 @@ export const AddEditActivity = () => {
                 />
 
               </Grid>
-              {/* <Grid item xs={12}>
-                <TextField
-                  name="managerId"
-                  label="מנהל הפעילות"
-                  fullWidth
-                  variant="outlined"
-                  value={newActivity.managerId}
-                  onChange={handleNewActivityChange}
-                  multiline
-                  rows={3}
-                />
-              </Grid> */}
+            
               <Grid item xs={12}>
                 <Box sx={{ border: '1px dashed', borderColor: 'primary.main', borderRadius: 2, p: 3, textAlign: 'center' }}>
                   <input
